@@ -5,7 +5,8 @@ namespace SeniorVlogger.DataAccess.Repository.IRepository
 {
     public interface IUnitOfWork : IDisposable
     {
-        IApplicationUserRepository ApplicationUser { get; }
+        IApplicationUserRepository ApplicationUsers { get; }
+        IBlogPostRepository BlogPosts{ get; }
 
         Task Save();
     }

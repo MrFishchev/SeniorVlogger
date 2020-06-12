@@ -12,5 +12,6 @@ namespace SeniorVlogger.DataAccess.Data
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<BlogPost> BlogPosts{ get; set; }
     }
 }

@@ -7,13 +7,16 @@ namespace SeniorVlogger.DataAccess.Repository
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _db;
-        public IApplicationUserRepository ApplicationUser { get; }
+
+        public IApplicationUserRepository ApplicationUsers { get; }
+        public IBlogPostRepository BlogPosts { get; }
 
 
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
-            ApplicationUser = new ApplicationUserRepository(db);
+            ApplicationUsers = new ApplicationUserRepository(db);
+            BlogPosts = new BlogPostRepository(db);
         }
 
         public async Task Save()
