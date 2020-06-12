@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using VueCliMiddleware;
 
 namespace SeniorVlogger.Web
 {
@@ -25,6 +21,14 @@ namespace SeniorVlogger.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            var env = (IHostEnvironment) services.First(d => 
+                d.ServiceType == typeof(IHostEnvironment))?.ImplementationInstance;
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = env.IsDevelopment() ? "ClientApp" : "ClientApp/dist";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,12 +40,25 @@ namespace SeniorVlogger.Web
             }
 
             app.UseRouting();
-
+            app.UseSpaStaticFiles();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSpa(spa =>
+            {
+                if (env.IsDevelopment())
+                {
+                    spa.Options.SourcePath = "ClientApp";
+                    spa.UseVueCli("serve");
+                }
+                else
+                {
+                    spa.Options.SourcePath = "ClientApp/dist";
+                }
             });
         }
     }
