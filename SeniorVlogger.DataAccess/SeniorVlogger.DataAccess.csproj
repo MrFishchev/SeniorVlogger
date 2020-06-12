@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SeniorVlogger.Common\SeniorVlogger.Common.csproj" />
+    <ProjectReference Include="..\SeniorVlogger.Models\SeniorVlogger.Models.csproj" />
+  </ItemGroup>
+
+</Project>
