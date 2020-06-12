@@ -1,0 +1,43 @@
+=keyframes($name)
+  @-webkit-keyframes #{$name}
+    @content
+  @-moz-keyframes #{$name}
+    @content
+  @-ms-keyframes #{$name}
+    @content
+  @keyframes #{$name}
+    @content
+    
+.slide-in-right
+  animation: slideInRight 0.75s ease both
++keyframes(slideInRight) 
+  0%
+    opacity: 0
+    transform: translateX(300px)
+  100% 
+    opacity: 1
+    transform: translateX(0)
+
+.slide-in-left
+  animation: slideInLeft 0.75s ease both
++keyframes(slideInLeft) 
+  0%
+    opacity: 0
+    transform: translateX(-300px)
+  100% 
+    opacity: 1
+    transform: translateX(0)
+
+.appers-fadein
+  animation: appearsFadeIn 1s ease-in-out
++keyframes(appearsFadeIn) 
+  0%
+    opacity: 0
+  100% 
+    opacity: 1
+
+.width-from-zero
+  animation: widthFromZero 1s
++keyframes(widthFromZero)
+  0%
+    width: 0
