@@ -39,8 +39,8 @@ namespace SeniorVlogger.Web
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddControllers();
 
-            var env = (IHostEnvironment) services.First(d => 
-                d.ServiceType == typeof(IHostEnvironment))?.ImplementationInstance;
+            var env = (IHostEnvironment)services.First(d =>
+               d.ServiceType == typeof(IHostEnvironment))?.ImplementationInstance;
 
             services.AddSpaStaticFiles(configuration =>
             {
@@ -64,7 +64,11 @@ namespace SeniorVlogger.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                //endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    "default",
+                    "{area}/{controller}/{action=GetAll}"
+                    );
             });
 
             app.UseSpa(spa =>
