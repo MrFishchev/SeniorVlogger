@@ -7,16 +7,16 @@
       <h1>Mr. Fishchev</h1>
       <h3 class="job">Fullstack <strong>.NET Developer</strong></h3>
       <div class="routes">
-        <!-- <nuxt to="/blog">
+        <router-link to="/blog">
           <button
             type="button"
             class="btn btn-lg">Blog</button>
-        </nuxt-link>
-        <nuxt-link to="/about">
+        </router-link>
+        <router-link to="/about">
           <button
             type="button"
             class="btn btn-lg">About</button>
-        </nuxt-link> -->
+        </router-link>
       </div>
     </div>
     <div class="svg">
