@@ -21,6 +21,31 @@ Vue.use(VueRouter)
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/About.vue')
     }
+  },
+  
+  //MANAGE SECTION
+  {
+    path: '/manage',
+    name: 'Manage',
+    meta: { layout: "manage"},
+    component: function () {
+      return import(/* webpackChunkName: "manage" */ '../views/manage/Index.vue')
+    },
+
+    children: [
+      {
+        path: 'posts',
+        component: function () {
+          return import('../views/manage/posts/Index.vue')
+        }
+      },
+      {
+        path: 'create',
+        component: function () {
+          return import(/* webpackChunkName: "createpost" */ '../views/manage/posts/Create.vue')
+        }
+      }
+    ]
   }
 ]
 

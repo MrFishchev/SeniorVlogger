@@ -174,6 +174,7 @@
     #about
         padding: 0
         margin: 0
+        background: $base
         .content
             h1
               animation: slideInLeft 0.5s

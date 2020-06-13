@@ -1,9 +1,9 @@
 <template>
     <div class="wrapper" id="blog-post">
 
-        <nuxt-link class="category slide-in-right" :to="'/posts/category/' + categoryURL">
+        <router-link class="category slide-in-right" :to="'/posts/category/' + categoryURL">
             {{ data.category }}
-        </nuxt-link>
+        </router-link>
         <h1 class="title slide-in-right">{{data.title}}</h1>
 
         <hr />
@@ -24,14 +24,14 @@
         <div id="content" class="appers-fadein" v-if="data.content" v-html="data.content" />
 
          <div class="additional-posts">
-            <span v-if="next">Next:<nuxt-link :to="'/posts/' + next.slug" :title="next.title">{{next.title}}</nuxt-link></span>
-            <span v-if="previous">Previous:<nuxt-link :to="'/posts/' + previous.slug" :title="previous.title">{{previous.title}}</nuxt-link></span>
+            <span v-if="next">Next:<router-link :to="'/posts/' + next.slug" :title="next.title">{{next.title}}</router-link></span>
+            <span v-if="previous">Previous:<router-link :to="'/posts/' + previous.slug" :title="previous.title">{{previous.title}}</router-link></span>
         </div>
         
         <div class="tags">
             <span v-for="tag in data.tags"
                 :key="tag.name">
-                <nuxt-link :to="'/posts/tag/' + tag">#{{tag}}</nuxt-link>
+                <router-link :to="'/posts/tag/' + tag">#{{tag}}</router-link>
             </span>
         </div>
 
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import 'highlight.js/styles/rainbow.css'
+import 'highlight.js/scss/rainbow.scss'
 const jQuery = require('jquery/dist/jquery.min.js')
 
 export default {

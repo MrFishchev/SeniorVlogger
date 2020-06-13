@@ -1,21 +1,25 @@
 <template>
-    <client-only placeholder="Loading...">
-        <div class="quill-editor" 
-            :content="buffer"
-            @change="onChanged($event)"
-            :options="editorOption"
-            v-quill:myQuillEditor="editorOption">
-        </div>
-    </client-only>
+    <quillEditor class="quill-editor" 
+        :content="buffer"
+        @change="onChanged($event)"
+        :options="editorOption">
+    </quillEditor>
 </template>
 
 <script>
-import hljs from 'highlight.js/lib/highlight.js'
-if(process.browser){
-    require('~/plugins/nuxt-quill-plugin.js')
-}
+import hljs from 'highlight.js'
+import { quillEditor } from 'vue-quill-editor'
+import Quill from 'quill'
+import ImageResize from 'quill-image-resize-vue'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+Quill.register('modules/imageResize', ImageResize)
 
 export default {
+    components: {
+        quillEditor
+    },
+
     props:{
         buffer: String
     },
