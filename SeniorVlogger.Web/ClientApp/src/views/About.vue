@@ -134,7 +134,7 @@
             <div class="desc">
               I'm a <strong>Fullstack .NET Developer</strong>. I was born in Russia but live in Minsk.
               I would like to move to Germany. Let's make the world a better place.
-              If you want know more about me or <strong>.NET</strong>, then go to my <nuxt-link to="/blog">blog</nuxt-link>.
+              If you want know more about me or <strong>.NET</strong>, then go to my <router-link to="/blog">blog</router-link>.
             </div>
           </div>
 
