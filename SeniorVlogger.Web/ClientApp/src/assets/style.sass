@@ -1,0 +1,76 @@
+@import '_colors'
+@import '_animation'
+
+
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+select:focus,
+textarea 
+  font-size: 16px
+
+
+html
+    font-size: 16px
+body
+    font-family: "Montserrat"
+    padding: 0
+    margin: 0
+    overflow-x: hidden!important
+    background: $base
+    min-width: 320px
+    &.light
+        background: #fff
+    .noselect
+        -webkit-touch-callout: none
+        -webkit-user-select: none
+        -khtml-user-select: none
+        -moz-user-select: none
+            -ms-user-select: none
+                user-select: none 
+    textarea, input
+        &:focus
+            outline: none
+    .wrapper
+        .content
+            .block:nth-child(2n)
+                background: $block-dark
+            .block
+                width: 100vw
+                padding: 4vw 0
+                h1
+                    font-size: 2rem
+                    text-align: center
+                    color: $font-white
+                    position: relative
+                    text-transform: uppercase
+                    &::after
+                        content: " "
+                        background: $font-white
+                        position: absolute
+                        height: 2px
+                        top: calc(100% + 0.5rem)
+                        left: calc(50% - 1.8rem)
+                        width: 4rem
+                .container
+                    padding-top: 3vw
+        .btn
+            color: $font-white
+            text-transform: uppercase
+            font-weight: 400
+            border: 1px solid $base-light
+            transition: all 0.5s
+            &:hover, &:active
+                background: $neon-light
+                border-color: #0f7dbd
+a
+    color: $neon-light
+    cursor: pointer
+    &:hover
+        text-decoration: underline
+        text-decoration-style: dotted
+
+@import '_media'

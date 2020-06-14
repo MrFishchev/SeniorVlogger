@@ -6,6 +6,7 @@ namespace SeniorVlogger.Models.DTO
 {
     public class BlogPost
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -45,5 +46,11 @@ namespace SeniorVlogger.Models.DTO
         public int? PreviousId { get; set; }
         [ForeignKey(nameof(PreviousId))]
         public BlogPost Previous { get; set; }
+
+        [Required]
+        public string AuthorId { get; set; }
+        [ForeignKey(nameof(AuthorId))]
+        public ApplicationUser Author { get; set; }
+
     }
 }
