@@ -58,7 +58,7 @@
                 <ul>
                     <li v-for="file in files" :key="file.id">
                         <span v-if="file.success && !file.removed">
-                            <a href @click.prevent="removeFile(file)">Remove file</a>
+                            <a href="#" @click.prevent="removeFile(file)">Remove file</a>
                         </span>
                         <span v-if="!file.removed">{{file.name}}</span>
                         <span v-if="!file.removed">{{file.size}}</span>
@@ -179,7 +179,14 @@ export default {
             }
         },
 
-        async publish () {
+        async publish() {
+
+            let json = {
+                id: 1,
+                title: 'hello'
+            }
+            this.$http.post('/Admin/Blog/Create', json).then(res => console.log(res))
+
             // await this.$apollo.mutate({
             //     mutation: graphql.post.create,
             //     variables: {
