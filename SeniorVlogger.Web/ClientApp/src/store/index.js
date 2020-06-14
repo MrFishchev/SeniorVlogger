@@ -6,43 +6,56 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
-        todos: null
+        user: {
+            name: '',
+            loggedIn: false,
+            isEmailConfirmed: false,
+            isSubscribed: false
+        }
     },
     getters: {
-        TODOS: state => {
-            return state.todos
+        AUTH: state=> {
+            return state.user.loggedIn
         }
     },
     mutations: {
-        SET_TODO: (state, payload) => {
-            state.todos = payload
+        SET_USER: (state, payload) => {
+            state.user.name = payload.user
+            state.user.loggedIn = true
+            state.user.isEmailConfirmed = payload.isEmailConfirmed
+            state.user.isSubscribed = payload.isSubscribed
         },
 
-        ADD_TODO: (state, payload) => {
-            state.todos.push(payload)
+        DELETE_USER: (state, payload) => {
+            state.user.name = ''
+            state.user.loggedIn = false
+            state.user.isEmailConfirmed = false
+            state.user.isSubscribed = false
         }
     },
     actions: {
-        GET_TODO: async (context, payload) => {
-            let {data} = await axios.get('url')
-            context.commit('SET_TODO', data)
+        LOGIN: async (context, payload) => {
+            let { data } = await axios.post('/Identity/User/Login', payload)
+            if (data.user) {
+                context.commit('SET_USER', data)
+            }
+            return data
         },
 
-        SAVE_TODO: async (context, payload) => {
-            let {data} = await axios.post('url')
-            context.commit('ADD_TODO', payload)
+        LOGOUT: async (context, payload) => {
+            let { data } = await axios.post('/Identity/User/Logout')
+            context.commit('DELETE_USER')
         }
     }
 })
 
-
 // //add new todo item
 // let item = 'New TODO'
-// this.$store.dispath('SAVE_TODO', item)
+// this.$store.dispatch('SAVE_TODO', item)
 
 // //get elements and put in todos
 // mounted() {
-//     this.$store.dispath('GET_TODO')
+//     this.$store.dispatch('GET_TODO')
 // }
 
 // //get todolist

@@ -81,15 +81,14 @@
 <script>
 export default {
   computed: {
-    authorized () {
-      // return this.$store.state.authorized || this.$apolloHelpers.getToken()
+    authorized() {
+        return this.$store.getters.AUTH
     }
   },
   methods: {
     async logout () {
-      // await this.$apolloHelpers.onLogout()
-      // this.$store.commit('setAuthorized', false)
-      // this.$router.push({ path: '/' })
+      await this.$store.dispatch('LOGOUT')
+      this.$router.replace('/')
     }
   }
 }

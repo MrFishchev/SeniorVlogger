@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <router-link tag="button" to="create" class="btn btn-primary">Create New</router-link>
+        <router-link tag="button" to="posts/create" class="btn btn-primary">Create New</router-link>
         <table v-if="posts && posts.length">
             <thead>
                 <tr>

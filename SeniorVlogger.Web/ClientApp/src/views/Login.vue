@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-    <!-- TODO Loading  -->
     <form @submit.prevent="signin">
       <input
         v-model="credentials.username"
@@ -14,15 +13,16 @@
         required >
       <button type="submit">Submit</button>
     </form>
+    <span class="danger" v-if="error">{{error}}</span>
   </div>
 </template>
 
 <script>
-import graphql from '@/graphql'
 export default {
   data () {
     return {
       submitting: false,
+      error: null,
       credentials: {
         username: '',
         password: ''
@@ -30,21 +30,14 @@ export default {
     }
   },
   methods: {
-    async signin () {
-      this.submitting = true
-
-      try {
-        const token = await this.$apollo.mutate({
-          mutation: graphql.auth.signin,
-          variables: this.credentials
-        }).then(({ data }) => data && data.authSignin)
-
-        await this.$apolloHelpers.onLogin(token)
-        this.$store.commit('setAuthorized', true)
-        this.$router.replace({ path: '/manage' })
-      } finally {
-        this.submitting = false
-      }
+    signin () {
+        this.$store.dispatch('LOGIN', this.credentials)
+            .then(data => {
+                if (data.success)
+                    this.$router.replace('/manage')
+                else
+                    this.error = data.message
+            })
     }
   }
 }

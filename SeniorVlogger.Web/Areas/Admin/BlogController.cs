@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using SeniorVlogger.DataAccess.Repository.IRepository;
 using SeniorVlogger.Models.DTO;
 
-namespace SeniorVlogger.Web.Areas.Admin.Controllers
+namespace SeniorVlogger.Web.Areas.Admin
 {
     [Area("Admin")]
     public class BlogController : Controller
@@ -47,10 +47,10 @@ namespace SeniorVlogger.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> Create([FromBody]BlogPost blogPost)
+        public async Task<IActionResult> Create([FromBody]BlogPost blogPost)
         {
-            _logger.LogInformation("Hello World");
-            return null;
+            await Task.Delay(10);
+            return Json(new {data = blogPost});
         }
     }
 }
