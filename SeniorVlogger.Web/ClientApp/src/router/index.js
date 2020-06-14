@@ -72,12 +72,23 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if(!to.meta.middleware) {
+  const middleware = to.meta.middleware
+
+  let parent = to.matched.filter(m => m.meta.middleware)[0]
+  const parentMiddleware = (parent) ? parent.meta.middleware : null
+    
+  if(!middleware && !parentMiddleware) {
     return next()
   }
-  const middleware = to.meta.middleware
   const context = {
     to, from, next, store
+  }
+
+  if (!middleware) {
+    return parentMiddleware[0]({ 
+      ...context,
+      nextMiddleware: middlewarePipeline(context, parentMiddleware, 1)
+    })
   }
 
   return middleware[0] ({
