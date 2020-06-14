@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SeniorVlogger.DataAccess.Repository.IRepository;
 using SeniorVlogger.Models.DTO;
@@ -21,16 +22,18 @@ namespace SeniorVlogger.Web.Areas.Identity
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IConfiguration _configuration;
 
         public UserController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment, 
             ILogger<UserController> logger, SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _hostEnvironment = hostEnvironment;
             _logger = logger;
             _signInManager = signInManager;
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -48,7 +51,14 @@ namespace SeniorVlogger.Web.Areas.Identity
                     var user = await _unitOfWork.ApplicationUsers.GetFirstOrDefault(u =>
                         u.UserName == credentials.Username);
                     _logger.LogInformation($"User {credentials.Username} logged in");
-                    return Json(new {success = true, user = credentials.Username, isEmailConfirmed = user.EmailConfirmed, isSubscribed = false});
+                    return Json(new
+                    {
+                        success = true,
+                        user = credentials.Username,
+                        isEmailConfirmed = user.EmailConfirmed,
+                        isSubscribed = false,
+                        token = GetRandomToken(credentials.Username)
+                    });
                 }
 
                 if (result.IsLockedOut)
@@ -82,12 +92,22 @@ namespace SeniorVlogger.Web.Areas.Identity
                     : $"Cannot create user {resultUser.Errors.First().Description}");
             }
         }
-    }
 
-    public class Credentials
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public bool Remember { get; set; }
+        private string GetRandomToken(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+                throw new ArgumentNullException();
+
+            var jwt = new JwtService(_configuration);
+            var token = jwt.GenerateSecurityToken(email);
+            return token;
+        }
+
+        public class Credentials
+        {
+            public string Username { get; set; }
+            public string Password { get; set; }
+            public bool Remember { get; set; }
+        }
     }
 }

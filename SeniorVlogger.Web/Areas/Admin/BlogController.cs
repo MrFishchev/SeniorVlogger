@@ -12,6 +12,7 @@ using SeniorVlogger.Models.DTO;
 namespace SeniorVlogger.Web.Areas.Admin
 {
     [Area("Admin")]
+    [Authorize]
     public class BlogController : Controller
     {
         private readonly ILogger<BlogController> _logger;
