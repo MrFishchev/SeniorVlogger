@@ -8,32 +8,35 @@ export const store = new Vuex.Store({
     state: {
         user: {
             name: '',
-            loggedIn: false,
             isEmailConfirmed: false,
             isSubscribed: false,
             token: ''
         }
     },
     getters: {
-        AUTH: state=> {
-            return state.user.loggedIn
+        AUTH: state => {
+            return (state.user.token || localStorage.getItem('token')) ? true : false
+        },
+
+        TOKEN: state => {
+            return state.user.token || localStorage.getItem('token')
         }
     },
     mutations: {
         SET_USER: (state, payload) => {
             state.user.name = payload.user
-            state.user.loggedIn = true
             state.user.isEmailConfirmed = payload.isEmailConfirmed
             state.user.isSubscribed = payload.isSubscribed
             state.user.token = payload.token
+            localStorage.setItem('token', payload.token)
         },
 
         DELETE_USER: (state, payload) => {
             state.user.name = ''
-            state.user.loggedIn = false
             state.user.isEmailConfirmed = false
             state.user.isSubscribed = false
             state.user.token = ''
+            localStorage.removeItem('token')
         }
     },
     actions: {

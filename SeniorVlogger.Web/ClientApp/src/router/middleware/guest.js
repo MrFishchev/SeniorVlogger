@@ -1,7 +1,7 @@
-export default function guset ({next, store, nextMiddleware}){
-    if(store.getters.AUTH.loggedIn){
+export default function guest({ next, store, nextMiddleware }) {
+    if(store.getters.AUTH){
         return next({
-            name: 'manage'
+            name: 'Manage'
         })
     }
     return nextMiddleware()

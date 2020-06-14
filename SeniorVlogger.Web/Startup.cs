@@ -44,6 +44,7 @@ namespace SeniorVlogger.Web
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddControllers();
             services.AddTokenAuthentication(Configuration);
 
@@ -66,9 +67,9 @@ namespace SeniorVlogger.Web
             }
 
             app.UseRouting();
-            app.UseSpaStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSpaStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {

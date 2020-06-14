@@ -13,7 +13,7 @@ Vue.use(VueRouter)
   const routes = [
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     meta: {layout: 'mainslide', middleware: [ guest ]},
     component: function () {
       return import('../views/Login.vue')
@@ -22,7 +22,7 @@ Vue.use(VueRouter)
 
   {
     path: '/',
-    name: 'Home',
+    name: 'Default',
     meta: { layout: 'mainslide'},
     component: Home
   },

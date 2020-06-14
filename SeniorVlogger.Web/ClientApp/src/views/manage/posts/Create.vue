@@ -185,7 +185,7 @@ export default {
                 id: 1,
                 title: 'hello'
             }
-            this.$http.post('/Admin/Blog/Create', json).then(res => console.log(res))
+            this.$api.post('/Admin/Blog/Create', json).then(res => console.log(res))
 
             // await this.$apollo.mutate({
             //     mutation: graphql.post.create,
