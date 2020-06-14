@@ -12,9 +12,10 @@ using Microsoft.Extensions.Logging;
 using SeniorVlogger.DataAccess.Repository.IRepository;
 using SeniorVlogger.Models.DTO;
 
-namespace SeniorVlogger.Web.Areas.Identity
+namespace SeniorVlogger.Web.Controllers
 {
-    [Area("Identity")]
+    [ApiController]
+    [Route("api/[controller]")]
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;

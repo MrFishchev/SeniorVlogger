@@ -9,10 +9,11 @@ using Microsoft.Extensions.Logging;
 using SeniorVlogger.DataAccess.Repository.IRepository;
 using SeniorVlogger.Models.DTO;
 
-namespace SeniorVlogger.Web.Areas.Admin
+namespace SeniorVlogger.Web.Controllers
 {
-    [Area("Admin")]
+    [ApiController]
     [Authorize]
+    [Route("api/[controller]")]
     public class BlogController : Controller
     {
         private readonly ILogger<BlogController> _logger;
@@ -27,31 +28,24 @@ namespace SeniorVlogger.Web.Areas.Admin
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IEnumerable<BlogPost>> GetAll()
         {
             var allObj = await _unitOfWork.BlogPosts
                 .GetAll(includeProperties: "Next,Previous");
-            return Json(new { data = allObj });
+            return allObj;
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             var blogPost = await _unitOfWork.BlogPosts.Get(id);
-            if (blogPost == null) return Json(new { success = false, message = "Cannot delete product" });
+            if (blogPost == null) return NotFound();
 
             //TODO DeleteOldImage
             await _unitOfWork.BlogPosts.Remove(blogPost);
             await _unitOfWork.Save();
 
-            return Json(new { success = true, message = "Cannot delete product" });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody]BlogPost blogPost)
-        {
-            await Task.Delay(10);
-            return Json(new {data = blogPost});
+            return Ok();
         }
     }
 }

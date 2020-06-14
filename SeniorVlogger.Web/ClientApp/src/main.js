@@ -20,14 +20,12 @@ axios.interceptors.request.use(config => {
     if (token) {
         config.headers.Authorization = 'Bearer ' + token
     }
-    console.log(config)
 
     return config
 }, (error) => {
     return Promise.reject(error)
 })
 Vue.prototype.$api = axios
-
 
 Vue.config.productionTip = false
 

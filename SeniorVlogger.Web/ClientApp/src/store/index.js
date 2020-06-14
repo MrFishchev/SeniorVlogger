@@ -41,7 +41,7 @@ export const store = new Vuex.Store({
     },
     actions: {
         LOGIN: async (context, payload) => {
-            let { data } = await axios.post('/Identity/User/Login', payload)
+            let { data } = await axios.post('/api/User/Login', payload)
             if (data.user) {
                 context.commit('SET_USER', data)
             }
@@ -49,7 +49,7 @@ export const store = new Vuex.Store({
         },
 
         LOGOUT: async (context, payload) => {
-            let { data } = await axios.post('/Identity/User/Logout')
+            let { data } = await axios.post('/api/User/Logout')
             context.commit('DELETE_USER')
         }
     }
