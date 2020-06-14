@@ -10,7 +10,8 @@ export const store = new Vuex.Store({
             name: '',
             loggedIn: false,
             isEmailConfirmed: false,
-            isSubscribed: false
+            isSubscribed: false,
+            token: ''
         }
     },
     getters: {
@@ -24,6 +25,7 @@ export const store = new Vuex.Store({
             state.user.loggedIn = true
             state.user.isEmailConfirmed = payload.isEmailConfirmed
             state.user.isSubscribed = payload.isSubscribed
+            state.user.token = payload.token
         },
 
         DELETE_USER: (state, payload) => {
@@ -31,6 +33,7 @@ export const store = new Vuex.Store({
             state.user.loggedIn = false
             state.user.isEmailConfirmed = false
             state.user.isSubscribed = false
+            state.user.token = ''
         }
     },
     actions: {
