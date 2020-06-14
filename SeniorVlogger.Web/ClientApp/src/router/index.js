@@ -42,7 +42,7 @@ Vue.use(VueRouter)
   {
     path: '/manage',
     name: 'Manage',
-    meta: { layout: 'manage'},
+    meta: { layout: 'manage', middleware: [ auth ]},
     component: function () {
       return import(/* webpackChunkName: "manage" */ '../views/manage/Index.vue')
     },
