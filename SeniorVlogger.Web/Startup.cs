@@ -45,6 +45,7 @@ namespace SeniorVlogger.Web
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddControllers();
+            services.AddTokenAuthentication(Configuration);
 
             var env = (IHostEnvironment)services.First(d =>
                d.ServiceType == typeof(IHostEnvironment))?.ImplementationInstance;
