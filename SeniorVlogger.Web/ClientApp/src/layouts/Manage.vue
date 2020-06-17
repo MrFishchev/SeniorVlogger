@@ -1,7 +1,7 @@
 <template>
   <div id="manage">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <router-link :to="{ path: '/manage'}" replace class="navbar-brand" exact-active-class="active">Manage</router-link>
+      <router-link :to="{ path: '/manage'}" exact class="navbar-brand" exact-active-class="active">Manage</router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -17,13 +17,13 @@
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <router-link :to="{ path: '/manage/posts'}" replace class="nav-link" active-class="active">Posts</router-link>
+            <router-link :to="{ path: '/manage/posts'}" exact class="nav-link" active-class="active">Posts</router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{ path: '/manage/categories'}" replace class="nav-link" active-class="active">Categories</router-link>
+            <router-link :to="{ path: '/manage/categories'}" exact class="nav-link" active-class="active">Categories</router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{ path: '/manage/users'}" replace class="nav-link" active-class="active">Users</router-link>
+            <router-link :to="{ path: '/manage/users'}" exact class="nav-link" active-class="active">Users</router-link>
           </li>
         </ul>
 
