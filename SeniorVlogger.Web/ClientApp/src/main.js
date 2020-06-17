@@ -3,7 +3,7 @@ import axios from 'axios'
 import {store} from './store'
 import App from './App.vue'
 import router from './router'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import './assets/bootstrap.min.css'
 
 import Default from "./layouts/Default.vue"
 import Blog from "./layouts/Blog.vue"
@@ -15,7 +15,17 @@ Vue.component('blog-layout', Blog)
 Vue.component('mainslide-layout', MainSlide)
 Vue.component('manage-layout', Manage)
 
-Vue.prototype.$http = axios
+axios.interceptors.request.use(config => {
+    let token = store.getters.TOKEN
+    if (token) {
+        config.headers.Authorization = 'Bearer ' + token
+    }
+
+    return config
+}, (error) => {
+    return Promise.reject(error)
+})
+Vue.prototype.$api = axios
 
 Vue.config.productionTip = false
 

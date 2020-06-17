@@ -13,7 +13,7 @@ Vue.use(VueRouter)
   const routes = [
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     meta: {layout: 'mainslide', middleware: [ guest ]},
     component: function () {
       return import('../views/Login.vue')
@@ -22,7 +22,7 @@ Vue.use(VueRouter)
 
   {
     path: '/',
-    name: 'Home',
+    name: 'Default',
     meta: { layout: 'mainslide'},
     component: Home
   },
@@ -42,7 +42,7 @@ Vue.use(VueRouter)
   {
     path: '/manage',
     name: 'Manage',
-    meta: { layout: 'manage'},
+    meta: { layout: 'manage', middleware: [ auth ]},
     component: function () {
       return import(/* webpackChunkName: "manage" */ '../views/manage/Index.vue')
     },
@@ -72,12 +72,23 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if(!to.meta.middleware) {
+  const middleware = to.meta.middleware
+
+  let parent = to.matched.filter(m => m.meta.middleware)[0]
+  const parentMiddleware = (parent) ? parent.meta.middleware : null
+    
+  if(!middleware && !parentMiddleware) {
     return next()
   }
-  const middleware = to.meta.middleware
   const context = {
     to, from, next, store
+  }
+
+  if (!middleware) {
+    return parentMiddleware[0]({ 
+      ...context,
+      nextMiddleware: middlewarePipeline(context, parentMiddleware, 1)
+    })
   }
 
   return middleware[0] ({
