@@ -28,7 +28,8 @@ export const store = new Vuex.Store({
             state.user.isEmailConfirmed = payload.isEmailConfirmed
             state.user.isSubscribed = payload.isSubscribed
             state.user.token = payload.token
-            localStorage.setItem('token', payload.token)
+            if(payload.remember)
+                localStorage.setItem('token', payload.token)
         },
 
         DELETE_USER: (state, payload) => {
@@ -43,6 +44,8 @@ export const store = new Vuex.Store({
         LOGIN: async (context, payload) => {
             let { data } = await axios.post('/api/User/Login', payload)
             if (data.user) {
+                if(payload.remember)
+                    data.remember = true
                 context.commit('SET_USER', data)
             }
             return data

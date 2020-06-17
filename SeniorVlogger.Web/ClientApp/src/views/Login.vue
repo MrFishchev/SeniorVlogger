@@ -1,19 +1,33 @@
 <template>
-  <div class="wrapper">
-    <form @submit.prevent="signin">
-      <input
-        v-model="credentials.username"
-        type="text"
-        placeholder="Username"
-        required >
-      <input
-        v-model="credentials.password"
-        type="password"
-        placeholder="Password"
-        required >
-      <button type="submit">Submit</button>
-    </form>
-    <span class="danger" v-if="error">{{error}}</span>
+  <div id="manage" class="container">
+    <div class="col-lg-6 col-md-10 col-sm-12 m-auto border border-primary rounded p-5 shadow">
+      <form @submit.prevent="signIn">
+
+       <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" v-model="credentials.username"
+                class="form-control" id="email" placeholder="Someone@example.com">
+          <small id="emailHelp" class="form-text text-danger">{{error}}</small>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" v-model="credentials.password"
+                class="form-control" id="password" placeholder="Password">
+        </div>
+
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" v-model="credentials.remember"
+                  type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+              Remember Me
+            </label>
+          </div>
+        </div>
+        <button class="btn btn-primary mt-3" type="submit">Submit</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -22,23 +36,34 @@ export default {
   data () {
     return {
       submitting: false,
-      error: null,
+      error: '',
+
       credentials: {
         username: '',
-        password: ''
+        password: '',
+        remember: ''
       }
     }
   },
   methods: {
-    signin () {
+    signIn () {
         this.$store.dispatch('LOGIN', this.credentials)
-            .then(data => {
-                if (data.success)
-                    this.$router.replace('/manage')
-                else
-                    this.error = data.message
-            })
+          .then(data => {
+              if (data.success)
+                  this.$router.replace('/manage')
+              else
+                  this.error = data.message
+          })
     }
   }
 }
 </script>
+
+<style lang="sass" scoped>
+  #manage
+    display: flex
+    align-items: center
+    height: 100vh
+    .btn
+      width: 100%
+</style>
