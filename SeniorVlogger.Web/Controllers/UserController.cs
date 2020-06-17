@@ -37,7 +37,7 @@ namespace SeniorVlogger.Web.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody]Credentials credentials)
         {
             try

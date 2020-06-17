@@ -44,8 +44,7 @@ export const store = new Vuex.Store({
         LOGIN: async (context, payload) => {
             let { data } = await axios.post('/api/User/Login', payload)
             if (data.user) {
-                if(payload.remember)
-                    data.remember = true
+                data.remember = payload.remember ? true : false
                 context.commit('SET_USER', data)
             }
             return data

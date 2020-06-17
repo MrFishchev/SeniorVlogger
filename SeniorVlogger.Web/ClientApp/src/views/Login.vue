@@ -41,7 +41,7 @@ export default {
       credentials: {
         username: '',
         password: '',
-        remember: ''
+        remember: false
       }
     }
   },
