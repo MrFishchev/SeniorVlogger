@@ -3,7 +3,7 @@ import axios from 'axios'
 import {store} from './store'
 import App from './App.vue'
 import router from './router'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import './assets/bootstrap.min.css'
 
 import Default from "./layouts/Default.vue"
 import Blog from "./layouts/Blog.vue"
