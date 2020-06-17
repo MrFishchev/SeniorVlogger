@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import {store} from '../store'
 import Home from '../views/Home.vue'
+import NotFound from '../views/NotFound.vue'
 
 import middlewarePipeline from './middlewarePipeline'
 import guest from './middleware/guest'
@@ -21,6 +22,11 @@ Vue.use(VueRouter)
   },
 
   {
+    path: '*',
+    component: NotFound
+  },
+
+  {
     path: '/',
     name: 'Default',
     meta: { layout: 'mainslide'},
@@ -29,7 +35,7 @@ Vue.use(VueRouter)
   {
     path: '/about',
     name: 'About',
-    meta: { layout: 'default'},
+    meta: { layout: 'about'},
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.

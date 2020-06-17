@@ -7,7 +7,6 @@
 </template>
 
 <style lang="sass">
-  @import "@/assets/style"
   #app.main, #app > .main
     min-height: 100vh
 </style>
