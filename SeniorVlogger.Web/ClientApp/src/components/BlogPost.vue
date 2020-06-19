@@ -61,7 +61,7 @@ export default {
 
     computed: {
         categoryURL () {
-            return this.data.category.toLowerCase().trim()
+            // return this.data.category.toLowerCase().trim()
         },
         postUrl(){
             return `https://seniorvlogger.com/posts/${this.data.slug}` 
