@@ -1,138 +1,149 @@
 <template>
-    <div class="wrapper" id="post-create">
-        <button @click="togglePreview">
-            <span v-if="preview">Hide preview</span>
-            <span v-else>Show preview</span>
-        </button>
+    <div class="wrapper col-lg-7 col-md-10 col-sm-12" id="post-create">
+        <div class="col-12 p-0 mt-5 mb-5">
+            <button class="btn btn-primary text-white w-100" @click="togglePreview">
+                <span v-if="preview">Hide preview</span>
+                <span v-else>Show preview</span>
+            </button>
+        </div>
         <blog-post v-show="preview" :data="data" />
 
-        <div class="post">
+        <div class="post" v-show="!preview">
             <form class="form" @submit.prevent="publish">
-                <input type="text" placeholder="Title"
-                    v-model="post.title" />
-                <input type="text" placeholder="Image"
-                    v-model="post.image" />
-                <input type="text" placeholder="Thumbnail"
-                    v-model="post.thumb" />
-                <input type="text" placeholder="Short"
-                    v-model="post.short" />
-                <input type="text" placeholder="Category"
-                    v-model="post.category" />
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" placeholder="Title" id="title" v-model="post.title" class="form-control" required/>
+                </div>
 
-                <label for="next">Next</label>
-                <select name="next" v-model="post.next">
-                    <option value="" selected>none</option>
-                    <option v-for="post in posts"
-                            :key="post.id"
-                            :value="post.id">
-                        {{ post.title }}
-                    </option>
-                </select>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" v-model="post.description" class="form-control" rows="3" required/>
+                </div>
 
-                <label for="next">Previous</label>
-                <select name="next" v-model="post.previous">
-                    <option value="" selected>none</option>
-                    <option v-for="post in posts"
-                            :key="post.id"
-                            :value="post.id">
-                        {{ post.title }}
-                    </option>
-                </select>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" v-model="post.category" class="form-control" required>
+                        <option value="" selected>Select Category</option>
+                        <option v-for="category in categories"
+                                :key="category.id" :value="category.id">
+                            {{category.name}}
+                        </option>
+                    </select>
+                </div>
 
-                <multiselect v-model="post.tags"
-                    :close-on-select="false"
-                    :clear-on-select="false"
-                    :preserve-search="true"
-                    :preselect-first="false"
-                    :options="tags"
-                    :multiple="true"
-                    :taggable="true"
-                    tag-placeholder="Add this as new tag"
-                    placeholder="Search or add a tag"
-                    @tag="addTag" />
+                <div class="form-group">
+                    <label for="tags">Tags</label>
+                    <multiselect class="tags"
+                        tag-placeholder="Add this as new tag" 
+                        placeholder="Search or add a tag" 
+                        :options="post.tags" 
+                        :multiple="true" 
+                        :taggable="true" 
+                        @tag="addTag">
+                    </multiselect>
+                </div>
 
-                <label for="scratch">Scratch</label>
-                <input type="checkbox" name="scratch"
-                    v-model="post.scratch" />
+                <div class="form-group">
+                    <label>Post Image</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">{{post.image || 'Select Image'}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="previous">Previous Post</label>
+                    <select id="previous" v-model="post.previous" class="form-control">
+                        <option value="" selected>Optional</option>
+                        <option v-for="post in posts"
+                                :key="post.id" :value="post.id">
+                            {{post.name}}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="next">Next Post</label>
+                    <select id="next" v-model="post.next" class="form-control">
+                        <option value="" selected>Optional</option>
+                        <option v-for="post in posts"
+                                :key="post.id" :value="post.id">
+                            {{post.name}}
+                        </option>
+                    </select>
+                </div>
                 
-                <ul>
-                    <li v-for="file in files" :key="file.id">
-                        <span v-if="file.success && !file.removed">
-                            <a href="#" @click.prevent="removeFile(file)">Remove file</a>
-                        </span>
-                        <span v-if="!file.removed">{{file.name}}</span>
-                        <span v-if="!file.removed">{{file.size}}</span>
-                        <span v-else>-- removed --</span>
-                        <span v-if="file.active">uploading...</span>
-                        <span v-else-if="file.error">error</span>
-                        <span v-else />
-                    </li>
-                </ul>
-                <file-upload v-model="files"
-                    ref="upload"
-                    :multiple="false"
-                    :custom-action="uploadFiles"
-                    extensions="jpg,jpeg,png"
-                    accept="image/png,image/jpeg,image"
-                    @input-filter="inputFilter">
-                    Select files
-                </file-upload>
-                <button v-if="!$refs.upload || !$refs.upload.active"
-                    type="button"
-                    @click.prevent="$refs.upload.active = true">
-                    Upload
-                </button>
-                <button v-else
-                    type="button"
-                    @click.prevent="$refs.upload.active = false">
-                    Stop uploading
-                </button>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" v-model="post.mailed"
+                            type="checkbox" id="mailed">
+                        <label class="form-check-label" for="mailed">
+                        Send Mail to Subscribers
+                        </label>
+                    </div>
+                </div>
 
-                <button type="submit">Submit</button>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" v-model="post.scratch"
+                            type="checkbox" id="scratch">
+                        <label class="form-check-label" for="scratch">
+                        Scratch (Don't publish now)
+                        </label>
+                    </div>
+                </div>
 
+                <TextEditor class="editor" :buffer="editor.content" v-on:changed="editorTextChanged($event)" />
+
+                <div class="buttons mb-5">
+                    <button class="btn btn-success w-25 text-white">Save Blog</button>
+                    <button class="btn btn-danger w-25 text-white">Cancel</button>
+                </div>
             </form>
         </div>
-        
-        <TextEditor :buffer="editor.content" v-on:changed="editorTextChanged($event)" />
     </div>
 </template>
 
 <script>
 import BlogPost from '@/components/BlogPost'
-import FileUpload from 'vue-upload-component/dist/vue-upload-component.part.js'
 import Multiselect from 'vue-multiselect'
 const TextEditor = () => import('@/components/TextEditor.vue')
 
 export default {
-    // middlewawre: ['auth'],
     components: {
         BlogPost,
-        FileUpload,
         Multiselect,
         TextEditor
     },
 
     data () {
         return {
+            preview: false,
+
             editor:{
                 content: '',
             },
-            files: [],
-            tags: [],
-            preview: false,
+
             post: {
                 title: '',
-                short: '',
+                description: '',
                 tags: [],
                 image: '',
-                thumb: '',
-                date: this.formatDate(new Date()),
-                category: '',
-                next: '',
-                previous: ''
+                date: '',
+                category: 0,
+                next: 0,
+                previous: 0,
+                mailed: false,
+                scratch: true
             },
-            posts: []
+
+            posts: [],
+            categories: []
         }
+    },
+
+    beforeMount() {
+
     },
 
     computed: {
@@ -197,7 +208,7 @@ export default {
             //         short: this.post.short,
             //         content: this.data.content,
             //         scratch: this.post.scratch,
-            //         category: this.post.category.toLowerCase(),
+            //         category: this.post.category
             //         next: this.post.next,
             //         previous: this.post.previous,
             //         date: this.post.date
@@ -210,44 +221,7 @@ export default {
             this.$router.replace({ path: '/manage/posts' })
         },
 
-        async uploadFiles (data) {
-            data.headers['Content-type'] = 'multipart/form-data'
-            const formData = new FormData()
-            formData.append('file', data.file)
-            let post = this.post;
-
-            // await this.$apollo.mutate({
-            //     mutation: graphql.file.create,
-            //     variables: {
-            //         file: data.file
-            //     },
-            //     update (store, result) {
-            //         if(!post.image){
-            //             post.image = result.data.fileCreate.filename
-            //         }
-            //         data.name = result.data.fileCreate.filename
-            //         data.graphql = result.data.fileCreate
-            //     }
-            // })
-        },
-
-        async removeFile (file) {
-            const vm = this
-            const filename = file.name
-            file.name = 'removing...'
-
-            // await this.$apollo.mutate({
-            //     mutation: graphql.file.remove,
-            //     variables: { id: file.graphql.id },
-            //     update (store, result) {
-            //         file.name = filename,
-            //         vm.$set(file, 'removed', true)
-            //     } 
-            // })
-        },
-
         addTag (newTag) {
-            this.tags.push(newTag)
             this.post.tags.push(newTag)
         }
     }
@@ -256,8 +230,14 @@ export default {
 
 <style lang="sass">
     #post-create
-        width: 80%
         margin: 0 auto
-        input, textarea
-            display: block
+        .editor 
+            margin: 30px 0 30px 0 
+            .ql-editor
+                min-height: 300px
+        .buttons
+            display: flex
+            justify-content: space-evenly
+            align-items: center
 </style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
