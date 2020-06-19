@@ -29,10 +29,10 @@
 
         <ul class="navbar-nav ml-auto mr-5">
           <li class="nav-item">
-            <router-link to="about" class="nav-link">About</router-link>
+            <router-link :to="{ path: '/about'}" exact class="nav-link">About</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="blog" class="nav-link">Blog</router-link>
+            <router-link :to="{ path: '/blog'}" exact class="nav-link">Blog</router-link>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0 d-none d-lg-block">
