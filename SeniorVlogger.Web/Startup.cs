@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using SeniorVlogger.DataAccess.Data;
 using SeniorVlogger.DataAccess.Repository;
 using SeniorVlogger.DataAccess.Repository.IRepository;
+using SeniorVlogger.Web.Services;
 using VueCliMiddleware;
 
 namespace SeniorVlogger.Web
@@ -43,6 +45,7 @@ namespace SeniorVlogger.Web
                 options.Password.RequiredLength = 3;
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddSingleton<UploadsService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddControllers();
@@ -64,6 +67,12 @@ namespace SeniorVlogger.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+            }
+
+            if (string.IsNullOrWhiteSpace(env.WebRootPath))
+            {
+                env.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(),
+                    (env.IsDevelopment()) ? "ClientApp" : "ClientApp/dist");
             }
 
             app.UseRouting();
