@@ -34,6 +34,9 @@
           <li class="nav-item">
             <router-link :to="{ path: '/blog'}" exact class="nav-link">Blog</router-link>
           </li>
+          <li class="nav-item" v-if="auth">
+            <a href="#" @click="Logout" class="nav-link">Logout</a>
+          </li>
         </ul>
         <form class="form-inline my-2 my-lg-0 d-none d-lg-block">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" />
@@ -46,10 +49,27 @@
   </div>
 </template>
 
+<script>
+    export default {
+        computed: {
+            auth() {
+                return this.$store.getters.AUTH
+            }
+        },
+
+        methods: {
+            Logout() {
+                this.$store.dispatch("LOGOUT")
+                    .then(res => this.$router.push("/login"))
+            }
+        }
+    }
+</script>
+
 <style lang="sass">
 body
   background: #fff!important
-  #manage
+  #manage      
     nav
       font-size: 1rem
       .items

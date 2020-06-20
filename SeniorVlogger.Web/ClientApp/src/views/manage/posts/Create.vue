@@ -9,7 +9,7 @@
         <blog-post v-show="preview" :data="data" />
 
         <div class="post" v-show="!preview">
-            <form class="form" @submit.prevent="publish">
+            <form class="form" @submit.prevent="publish" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" placeholder="Title" id="title" v-model="post.title" class="form-control" required/>
@@ -23,10 +23,10 @@
                 <div class="form-group">
                     <label for="category">Category</label>
                     <select id="category" v-model="post.category" class="form-control" required>
-                        <option value="" selected>Select Category</option>
+                        <option value="" selected disabled>Select Category</option>
                         <option v-for="category in categories"
-                                :key="category.id" :value="category.id">
-                            {{category.name}}
+                                :key="category.id" :value="category">
+                            {{ category.name }}
                         </option>
                     </select>
                 </div>
@@ -36,7 +36,10 @@
                     <multiselect class="tags"
                         tag-placeholder="Add this as new tag" 
                         placeholder="Search or add a tag" 
-                        :options="post.tags" 
+                        label="name"
+                        track-by="code"
+                        v-model="tagValues"
+                        :options="tagOptions" 
                         :multiple="true" 
                         :taggable="true" 
                         @tag="addTag">
@@ -46,8 +49,8 @@
                 <div class="form-group">
                     <label>Post Image</label>
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">{{post.image || 'Select Image'}}</label>
+                        <input type="file" class="custom-file-input" id="customFile" @change="selectImage" ref="image" required>
+                        <label class="custom-file-label" for="customFile">{{(postImage != null) ? postImage.name : null || 'Select Image'}}</label>
                     </div>
                 </div>
 
@@ -56,7 +59,7 @@
                     <select id="previous" v-model="post.previous" class="form-control">
                         <option value="" selected>Optional</option>
                         <option v-for="post in posts"
-                                :key="post.id" :value="post.id">
+                                :key="post.id" :value="post">
                             {{post.name}}
                         </option>
                     </select>
@@ -67,7 +70,7 @@
                     <select id="next" v-model="post.next" class="form-control">
                         <option value="" selected>Optional</option>
                         <option v-for="post in posts"
-                                :key="post.id" :value="post.id">
+                                :key="post.id" :value="post">
                             {{post.name}}
                         </option>
                     </select>
@@ -120,25 +123,29 @@ export default {
         return {
             preview: false,
 
-            editor:{
+            editor: {
                 content: '',
             },
 
+            postImage: null,
             post: {
                 title: '',
                 description: '',
                 tags: [],
-                image: '',
-                date: '',
-                category: 0,
-                next: 0,
-                previous: 0,
+                imageUrl: '',
+                date: null,
+                category: null,
+                next: null,
+                previous: null,
                 mailed: false,
                 scratch: true
             },
 
+            tagValues: [],
+            tagOptions: [],
+
             posts: [],
-            categories: []
+            categories: [{id: 1, name: 'cat'}]
         }
     },
 
@@ -156,21 +163,25 @@ export default {
     },
 
     methods: {
+        selectImage(event){
+            this.postImage = event.target.files[0]
+        },
+
         editorTextChanged(html){
             this.editor.content = html
         },
 
         formatDate(date) {
-            var monthNames = [
+            let monthNames = [
                 "January", "February", "March",
                 "April", "May", "June", "July",
                 "August", "September", "October",
                 "November", "December"
             ]
 
-            var day = date.getDate()
-            var monthIndex = date.getMonth()
-            var year = date.getFullYear()
+            let day = date.getDate()
+            let monthIndex = date.getMonth()
+            let year = date.getFullYear()
 
             return monthNames[monthIndex] + ' ' + day + ', ' + year
         },
@@ -190,39 +201,40 @@ export default {
             }
         },
 
-        async publish() {
+        async uploadImage() {
+            if (this.postImage == null) return
 
-            let json = {
-                id: 1,
-                title: 'hello'
-            }
-            this.$api.post('/api/Blog/Create', json).then(res => console.log(res))
+            var formData = new FormData()
+            var imagefile = this.postImage
+            formData.append("image", imagefile)
 
-            // await this.$apollo.mutate({
-            //     mutation: graphql.post.create,
-            //     variables: {
-            //         tags: this.post.tags,
-            //         title: this.post.title,
-            //         image: this.post.image,
-            //         thumb: this.post.thumb,
-            //         short: this.post.short,
-            //         content: this.data.content,
-            //         scratch: this.post.scratch,
-            //         category: this.post.category
-            //         next: this.post.next,
-            //         previous: this.post.previous,
-            //         date: this.post.date
-            //     },
-            //     update (store, result) {
-            //         const data = store.readQuery({ query: graphql.post.getAll })
-            //         store.writeQuery({ query: graphql.post.getAll, data })
-            //     }
-            // })
-            this.$router.replace({ path: '/manage/posts' })
+            return this.$api({
+                method: 'post',
+                url: '/api/blog/image',
+                data: formData,
+                config: { headers: {'Content-Type': 'multipart/form-data'}}
+            })
         },
 
-        addTag (newTag) {
-            this.post.tags.push(newTag)
+        async publish() {
+            let response = await this.uploadImage()
+            this.post.imageUrl = response.data
+            this.post.date = Date.now()
+            this.post.tags = this.tagValues.map(i => { return i.name })
+
+            let status = await this.$api.post('/api/blog', this.post)
+            console.log(status)
+
+            // this.$router.push({ path: '/manage/posts' })
+        },
+
+        addTag(newTag) {
+            let tag = {
+                name: newTag,
+                code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+            }
+            this.tagOptions.push(tag)
+            this.tagValues.push(tag)
         }
     }
 }
