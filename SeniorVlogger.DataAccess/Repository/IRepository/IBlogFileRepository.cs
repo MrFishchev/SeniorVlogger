@@ -3,7 +3,7 @@ using SeniorVlogger.Models.DTO;
 
 namespace SeniorVlogger.DataAccess.Repository.IRepository
 {
-    public interface IBlogFileRepository : IRepository<BlogFile>
+    public interface IBlogFileRepository : IRepository<BlogFileDto>
     {
     }
 }

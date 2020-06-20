@@ -7,6 +7,6 @@ namespace SeniorVlogger.Models.DTO
     public class ApplicationUser : IdentityUser
     {
         [NotMapped] 
-        public Roles Role { get; set; }
+        public Role Role { get; set; }
     }
 }

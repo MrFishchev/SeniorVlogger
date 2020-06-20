@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeniorVlogger.Models.DTO
 {
-    public class BlogPost
+    public class BlogPostDto
     {
         [Key]
         public int Id { get; set; }
@@ -41,11 +41,11 @@ namespace SeniorVlogger.Models.DTO
 
         public int? NextId { get; set; }
         [ForeignKey(nameof(NextId))]
-        public BlogPost Next { get; set; }
+        public BlogPostDto Next { get; set; }
 
         public int? PreviousId { get; set; }
         [ForeignKey(nameof(PreviousId))]
-        public BlogPost Previous { get; set; }
+        public BlogPostDto Previous { get; set; }
 
         [Required]
         public string AuthorId { get; set; }

@@ -6,7 +6,7 @@ using SeniorVlogger.Models.DTO;
 
 namespace SeniorVlogger.DataAccess.Repository
 {
-    public class BlogPostRepository : Repository<BlogPost>, IBlogPostRepository
+    public class BlogPostRepository : Repository<BlogPostDto>, IBlogPostRepository
     {
         private readonly ApplicationDbContext _db;
 
@@ -15,7 +15,7 @@ namespace SeniorVlogger.DataAccess.Repository
             _db = db;
         }
 
-        public async Task Update(BlogPost blogPost)
+        public async Task Update(BlogPostDto blogPost)
         {
             var objDb = await _db.BlogPosts
                 .FirstOrDefaultAsync(d => d.Id == blogPost.Id);

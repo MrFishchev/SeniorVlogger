@@ -4,7 +4,7 @@ using SeniorVlogger.Models.DTO;
 
 namespace SeniorVlogger.DataAccess.Repository
 {
-    public class BlogFileRepository : Repository<BlogFile>, IBlogFileRepository
+    public class BlogFileRepository : Repository<BlogFileDto>, IBlogFileRepository
     {
         private readonly ApplicationDbContext _db;
 
