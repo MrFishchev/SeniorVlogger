@@ -58,9 +58,11 @@ namespace SeniorVlogger.Web.Controllers
                 var objDb = post.ToDto();
                 objDb.AuthorId = user.Id;
                 objDb.Slug = post.Title.GenerateSlug();
+                objDb.PublishDate = DateTime.UtcNow;
                 //TODO Generate unique slug by DB
 
                 await _unitOfWork.BlogPosts.Add(objDb);
+                await _unitOfWork.Save();
             }
             catch (Exception e)
             {

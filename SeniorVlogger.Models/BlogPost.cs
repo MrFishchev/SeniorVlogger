@@ -23,7 +23,6 @@ namespace SeniorVlogger.Models
 
         public Category Category { get; set; }
 
-        [JsonConverter(typeof(JavaScriptDateTimeConverter))]
         public DateTime PublishDate { get; set; }
 
         public bool Mailed { get; set; }

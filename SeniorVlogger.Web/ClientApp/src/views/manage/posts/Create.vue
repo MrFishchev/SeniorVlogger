@@ -133,7 +133,6 @@ export default {
                 description: '',
                 tags: [],
                 imageUrl: '',
-                date: null,
                 category: null,
                 next: null,
                 previous: null,
@@ -171,21 +170,6 @@ export default {
             this.editor.content = html
         },
 
-        formatDate(date) {
-            let monthNames = [
-                "January", "February", "March",
-                "April", "May", "June", "July",
-                "August", "September", "October",
-                "November", "December"
-            ]
-
-            let day = date.getDate()
-            let monthIndex = date.getMonth()
-            let year = date.getFullYear()
-
-            return monthNames[monthIndex] + ' ' + day + ', ' + year
-        },
-
         togglePreview () {
             this.preview = !this.preview
         },
@@ -219,7 +203,6 @@ export default {
         async publish() {
             let response = await this.uploadImage()
             this.post.imageUrl = response.data
-            this.post.date = Date.now()
             this.post.tags = this.tagValues.map(i => { return i.name })
 
             let status = await this.$api.post('/api/blog', this.post)
