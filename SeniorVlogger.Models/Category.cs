@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SeniorVlogger.Models
+﻿namespace SeniorVlogger.Models
 {
     public class Category
     {

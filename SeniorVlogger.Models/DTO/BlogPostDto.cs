@@ -29,15 +29,16 @@ namespace SeniorVlogger.Models.DTO
         public string Description { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string Category { get; set; }
-
-        [Required]
         public DateTime PublishDate { get; set; }
 
         public bool Mailed { get; set; }
 
         public bool Scratch { get; set; }
+
+        [Required]
+        public int CategoryId { get; set; }
+        [ForeignKey(nameof(CategoryId))]
+        public CategoryDto Category { get; set; }
 
         public int? NextId { get; set; }
         [ForeignKey(nameof(NextId))]
