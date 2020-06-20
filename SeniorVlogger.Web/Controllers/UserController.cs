@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -35,6 +36,23 @@ namespace SeniorVlogger.Web.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
             _configuration = configuration;
+        }
+
+        [HttpGet("Verify")]
+        public async Task<IActionResult> Verify()
+        {
+            var email = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(email)) return NotFound();
+
+            var user = await _unitOfWork.ApplicationUsers
+                .GetFirstOrDefault(u => u.Email == email);
+
+            return Json(new
+            {
+                user = user.UserName,
+                isEmailConfirmed = user.EmailConfirmed,
+                isSubscribed = false,
+            });
         }
 
         [HttpPost("Login")]
@@ -76,22 +94,33 @@ namespace SeniorVlogger.Web.Controllers
             return Json(new { success = false, message = "Invalid login attempt" });
         }
 
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var email = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(email)) return NotFound();
+
+            await _signInManager.SignOutAsync();
+
+            _logger.LogInformation($"{email} logged out");
+            return Ok();
+        }
+
         private async Task CreateUserIfEmpty(string username, string password)
         {
             var users = await _unitOfWork.ApplicationUsers.GetFirstOrDefault();
-            if (users == null)
-            {
-                var appUser = new ApplicationUser
-                {
-                    UserName = username,
-                    Email = username
-                };
-                var resultUser = await _userManager.CreateAsync(appUser, password);
+            if (users != null) return;
 
-                _logger.LogInformation((resultUser.Succeeded)
-                    ? $"{appUser.UserName} has been created"
-                    : $"Cannot create user {resultUser.Errors.First().Description}");
-            }
+            var appUser = new ApplicationUser
+            {
+                UserName = username,
+                Email = username
+            };
+            var resultUser = await _userManager.CreateAsync(appUser, password);
+
+            _logger.LogInformation((resultUser.Succeeded)
+                ? $"{appUser.UserName} has been created"
+                : $"Cannot create user {resultUser.Errors.First().Description}");
         }
 
         private string GetRandomToken(string email)
