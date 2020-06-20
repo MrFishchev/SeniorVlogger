@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +15,7 @@ namespace SeniorVlogger.Web
             this IServiceCollection services, 
             IConfiguration configuration)
         {
-            var secret = configuration.GetSection("Jwt")["secret"];
+            var secret = configuration.GetSection("Jwt")["Secret"];
             var key = Encoding.ASCII.GetBytes(secret);
 
             services.AddAuthentication(options =>
@@ -22,11 +25,18 @@ namespace SeniorVlogger.Web
             })
             .AddJwtBearer(options =>
             {
+                //options.RequireHttpsMetadata = false;
+                //options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
+                    ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidIssuer = configuration.GetSection("Jwt")["Issuer"],
+                    ValidAudience = configuration.GetSection("Jwt")["Audience"],
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
