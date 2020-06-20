@@ -44,6 +44,22 @@ namespace SeniorVlogger.Web.Services
             }
         }
 
+        public Task Delete(string path)
+        {
+            try
+            {
+                var fullPath = Path.Combine(_hostEnvironment.WebRootPath, path);
+                if(File.Exists(fullPath))
+                    File.Delete(fullPath);
+            }
+            catch
+            {
+                //ignore
+            }
+
+            return Task.CompletedTask;
+        }
+
 
     }
 }

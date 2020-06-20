@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SeniorVlogger.DataAccess.Repository.IRepository;
 using SeniorVlogger.Models.DTO;
+using SeniorVlogger.Models.Requests;
 
 namespace SeniorVlogger.Web.Controllers
 {
@@ -19,12 +17,18 @@ namespace SeniorVlogger.Web.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
+        #region Fields
+
         private readonly ILogger<UserController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _configuration;
+
+        #endregion
+
+        #region Constructor
 
         public UserController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment, 
             ILogger<UserController> logger, SignInManager<IdentityUser> signInManager,
@@ -37,6 +41,10 @@ namespace SeniorVlogger.Web.Controllers
             _userManager = userManager;
             _configuration = configuration;
         }
+
+        #endregion
+
+        #region Actions
 
         [HttpGet("Verify")]
         public async Task<IActionResult> Verify()
@@ -56,13 +64,13 @@ namespace SeniorVlogger.Web.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody]Credentials credentials)
+        public async Task<IActionResult> Login([FromBody]CredentialsRequest credentials)
         {
             try
             {
                 await CreateUserIfEmpty(credentials.Username, credentials.Password);
 
-                var result = await _signInManager.PasswordSignInAsync(credentials.Username, credentials.Password, 
+                var result = await _signInManager.PasswordSignInAsync(credentials.Username, credentials.Password,
                     credentials.Remember, false);
 
                 if (result.Succeeded)
@@ -106,6 +114,10 @@ namespace SeniorVlogger.Web.Controllers
             return Ok();
         }
 
+        #endregion
+
+        #region Private Methods
+
         private async Task CreateUserIfEmpty(string username, string password)
         {
             var users = await _unitOfWork.ApplicationUsers.GetFirstOrDefault();
@@ -133,11 +145,7 @@ namespace SeniorVlogger.Web.Controllers
             return token;
         }
 
-        public class Credentials
-        {
-            public string Username { get; set; }
-            public string Password { get; set; }
-            public bool Remember { get; set; }
-        }
+        #endregion
+
     }
 }

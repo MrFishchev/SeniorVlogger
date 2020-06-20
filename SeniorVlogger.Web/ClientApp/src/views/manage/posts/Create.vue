@@ -205,10 +205,16 @@ export default {
             this.post.imageUrl = response.data
             this.post.tags = this.tagValues.map(i => { return i.name })
 
-            let status = await this.$api.post('/api/blog', this.post)
-            console.log(status)
+            this.$api.post('/api/blog', this.post)
+              .then(res => this.$router.push({ path: '/manage/posts' }))
+              .catch(error => {
+                  console.log('Cannot save post, deleting image')
+                  this.DeleteImage()
+              })
+        },
 
-            // this.$router.push({ path: '/manage/posts' })
+        DeleteImage() {
+            this.$api.delete('/api/blog/image', { data: { path: this.post.imageUrl } })
         },
 
         addTag(newTag) {

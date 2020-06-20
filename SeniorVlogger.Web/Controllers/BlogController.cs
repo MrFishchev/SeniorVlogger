@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -9,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SeniorVlogger.DataAccess.Repository.IRepository;
 using SeniorVlogger.Models;
-using SeniorVlogger.Models.DTO;
+using SeniorVlogger.Models.Requests;
 using SeniorVlogger.Web.Extensions;
 using SeniorVlogger.Web.Services;
 using SlugGenerator;
@@ -21,9 +20,15 @@ namespace SeniorVlogger.Web.Controllers
     [Route("api/[controller]")]
     public class BlogController : Controller
     {
+        #region Fields
+
         private readonly ILogger<BlogController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UploadsService _uploadsService;
+
+        #endregion
+
+        #region Constructor
 
         public BlogController(IUnitOfWork unitOfWork, UploadsService uploadsService, ILogger<BlogController> logger)
         {
@@ -31,6 +36,10 @@ namespace SeniorVlogger.Web.Controllers
             _uploadsService = uploadsService;
             _logger = logger;
         }
+
+        #endregion
+
+        #region Actions
 
         [HttpPost("image")]
         [Consumes("multipart/form-data")]
@@ -44,6 +53,21 @@ namespace SeniorVlogger.Web.Controllers
             if (string.IsNullOrEmpty(result)) return BadRequest();
 
             return Json(result);
+        }
+
+        [HttpDelete("image")]
+        public async Task<IActionResult> DeleteImage([FromBody] DeleteImageRequest request)
+        {
+            try
+            {
+                await _uploadsService.Delete(request.Path);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         [HttpPost]
@@ -85,5 +109,7 @@ namespace SeniorVlogger.Web.Controllers
 
             return Ok();
         }
+
+        #endregion
     }
 }
