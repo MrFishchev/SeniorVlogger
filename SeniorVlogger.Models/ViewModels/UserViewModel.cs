@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SeniorVlogger.Common.Enums;
+﻿using SeniorVlogger.Common.Enums;
 
-namespace SeniorVlogger.Models
+namespace SeniorVlogger.Models.ViewModels
 {
-    public class User
+    public class UserViewModel
     {
         public string Id { get; set; }
 

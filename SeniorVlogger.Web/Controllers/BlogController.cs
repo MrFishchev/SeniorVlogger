@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using SeniorVlogger.DataAccess.Repository.IRepository;
 using SeniorVlogger.Models;
 using SeniorVlogger.Models.Requests;
+using SeniorVlogger.Models.ViewModels;
 using SeniorVlogger.Web.Extensions;
 using SeniorVlogger.Web.Services;
 using SlugGenerator;
@@ -71,15 +73,14 @@ namespace SeniorVlogger.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IEnumerable<BlogPostViewModel>> GetAll()
         {
             var posts = await _unitOfWork.BlogPosts.GetAll(includeProperties: "Category,Author");
-            var result = posts.Select(i => i.ToViewModel());
-            return Json(result);
+            return posts.Select(i => i.ToViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> SavePost([FromBody] BlogPost post)
+        public async Task<IActionResult> SavePost([FromBody] BlogPostViewModel post)
         {
             try
             {

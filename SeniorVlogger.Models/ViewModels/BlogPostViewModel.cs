@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Collections.Generic;
 
-namespace SeniorVlogger.Models
+namespace SeniorVlogger.Models.ViewModels
 {
-    public class BlogPost
+    public class BlogPostViewModel
     {
         public int Id { get; set; }
 
@@ -21,7 +18,7 @@ namespace SeniorVlogger.Models
 
         public string Description { get; set; }
 
-        public Category Category { get; set; }
+        public CategoryViewModel Category { get; set; }
 
         public string PublishDate { get; set; }
 
@@ -29,10 +26,10 @@ namespace SeniorVlogger.Models
 
         public bool Scratch { get; set; }
 
-        public BlogPost Next { get; set; }
+        public BlogPostViewModel Next { get; set; }
 
-        public BlogPost Previous { get; set; }
+        public BlogPostViewModel Previous { get; set; }
 
-        public User Author { get; set; }
+        public UserViewModel Author { get; set; }
     }
 }

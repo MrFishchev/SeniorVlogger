@@ -1,32 +1,32 @@
 ﻿using System;
-using SeniorVlogger.Models;
 using SeniorVlogger.Models.DTO;
+using SeniorVlogger.Models.ViewModels;
 
 namespace SeniorVlogger.Web.Extensions
 {
     public static class BlogPostExtension
     {
-        public static BlogPostDto ToDto(this BlogPost post)
+        public static BlogPostDto ToDto(this BlogPostViewModel vm)
         {
             return new BlogPostDto
             {
-                CategoryId = post.Category.Id,
-                NextId = post?.Next?.Id,
-                PreviousId = post?.Previous?.Id,
-                Title = post.Title,
-                ImageUrl = post.ImageUrl,
-                Content = post.Content,
-                Description = post.Description,
-                Mailed = post.Mailed,
-                Scratch = post.Scratch,
-                PublishDate = DateTime.Parse(post.PublishDate),
-                Tags = string.Join(',', post.Tags)
+                CategoryId = vm.Category.Id,
+                NextId = vm?.Next?.Id,
+                PreviousId = vm?.Previous?.Id,
+                Title = vm.Title,
+                ImageUrl = vm.ImageUrl,
+                Content = vm.Content,
+                Description = vm.Description,
+                Mailed = vm.Mailed,
+                Scratch = vm.Scratch,
+                PublishDate = DateTime.Parse(vm.PublishDate),
+                Tags = string.Join(',', vm.Tags)
             };
         }
 
-        public static BlogPost ToViewModel(this BlogPostDto objDb)
+        public static BlogPostViewModel ToViewModel(this BlogPostDto objDb)
         {
-            var viewModel = new BlogPost
+            var viewModel = new BlogPostViewModel
             {
                 Id = objDb.Id,
                 ImageUrl = objDb.ImageUrl,
@@ -42,7 +42,7 @@ namespace SeniorVlogger.Web.Extensions
 
             if (objDb.Author != null)
             {
-                viewModel.Author = new User
+                viewModel.Author = new UserViewModel
                 {
                     Id = objDb.Author.Id,
                     Email = objDb.Author.Email,
@@ -52,7 +52,7 @@ namespace SeniorVlogger.Web.Extensions
 
             if (objDb.Category != null)
             {
-                viewModel.Category = new Category
+                viewModel.Category = new CategoryViewModel
                 {
                     Id = objDb.Category.Id,
                     Name = objDb.Category.Name
