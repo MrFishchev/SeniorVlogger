@@ -99,8 +99,8 @@
                 <TextEditor class="editor" :buffer="editor.content" v-on:changed="editorTextChanged($event)" />
 
                 <div class="buttons mb-5">
-                    <button class="btn btn-success w-25 text-white">Save Blog</button>
-                    <button class="btn btn-danger w-25 text-white">Cancel</button>
+                    <button class="btn btn-success w-25 text-white" type="submit">Save Blog</button>
+                    <router-link to="/manage/posts" tag="button" class="btn btn-danger w-25 text-white" @click.prevent="this.$router.push('/')">Cancel</router-link>
                 </div>
             </form>
         </div>

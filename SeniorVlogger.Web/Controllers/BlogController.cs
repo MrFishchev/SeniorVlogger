@@ -111,7 +111,7 @@ namespace SeniorVlogger.Web.Controllers
             var blogPost = await _unitOfWork.BlogPosts.Get(id);
             if (blogPost == null) return NotFound();
 
-            //TODO DeleteOldImage
+            await _uploadsService.Delete(blogPost.ImageUrl);
             await _unitOfWork.BlogPosts.Remove(blogPost);
             await _unitOfWork.Save();
 

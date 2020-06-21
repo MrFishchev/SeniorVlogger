@@ -1,8 +1,12 @@
 <template>
-    <div class="wrapper">
-        <router-link tag="button" to="posts/create" class="btn btn-primary">Create New</router-link>
+    <div class="wrapper p-5">
+        <div class="buttons col-12 pr-0 pl-0">
+            <router-link tag="button" to="posts/create" class="btn btn-primary">
+               <i class="fas fa-plus mr-1"></i> Create New
+            </router-link>
+        </div>
         
-        <div class="col-xl-11 col-md-12 m-auto">
+        <div class="data col-xl-11 col-md-12 m-auto p-0 border border-darken-2">
             <vue-good-table :columns="columns" :rows="posts"
                 :select-options="{ enabled: true, selectOnCheckboxOnly: true, selectionText: 'posts selected'}"
                 :search-options="{ enabled: true }">
@@ -13,14 +17,20 @@
                         </span> 
                     </span>
                     <span v-else-if="props.column.field == 'mailed'" class="check-success">
-                        <i class="fas fa-check" v-if="props.row.mailed"></i>
-                        <i class="fas fa-times" v-else></i>
+                        <i class="fas fa-check text-success" v-if="props.row.mailed"></i>
+                        <i class="fas fa-times text-danger" v-else></i>
                     </span>
                     <span v-else-if="props.column.field == 'scratch'" class="check-success">
-                        <i class="fas fa-check" v-if="props.row.scratch"></i>
-                        <i class="fas fa-times" v-else></i>
+                        <i class="fas fa-check text-success" v-if="props.row.scratch"></i>
+                        <i class="fas fa-times text-danger" v-else></i>
                     </span>
-                    <span v-else-if="props.column.field == 'buttons'" class="buttons">
+                    <span v-else-if="props.column.field == 'buttons'" class="table-buttons">
+                        <button class="btn btn-sm btn-primary mr-2">
+                            <i class="fas fa-external-link-alt"></i>
+                        </button>
+                        <button class="btn btn-sm btn-warning mr-2">
+                            <i class="far fa-edit"></i>
+                        </button>
                         <button class="btn btn-sm btn-danger" @click="OnDelete(props.row.id)">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -30,6 +40,10 @@
                     </span>
                 </template>
             </vue-good-table>
+
+            <div class="controls">
+
+            </div>
         </div>
     </div>
 </template>
@@ -54,9 +68,9 @@ export default {
                 },
                 { label: 'Author', field: 'author.name' },
                 { label: 'Tags', field: 'tags', sortable: false, globalSearchDisabled: true },
-                { label: 'Mailed', field: 'mailed', sortable: false, globalSearchDisabled: true },
-                { label: 'Scratch', field: 'scratch', sortable: false, globalSearchDisabled: true  },
-                { label: '', field: 'buttons', sortable: false, globalSearchDisabled: true }
+                { label: 'Mailed', field: 'mailed', sortable: false, globalSearchDisabled: true, tdClass: 'center-item' },
+                { label: 'Scratch', field: 'scratch', sortable: false, globalSearchDisabled: true, tdClass: 'center-item'  },
+                { label: '', field: 'buttons', sortable: false, globalSearchDisabled: true, tdClass: 'center-item' }
             ]
         }
     }, 
@@ -73,3 +87,22 @@ export default {
     }
 }
 </script>
+
+<style lang="sass">
+    .wrapper
+        td.center-item
+            text-align: center
+            vertical-align: middle
+        & > .buttons
+            display: flex
+            justify-content: flex-end
+            padding-bottom: 20px
+        .data
+            .table-buttons
+                display: flex
+                justify-content: center
+            .controls
+                background: linear-gradient(#f4f5f8,#f1f3f6)
+                height: 40px
+
+</style>
