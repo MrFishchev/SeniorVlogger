@@ -76,12 +76,39 @@ export default {
     }, 
 
     methods: {
-        OnDelete(id) {
-            this.$notify({
-                type: 'success',
-                text: 'Post was deleted',
-                group: 'app',
+        async OnDelete(id) {
+            let res = await this.$swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to restore the post!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                customClass: {
+                    confirmButton: 'btn btn-danger mr-3',
+                    cancelButton: 'btn btn-light'
+                },
+                buttonsStyling: false
             })
+
+            if(res.isConfirmed){
+                let response = await this.$api.delete(`/api/blog/${id}`)
+                if(response.status === 200){
+                    this.$notify({
+                        type: 'success',
+                        text: 'Post was deleted',
+                        group: 'app',
+                    })
+                }
+                else{
+                    this.$notify({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Cannot delete post',
+                        group: 'app',
+                    })
+                }
+               
+            }
         }
     },
 

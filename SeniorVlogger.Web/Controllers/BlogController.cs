@@ -77,7 +77,7 @@ namespace SeniorVlogger.Web.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var blogPost = await _unitOfWork.BlogPosts.Get(id);
