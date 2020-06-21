@@ -1,15 +1,11 @@
 <template>
   <div id="app" class="main">
     <component :is="layout">
+      <notifications group="app" class="notify" position="top right" />
       <router-view/>
     </component>
   </div>
 </template>
-
-<style lang="sass">
-  #app.main, #app > .main
-    min-height: 100vh
-</style>
 
 <script>
 const default_layout = "default"
@@ -24,3 +20,10 @@ export default {
   }  
 }
 </script>
+
+<style lang="sass">
+  #app.main, #app > .main
+    min-height: 100vh
+  .notify
+    top: 100px!important
+</style>

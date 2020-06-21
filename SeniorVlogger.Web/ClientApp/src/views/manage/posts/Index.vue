@@ -1,12 +1,12 @@
 <template>
-    <div class="wrapper p-5">
-        <div class="buttons col-12 pr-0 pl-0">
+    <div class="wrapper p-5 col-xl-11 col-md-12 m-auto">
+        <div class="buttons pr-0 pl-0">
             <router-link tag="button" to="posts/create" class="btn btn-primary">
                <i class="fas fa-plus mr-1"></i> Create New
             </router-link>
         </div>
         
-        <div class="data col-xl-11 col-md-12 m-auto p-0 border border-darken-2">
+        <div class="data p-0 border border-darken-2">
             <vue-good-table :columns="columns" :rows="posts"
                 :select-options="{ enabled: true, selectOnCheckboxOnly: true, selectionText: 'posts selected'}"
                 :search-options="{ enabled: true }">
@@ -77,7 +77,11 @@ export default {
 
     methods: {
         OnDelete(id) {
-            console.log(id)
+            this.$notify({
+                type: 'success',
+                text: 'Post was deleted',
+                group: 'app',
+            })
         }
     },
 

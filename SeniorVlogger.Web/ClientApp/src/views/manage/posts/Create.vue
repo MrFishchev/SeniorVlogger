@@ -206,14 +206,24 @@ export default {
             this.post.tags = this.tagValues.map(i => { return i.name })
 
             this.$api.post('/api/blog', this.post)
-              .then(res => this.$router.push({ path: '/manage/posts' }))
-              .catch(error => {
-                  console.log('Cannot save post, deleting image')
-                  this.DeleteImage()
-              })
+                .then(res => this.$router.push({ path: '/manage/posts' }))
+                .catch(error => {
+                    this.$notify({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Cannot save post',
+                        group: 'app',
+                    })
+                    this.DeleteImage()
+                })
         },
 
         DeleteImage() {
+            this.$notify({
+                type: 'warn',
+                text: 'Deleting uploaded image',
+                group: 'app',
+            })
             this.$api.delete('/api/files', { data: { path: this.post.imageUrl } })
         },
 
