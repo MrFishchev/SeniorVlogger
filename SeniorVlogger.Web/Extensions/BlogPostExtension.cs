@@ -19,7 +19,7 @@ namespace SeniorVlogger.Web.Extensions
                 Description = vm.Description,
                 Mailed = vm.Mailed,
                 Scratch = vm.Scratch,
-                PublishDate = DateTime.Parse(vm.PublishDate),
+                PublishDate = vm.PublishDate != null ?  DateTime.Parse(vm.PublishDate) : DateTime.MinValue,
                 Tags = string.Join(',', vm.Tags)
             };
         }

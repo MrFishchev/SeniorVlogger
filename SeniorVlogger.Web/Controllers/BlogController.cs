@@ -43,35 +43,6 @@ namespace SeniorVlogger.Web.Controllers
 
         #region Actions
 
-        [HttpPost("image")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> SaveImage([FromForm] IFormCollection form)
-        {
-            if (!form.Files.Any()) return BadRequest();
-
-            var file = form.Files.First();
-            var result = await _uploadsService.Upload(file);
-
-            if (string.IsNullOrEmpty(result)) return BadRequest();
-
-            return Json(result);
-        }
-
-        [HttpDelete("image")]
-        public async Task<IActionResult> DeleteImage([FromBody] DeleteImageRequest request)
-        {
-            try
-            {
-                await _uploadsService.Delete(request.Path);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
         [HttpGet]
         public async Task<IEnumerable<BlogPostViewModel>> GetAll()
         {
@@ -80,7 +51,7 @@ namespace SeniorVlogger.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SavePost([FromBody] BlogPostViewModel post)
+        public async Task<IActionResult> Create([FromBody] BlogPostViewModel post)
         {
             try
             {

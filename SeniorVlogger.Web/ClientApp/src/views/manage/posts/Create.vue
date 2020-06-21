@@ -194,7 +194,7 @@ export default {
 
             return this.$api({
                 method: 'post',
-                url: '/api/blog/image',
+                url: '/api/files',
                 data: formData,
                 config: { headers: {'Content-Type': 'multipart/form-data'}}
             })
@@ -214,7 +214,7 @@ export default {
         },
 
         DeleteImage() {
-            this.$api.delete('/api/blog/image', { data: { path: this.post.imageUrl } })
+            this.$api.delete('/api/files', { data: { path: this.post.imageUrl } })
         },
 
         addTag(newTag) {
