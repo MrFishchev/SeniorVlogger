@@ -1,53 +1,75 @@
 <template>
     <div class="wrapper">
         <router-link tag="button" to="posts/create" class="btn btn-primary">Create New</router-link>
-        <table v-if="posts && posts.length">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Tags</th>
-                    <th>Date</th>
-                    <th/>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="post in posts" :key="post.id">
-                    <td>{{ post.title }}</td>
-                    <td>{{ post.tags }}</td>
-                    <td>{{ post.date }}</td>
-                    <td>
-                        <nuxt-link :to="'/posts/' + post.slug">
-                            View
-                        </nuxt-link>
-                        <router-link :to="'/manage/posts/update/' + post.id" :prefetch="false">
-                            Edit
-                        </router-link>
-                        <a href @click.prevent="removePost(post.id)">
-                            Delete
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <p v-else>There are no posts</p>
+        
+        <div class="col-xl-11 col-md-12 m-auto">
+            <vue-good-table :columns="columns" :rows="posts"
+                :select-options="{ enabled: true, selectOnCheckboxOnly: true, selectionText: 'posts selected'}"
+                :search-options="{ enabled: true }">
+                <template slot="table-row" slot-scope="props">
+                    <span v-if="props.column.field == 'tags'" class="tags">
+                        <span class="tag" v-for="(item, index) in props.row.tags" :key="index">
+                            {{ item }}
+                        </span> 
+                    </span>
+                    <span v-else-if="props.column.field == 'mailed'" class="check-success">
+                        <i class="fas fa-check" v-if="props.row.mailed"></i>
+                        <i class="fas fa-times" v-else></i>
+                    </span>
+                    <span v-else-if="props.column.field == 'scratch'" class="check-success">
+                        <i class="fas fa-check" v-if="props.row.scratch"></i>
+                        <i class="fas fa-times" v-else></i>
+                    </span>
+                    <span v-else-if="props.column.field == 'buttons'" class="buttons">
+                        <button class="btn btn-sm btn-danger" @click="OnDelete(props.row.id)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </span>
+                    <span v-else>
+                        {{props.formattedRow[props.column.field]}}
+                    </span>
+                </template>
+            </vue-good-table>
+        </div>
     </div>
 </template>
 
 <script>
 
 export default {
-    // middleware: ['auth'],
-
     data () {
         return {
-            posts: []
+            posts: [],
+
+            columns: [
+                { label: 'Title', field: 'title', sortable: false},
+                { label: 'Description', field: 'description', sortable: false },
+                { label: 'Category', field: 'category.name' },
+                { 
+                    label: 'Date', 
+                    field: 'publishDate', 
+                    dateOutputFormat: 'dd MMM yyyy',
+                    dateInputFormat: 'dd.MM.yyyy',
+                    type: 'date'
+                },
+                { label: 'Author', field: 'author.name' },
+                { label: 'Tags', field: 'tags', sortable: false, globalSearchDisabled: true },
+                { label: 'Mailed', field: 'mailed', sortable: false, globalSearchDisabled: true },
+                { label: 'Scratch', field: 'scratch', sortable: false, globalSearchDisabled: true  },
+                { label: '', field: 'buttons', sortable: false, globalSearchDisabled: true }
+            ]
+        }
+    }, 
+
+    methods: {
+        OnDelete(id) {
+            console.log(id)
         }
     },
-   
-    methods: {
-        async removePost (id) {
-            
-        }
-    }    
+
+    async beforeMount() {
+        let response = await this.$api.get('/api/blog')
+        this.posts = response.data
+    }
 }
 </script>

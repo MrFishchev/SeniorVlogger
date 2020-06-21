@@ -6,6 +6,10 @@ import router from './router'
 import './assets/bootstrap.min.css'
 import './assets/style.sass'
 
+import VueGoodTablePlugin from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css'
+Vue.use(VueGoodTablePlugin);
+
 import Default from "./layouts/Default.vue"
 import About from "./layouts/About.vue"
 import Blog from "./layouts/Blog.vue"

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore.Internal;
 using SeniorVlogger.Models;
 using SeniorVlogger.Models.DTO;
 
@@ -22,9 +19,47 @@ namespace SeniorVlogger.Web.Extensions
                 Description = post.Description,
                 Mailed = post.Mailed,
                 Scratch = post.Scratch,
-                PublishDate = post.PublishDate,
+                PublishDate = DateTime.Parse(post.PublishDate),
                 Tags = string.Join(',', post.Tags)
             };
+        }
+
+        public static BlogPost ToViewModel(this BlogPostDto objDb)
+        {
+            var viewModel = new BlogPost
+            {
+                Id = objDb.Id,
+                ImageUrl = objDb.ImageUrl,
+                Tags = objDb.Tags.Split(','),
+                Title = objDb.Title,
+                Slug = objDb.Slug,
+                Content = objDb.Content,
+                Description = objDb.Description,
+                Mailed = objDb.Mailed,
+                Scratch = objDb.Scratch,
+                PublishDate = objDb.PublishDate.Date.ToString("dd.MM.yyyy")
+            };
+
+            if (objDb.Author != null)
+            {
+                viewModel.Author = new User
+                {
+                    Id = objDb.Author.Id,
+                    Email = objDb.Author.Email,
+                    Name = objDb.Author.UserName
+                };
+            }
+
+            if (objDb.Category != null)
+            {
+                viewModel.Category = new Category
+                {
+                    Id = objDb.Category.Id,
+                    Name = objDb.Category.Name
+                };
+            }
+
+            return viewModel;
         }
     }
 }

@@ -70,6 +70,14 @@ namespace SeniorVlogger.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var posts = await _unitOfWork.BlogPosts.GetAll(includeProperties: "Category,Author");
+            var result = posts.Select(i => i.ToViewModel());
+            return Json(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> SavePost([FromBody] BlogPost post)
         {

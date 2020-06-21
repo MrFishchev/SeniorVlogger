@@ -23,7 +23,7 @@ namespace SeniorVlogger.Models
 
         public Category Category { get; set; }
 
-        public DateTime PublishDate { get; set; }
+        public string PublishDate { get; set; }
 
         public bool Mailed { get; set; }
 
