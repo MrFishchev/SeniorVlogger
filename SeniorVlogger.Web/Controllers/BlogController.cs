@@ -4,12 +4,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SeniorVlogger.DataAccess.Repository.IRepository;
-using SeniorVlogger.Models;
-using SeniorVlogger.Models.Requests;
 using SeniorVlogger.Models.ViewModels;
 using SeniorVlogger.Web.Extensions;
 using SeniorVlogger.Web.Services;
@@ -47,7 +44,14 @@ namespace SeniorVlogger.Web.Controllers
         public async Task<IEnumerable<BlogPostViewModel>> GetAll()
         {
             var posts = await _unitOfWork.BlogPosts.GetAll(includeProperties: "Category,Author");
-            return posts.Select(i => i.ToViewModel());
+            return posts?.Select(i => i.ToViewModel());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<BlogPostViewModel> Get(int id)
+        {
+            var post = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Id == id, includeProperties: "Category,Author");
+            return post?.ToViewModel();
         }
 
         [HttpPost]
@@ -66,6 +70,29 @@ namespace SeniorVlogger.Web.Controllers
                 //TODO Generate unique slug by DB
 
                 await _unitOfWork.BlogPosts.Add(objDb);
+                await _unitOfWork.Save();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Cannot create blog post: {e.Message}");
+                return Problem();
+            }
+
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] BlogPostViewModel post)
+        {
+            try
+            {
+                if (post.Author.Email != User.FindFirst(ClaimTypes.NameIdentifier)?.Value)
+                    return Problem("You have no access to edit the post");
+
+                var objDb = post.ToDto();
+                objDb.Slug = post.Title.GenerateSlug();
+
+                await _unitOfWork.BlogPosts.Update(objDb);
                 await _unitOfWork.Save();
             }
             catch (Exception e)

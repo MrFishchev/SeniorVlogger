@@ -26,18 +26,11 @@ namespace SeniorVlogger.DataAccess.Repository
             objDb.Tags = blogPost.Tags;
             objDb.Content = blogPost.Content;
             objDb.Description = blogPost.Description;
-            objDb.Category = blogPost.Category;
-            objDb.PublishDate = blogPost.PublishDate;
             objDb.Mailed = blogPost.Mailed;
             objDb.Scratch = blogPost.Scratch;
+            objDb.CategoryId = blogPost.CategoryId;
             objDb.NextId = blogPost.NextId;
             objDb.PreviousId = blogPost.PreviousId;
-
-            if (objDb.ImageUrl != blogPost.ImageUrl)
-            {
-                //TODO delete old image and load new
-                objDb.ImageUrl = blogPost.ImageUrl;
-            }
         }
     }
 }

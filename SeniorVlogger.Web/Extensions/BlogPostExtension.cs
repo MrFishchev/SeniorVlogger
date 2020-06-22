@@ -10,6 +10,7 @@ namespace SeniorVlogger.Web.Extensions
         {
             return new BlogPostDto
             {
+                Id = vm.Id,
                 CategoryId = vm.Category.Id,
                 NextId = vm?.Next?.Id,
                 PreviousId = vm?.Previous?.Id,
