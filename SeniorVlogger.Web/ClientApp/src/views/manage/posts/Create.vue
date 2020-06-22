@@ -22,10 +22,10 @@
 
                 <div class="form-group">
                     <label for="category">Category</label>
-                    <select id="category" v-model="post.category" class="form-control" required>
+                    <select id="category" v-model="post.category.id" class="form-control" required>
                         <option value="" selected disabled>Select Category</option>
                         <option v-for="category in categories"
-                                :key="category.id" :value="category">
+                                :key="category.id" :value="category.id">
                             {{ category.name }}
                         </option>
                     </select>
@@ -46,7 +46,7 @@
                     </multiselect>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" v-if="!editMode">
                     <label>Post Image</label>
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="customFile" @change="selectImage" ref="image" required>
@@ -76,7 +76,7 @@
                     </select>
                 </div>
                 
-                <div class="form-group">
+                <div class="form-group" v-if="!editMode">
                     <div class="form-check">
                         <input class="form-check-input" v-model="post.mailed"
                             type="checkbox" id="mailed">
@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" v-if="!editMode">
                     <div class="form-check">
                         <input class="form-check-input" v-model="post.scratch"
                             type="checkbox" id="scratch">
@@ -99,7 +99,7 @@
                 <TextEditor class="editor" :buffer="editor.content" v-on:changed="editorTextChanged($event)" />
 
                 <div class="buttons mb-5">
-                    <button class="btn btn-success w-25 text-white" type="submit">Save Blog</button>
+                    <button class="btn btn-success w-25 text-white" type="submit">{{ editMode ? 'Update Post' : 'Create Post'}}</button>
                     <router-link to="/manage/posts" tag="button" class="btn btn-danger w-25 text-white" @click.prevent="this.$router.push('/')">Cancel</router-link>
                 </div>
             </form>
@@ -122,6 +122,7 @@ export default {
     data () {
         return {
             preview: false,
+            editMode: false,
 
             editor: {
                 content: '',
@@ -129,11 +130,14 @@ export default {
 
             postImage: null,
             post: {
+                id: 0,
                 title: '',
                 description: '',
-                tags: [],
                 imageUrl: '',
-                category: null,
+                category: {
+                    id: 0,
+                    name: ''
+                },
                 next: null,
                 previous: null,
                 mailed: false,
@@ -144,12 +148,19 @@ export default {
             tagOptions: [],
 
             posts: [],
-            categories: [{id: 1, name: 'cat'}]
+            categories: []
         }
     },
 
     beforeMount() {
+        this.LoadCategories()
 
+        let id = this.$route.params.id
+        if(id){
+            this.editMode = true
+            this.post.id = id
+            this.LoadEditingPost(id)
+        }
     },
 
     computed: {
@@ -162,6 +173,30 @@ export default {
     },
 
     methods: {
+        LoadCategories(){
+            this.$api.get('/api/category')
+                .then(response => this.categories = response.data)
+        },
+
+        LoadEditingPost(id){
+            this.$api.get(`/api/blog/${id}`)
+                .then(response => {
+                    this.post = response.data
+                    this.tagValues = response.data.tags.map((i, index) => {
+                        return { name: i, code: index }
+                    })
+                    this.editor.content = this.post.content
+                })
+                .catch(error => {
+                    this.$notify({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Cannot load the post',
+                        group: 'app',
+                    })
+                })
+        },
+
         selectImage(event){
             this.postImage = event.target.files[0]
         },
@@ -201,6 +236,11 @@ export default {
         },
 
         async publish() {
+            if(this.editMode){
+                this.UpdatePost()
+                return
+            }
+
             let response = await this.uploadImage()
             this.post.imageUrl = response.data
             this.post.tags = this.tagValues.map(i => { return i.name })
@@ -215,6 +255,20 @@ export default {
                         group: 'app',
                     })
                     this.DeleteImage()
+                })
+        },
+
+        UpdatePost() {
+            this.post.tags = this.tagValues.map(i => { return i.name })
+            this.$api.put('/api/blog', this.post)
+                .then(res => this.$router.push({path: '/manage/posts'}))
+                .catch(error => {
+                    this.$notify({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Cannot update post',
+                        group: 'app',
+                    })
                 })
         },
 

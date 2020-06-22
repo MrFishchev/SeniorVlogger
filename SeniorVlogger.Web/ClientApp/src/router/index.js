@@ -60,7 +60,12 @@ Vue.use(VueRouter)
           return import('../views/manage/posts/Index.vue')
         },
       },
-
+      {
+        path: 'posts/edit/:id',
+        component: function() {
+          return import(/* webpackChunkName: "createpost" */ '../views/manage/posts/Create.vue')
+        }
+      },
       {
         path: 'posts/create',
         component: function () {

@@ -28,9 +28,9 @@
                         <button class="btn btn-sm btn-primary mr-2">
                             <i class="fas fa-external-link-alt"></i>
                         </button>
-                        <button class="btn btn-sm btn-warning mr-2">
+                        <router-link tag="button" :to="{path: `/manage/posts/edit/${props.row.id}`}" class="btn btn-sm btn-warning mr-2">
                             <i class="far fa-edit"></i>
-                        </button>
+                        </router-link >
                         <button class="btn btn-sm btn-danger" @click="OnDelete(props.row.id)">
                             <i class="fas fa-trash"></i>
                         </button>
