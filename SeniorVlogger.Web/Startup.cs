@@ -43,6 +43,9 @@ namespace SeniorVlogger.Web
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredUniqueChars = 1;
                 options.Password.RequiredLength = 3;
+                options.SignIn.RequireConfirmedAccount = false;
+                options.SignIn.RequireConfirmedEmail = false;
+                options.User.RequireUniqueEmail = true;
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddSingleton<UploadsService>();

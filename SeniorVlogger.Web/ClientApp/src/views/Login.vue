@@ -54,10 +54,14 @@ export default {
         this.submitting = true
         this.$store.dispatch('LOGIN', this.credentials)
           .then(data => {
-              if (data.success)
-                  this.$router.replace('/manage')
-              else
-                  this.error = data.message
+            if (data.success)
+              this.$router.replace('/manage')
+            else
+              this.error = data.message
+            this.submitting = false
+          })
+          .catch(error => {
+            this.submitting = false
           })
     }
   }

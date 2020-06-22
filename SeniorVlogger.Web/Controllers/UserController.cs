@@ -70,13 +70,16 @@ namespace SeniorVlogger.Web.Controllers
             {
                 await CreateUserIfEmpty(credentials.Username, credentials.Password);
 
-                var result = await _signInManager.PasswordSignInAsync(credentials.Username, credentials.Password,
+                var user = await _userManager.FindByEmailAsync(credentials.Username);
+
+                if (user == null)
+                    return Json(new { success = false, message = "User doesn't exist" });
+
+                var result = await _signInManager.PasswordSignInAsync(user.UserName, credentials.Password,
                     credentials.Remember, false);
 
                 if (result.Succeeded)
                 {
-                    var user = await _unitOfWork.ApplicationUsers.GetFirstOrDefault(u =>
-                        u.UserName == credentials.Username);
                     _logger.LogInformation($"User {credentials.Username} logged in");
                     return Json(new
                     {
