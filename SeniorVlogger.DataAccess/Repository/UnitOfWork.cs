@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using SeniorVlogger.DataAccess.Data;
 using SeniorVlogger.DataAccess.Repository.IRepository;
-using SeniorVlogger.Models.DTO;
 
 namespace SeniorVlogger.DataAccess.Repository
 {
@@ -11,8 +10,9 @@ namespace SeniorVlogger.DataAccess.Repository
 
         public IApplicationUserRepository ApplicationUsers { get; }
         public IBlogPostRepository BlogPosts { get; }
-        public IBlogFileRepository BlogFiles { get; set; }
-
+        public IBlogFileRepository BlogFiles { get; }
+        public ICategoryRepository Categories { get; }
+        public ISubscriptionRepository Subscriptions { get; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -20,6 +20,8 @@ namespace SeniorVlogger.DataAccess.Repository
             ApplicationUsers = new ApplicationUserRepository(db);
             BlogPosts = new BlogPostRepository(db);
             BlogFiles = new BlogFileRepository(db);
+            Categories = new CategoryRepository(db);
+            Subscriptions = new SubscriptionRepository(db);
         }
 
         public async Task Save()

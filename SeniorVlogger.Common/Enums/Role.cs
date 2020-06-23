@@ -1,6 +1,6 @@
 ﻿namespace SeniorVlogger.Common.Enums
 {
-    public enum Roles
+    public enum Role
     {
         User,
         Author,

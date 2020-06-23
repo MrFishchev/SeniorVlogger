@@ -2,6 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import {store} from '../store'
 import Home from '../views/Home.vue'
+import Blog from '../views/Blog.vue'
+import BlogPost from '../components/BlogPost.vue'
+import NotFound from '../views/NotFound.vue'
 
 import middlewarePipeline from './middlewarePipeline'
 import guest from './middleware/guest'
@@ -21,6 +24,11 @@ Vue.use(VueRouter)
   },
 
   {
+    path: '*',
+    component: NotFound
+  },
+
+  {
     path: '/',
     name: 'Default',
     meta: { layout: 'mainslide'},
@@ -29,7 +37,7 @@ Vue.use(VueRouter)
   {
     path: '/about',
     name: 'About',
-    meta: { layout: 'default'},
+    meta: { layout: 'about'},
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -54,7 +62,12 @@ Vue.use(VueRouter)
           return import('../views/manage/posts/Index.vue')
         },
       },
-
+      {
+        path: 'posts/edit/:id',
+        component: function() {
+          return import(/* webpackChunkName: "createpost" */ '../views/manage/posts/Create.vue')
+        }
+      },
       {
         path: 'posts/create',
         component: function () {
@@ -62,6 +75,18 @@ Vue.use(VueRouter)
         }
       }
     ]
+  },
+
+  {
+    path: '/blog',
+    name: 'Blog',
+    meta: { layout: 'blog' },
+    component: Blog
+  },
+  {
+    path: '/blog/:slug',
+    meta: { layout: 'blog' },
+    component: BlogPost
   }
 ]
 

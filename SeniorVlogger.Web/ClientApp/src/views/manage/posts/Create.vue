@@ -1,137 +1,165 @@
 <template>
-    <div class="wrapper" id="post-create">
-        <button @click="togglePreview">
-            <span v-if="preview">Hide preview</span>
-            <span v-else>Show preview</span>
-        </button>
+    <div class="wrapper col-lg-7 col-md-10 col-sm-12" id="post-create">
+        <div class="col-12 p-0 mt-5 mb-5">
+            <button class="btn btn-primary text-white w-100" @click="togglePreview">
+                <span v-if="preview">Hide preview</span>
+                <span v-else>Show preview</span>
+            </button>
+        </div>
         <blog-post v-show="preview" :data="data" />
 
-        <div class="post">
-            <form class="form" @submit.prevent="publish">
-                <input type="text" placeholder="Title"
-                    v-model="post.title" />
-                <input type="text" placeholder="Image"
-                    v-model="post.image" />
-                <input type="text" placeholder="Thumbnail"
-                    v-model="post.thumb" />
-                <input type="text" placeholder="Short"
-                    v-model="post.short" />
-                <input type="text" placeholder="Category"
-                    v-model="post.category" />
+        <div class="post" v-show="!preview">
+            <form class="form" @submit.prevent="publish" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" placeholder="Title" id="title" v-model="post.title" class="form-control" required/>
+                </div>
 
-                <label for="next">Next</label>
-                <select name="next" v-model="post.next">
-                    <option value="" selected>none</option>
-                    <option v-for="post in posts"
-                            :key="post.id"
-                            :value="post.id">
-                        {{ post.title }}
-                    </option>
-                </select>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" v-model="post.description" class="form-control" rows="3" required/>
+                </div>
 
-                <label for="next">Previous</label>
-                <select name="next" v-model="post.previous">
-                    <option value="" selected>none</option>
-                    <option v-for="post in posts"
-                            :key="post.id"
-                            :value="post.id">
-                        {{ post.title }}
-                    </option>
-                </select>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" v-model="post.category.id" class="form-control" required>
+                        <option value="" selected disabled>Select Category</option>
+                        <option v-for="category in categories"
+                                :key="category.id" :value="category.id">
+                            {{ category.name }}
+                        </option>
+                    </select>
+                </div>
 
-                <multiselect v-model="post.tags"
-                    :close-on-select="false"
-                    :clear-on-select="false"
-                    :preserve-search="true"
-                    :preselect-first="false"
-                    :options="tags"
-                    :multiple="true"
-                    :taggable="true"
-                    tag-placeholder="Add this as new tag"
-                    placeholder="Search or add a tag"
-                    @tag="addTag" />
+                <div class="form-group">
+                    <label for="tags">Tags</label>
+                    <multiselect class="tags"
+                        tag-placeholder="Add this as new tag" 
+                        placeholder="Search or add a tag" 
+                        label="name"
+                        track-by="code"
+                        v-model="tagValues"
+                        :options="tagOptions" 
+                        :multiple="true" 
+                        :taggable="true" 
+                        @tag="addTag">
+                    </multiselect>
+                </div>
 
-                <label for="scratch">Scratch</label>
-                <input type="checkbox" name="scratch"
-                    v-model="post.scratch" />
+                <div class="form-group" v-if="!editMode">
+                    <label>Post Image</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFile" @change="selectImage" ref="image" required>
+                        <label class="custom-file-label" for="customFile">{{(postImage != null) ? postImage.name : null || 'Select Image'}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="previous">Previous Post</label>
+                    <select id="previous" v-model="post.previous" class="form-control">
+                        <option value="" selected>Optional</option>
+                        <option v-for="post in posts"
+                                :key="post.id" :value="post">
+                            {{post.name}}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="next">Next Post</label>
+                    <select id="next" v-model="post.next" class="form-control">
+                        <option value="" selected>Optional</option>
+                        <option v-for="post in posts"
+                                :key="post.id" :value="post">
+                            {{post.name}}
+                        </option>
+                    </select>
+                </div>
                 
-                <ul>
-                    <li v-for="file in files" :key="file.id">
-                        <span v-if="file.success && !file.removed">
-                            <a href="#" @click.prevent="removeFile(file)">Remove file</a>
-                        </span>
-                        <span v-if="!file.removed">{{file.name}}</span>
-                        <span v-if="!file.removed">{{file.size}}</span>
-                        <span v-else>-- removed --</span>
-                        <span v-if="file.active">uploading...</span>
-                        <span v-else-if="file.error">error</span>
-                        <span v-else />
-                    </li>
-                </ul>
-                <file-upload v-model="files"
-                    ref="upload"
-                    :multiple="false"
-                    :custom-action="uploadFiles"
-                    extensions="jpg,jpeg,png"
-                    accept="image/png,image/jpeg,image"
-                    @input-filter="inputFilter">
-                    Select files
-                </file-upload>
-                <button v-if="!$refs.upload || !$refs.upload.active"
-                    type="button"
-                    @click.prevent="$refs.upload.active = true">
-                    Upload
-                </button>
-                <button v-else
-                    type="button"
-                    @click.prevent="$refs.upload.active = false">
-                    Stop uploading
-                </button>
+                <div class="form-group" v-if="!editMode">
+                    <div class="form-check">
+                        <input class="form-check-input" v-model="post.mailed"
+                            type="checkbox" id="mailed">
+                        <label class="form-check-label" for="mailed">
+                        Send Mail to Subscribers
+                        </label>
+                    </div>
+                </div>
 
-                <button type="submit">Submit</button>
+                <div class="form-group" v-if="!editMode">
+                    <div class="form-check">
+                        <input class="form-check-input" v-model="post.scratch"
+                            type="checkbox" id="scratch">
+                        <label class="form-check-label" for="scratch">
+                        Scratch (Don't publish now)
+                        </label>
+                    </div>
+                </div>
 
+                <TextEditor class="editor" :buffer="editor.content" v-on:changed="editorTextChanged($event)" />
+
+                <div class="buttons mb-5">
+                    <button class="btn btn-success w-25 text-white" type="submit">{{ editMode ? 'Update Post' : 'Create Post'}}</button>
+                    <router-link to="/manage/posts" tag="button" class="btn btn-danger w-25 text-white" @click.prevent="this.$router.push('/')">Cancel</router-link>
+                </div>
             </form>
         </div>
-        
-        <TextEditor :buffer="editor.content" v-on:changed="editorTextChanged($event)" />
     </div>
 </template>
 
 <script>
 import BlogPost from '@/components/BlogPost'
-import FileUpload from 'vue-upload-component/dist/vue-upload-component.part.js'
 import Multiselect from 'vue-multiselect'
 const TextEditor = () => import('@/components/TextEditor.vue')
 
 export default {
-    // middlewawre: ['auth'],
     components: {
         BlogPost,
-        FileUpload,
         Multiselect,
         TextEditor
     },
 
     data () {
         return {
-            editor:{
+            preview: false,
+            editMode: false,
+
+            editor: {
                 content: '',
             },
-            files: [],
-            tags: [],
-            preview: false,
+
+            postImage: null,
             post: {
+                id: 0,
                 title: '',
-                short: '',
-                tags: [],
-                image: '',
-                thumb: '',
-                date: this.formatDate(new Date()),
-                category: '',
-                next: '',
-                previous: ''
+                description: '',
+                imageUrl: '',
+                category: {
+                    id: 0,
+                    name: ''
+                },
+                next: null,
+                previous: null,
+                mailed: false,
+                scratch: true
             },
-            posts: []
+
+            tagValues: [],
+            tagOptions: [],
+
+            posts: [],
+            categories: []
+        }
+    },
+
+    beforeMount() {
+        this.LoadCategories()
+
+        let id = this.$route.params.id
+        if(id){
+            this.editMode = true
+            this.post.id = id
+            this.LoadEditingPost(id)
         }
     },
 
@@ -145,23 +173,36 @@ export default {
     },
 
     methods: {
-        editorTextChanged(html){
-            this.editor.content = html
+        LoadCategories(){
+            this.$api.get('/api/category')
+                .then(response => this.categories = response.data)
         },
 
-        formatDate(date) {
-            var monthNames = [
-                "January", "February", "March",
-                "April", "May", "June", "July",
-                "August", "September", "October",
-                "November", "December"
-            ]
+        LoadEditingPost(id){
+            this.$api.get(`/api/blog/${id}`)
+                .then(response => {
+                    this.post = response.data
+                    this.tagValues = response.data.tags.map((i, index) => {
+                        return { name: i, code: index }
+                    })
+                    this.editor.content = this.post.content
+                })
+                .catch(error => {
+                    this.$notify({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Cannot load the post',
+                        group: 'app',
+                    })
+                })
+        },
 
-            var day = date.getDate()
-            var monthIndex = date.getMonth()
-            var year = date.getFullYear()
+        selectImage(event){
+            this.postImage = event.target.files[0]
+        },
 
-            return monthNames[monthIndex] + ' ' + day + ', ' + year
+        editorTextChanged(html){
+            this.editor.content = html
         },
 
         togglePreview () {
@@ -179,76 +220,74 @@ export default {
             }
         },
 
+        async uploadImage() {
+            if (this.postImage == null) return
+
+            var formData = new FormData()
+            var imagefile = this.postImage
+            formData.append("image", imagefile)
+
+            return this.$api({
+                method: 'post',
+                url: '/api/files',
+                data: formData,
+                config: { headers: {'Content-Type': 'multipart/form-data'}}
+            })
+        },
+
         async publish() {
-
-            let json = {
-                id: 1,
-                title: 'hello'
+            if(this.editMode){
+                this.UpdatePost()
+                return
             }
-            this.$api.post('/api/Blog/Create', json).then(res => console.log(res))
 
-            // await this.$apollo.mutate({
-            //     mutation: graphql.post.create,
-            //     variables: {
-            //         tags: this.post.tags,
-            //         title: this.post.title,
-            //         image: this.post.image,
-            //         thumb: this.post.thumb,
-            //         short: this.post.short,
-            //         content: this.data.content,
-            //         scratch: this.post.scratch,
-            //         category: this.post.category.toLowerCase(),
-            //         next: this.post.next,
-            //         previous: this.post.previous,
-            //         date: this.post.date
-            //     },
-            //     update (store, result) {
-            //         const data = store.readQuery({ query: graphql.post.getAll })
-            //         store.writeQuery({ query: graphql.post.getAll, data })
-            //     }
-            // })
-            this.$router.replace({ path: '/manage/posts' })
+            let response = await this.uploadImage()
+            this.post.imageUrl = response.data
+            this.post.tags = this.tagValues.map(i => { return i.name })
+
+            this.$api.post('/api/blog', this.post)
+                .then(res => this.$router.push({ path: '/manage/posts' }))
+                .catch(error => {
+                    this.$notify({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Cannot save post',
+                        group: 'app',
+                    })
+                    this.DeleteImage()
+                })
         },
 
-        async uploadFiles (data) {
-            data.headers['Content-type'] = 'multipart/form-data'
-            const formData = new FormData()
-            formData.append('file', data.file)
-            let post = this.post;
-
-            // await this.$apollo.mutate({
-            //     mutation: graphql.file.create,
-            //     variables: {
-            //         file: data.file
-            //     },
-            //     update (store, result) {
-            //         if(!post.image){
-            //             post.image = result.data.fileCreate.filename
-            //         }
-            //         data.name = result.data.fileCreate.filename
-            //         data.graphql = result.data.fileCreate
-            //     }
-            // })
+        UpdatePost() {
+            this.post.tags = this.tagValues.map(i => { return i.name })
+            this.$api.put('/api/blog', this.post)
+                .then(res => this.$router.push({path: '/manage/posts'}))
+                .catch(error => {
+                    this.$notify({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Cannot update post',
+                        group: 'app',
+                    })
+                })
         },
 
-        async removeFile (file) {
-            const vm = this
-            const filename = file.name
-            file.name = 'removing...'
-
-            // await this.$apollo.mutate({
-            //     mutation: graphql.file.remove,
-            //     variables: { id: file.graphql.id },
-            //     update (store, result) {
-            //         file.name = filename,
-            //         vm.$set(file, 'removed', true)
-            //     } 
-            // })
+        DeleteImage() {
+            this.$notify({
+                type: 'warn',
+                text: 'Deleting uploaded image',
+                group: 'app',
+            })
+            this.$api.delete('/api/files', { data: { path: this.post.imageUrl } })
         },
 
-        addTag (newTag) {
-            this.tags.push(newTag)
-            this.post.tags.push(newTag)
+        addTag(newTag) {
+            let tag = {
+                name: newTag,
+                code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+            }
+            this.tagOptions.push(tag)
+            this.tagValues.push(tag)
         }
     }
 }
@@ -256,8 +295,14 @@ export default {
 
 <style lang="sass">
     #post-create
-        width: 80%
         margin: 0 auto
-        input, textarea
-            display: block
+        .editor 
+            margin: 30px 0 30px 0 
+            .ql-editor
+                min-height: 300px
+        .buttons
+            display: flex
+            justify-content: space-evenly
+            align-items: center
 </style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

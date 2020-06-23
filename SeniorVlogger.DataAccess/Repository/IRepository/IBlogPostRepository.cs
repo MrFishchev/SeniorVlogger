@@ -3,8 +3,8 @@ using SeniorVlogger.Models.DTO;
 
 namespace SeniorVlogger.DataAccess.Repository.IRepository
 {
-    public interface IBlogPostRepository : IRepository<BlogPost>
+    public interface IBlogPostRepository : IRepository<BlogPostDto>
     {
-        Task Update(BlogPost blogPost);
+        Task Update(BlogPostDto blogPost);
     }
 }

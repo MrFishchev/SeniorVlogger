@@ -2,7 +2,7 @@
 
 namespace SeniorVlogger.Models.DTO
 {
-    public class BlogFile
+    public class BlogFileDto
     {
         public int Id { get; set; }
 
