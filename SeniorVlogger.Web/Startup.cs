@@ -4,10 +4,12 @@ using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SeniorVlogger.Common;
 using SeniorVlogger.DataAccess.Data;
 using SeniorVlogger.DataAccess.Repository;
 using SeniorVlogger.DataAccess.Repository.IRepository;
@@ -48,7 +50,11 @@ namespace SeniorVlogger.Web
                 options.User.RequireUniqueEmail = true;
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.Configure<EmailSettings>(Configuration.GetSection("MailGun"));
+            services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             services.AddSingleton<UploadsService>();
+            services.AddSingleton<JwtService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddControllers();
