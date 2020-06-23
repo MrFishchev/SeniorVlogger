@@ -25,7 +25,7 @@
                         <i class="fas fa-times text-danger" v-else></i>
                     </span>
                     <span v-else-if="props.column.field == 'buttons'" class="table-buttons">
-                        <button class="btn btn-sm btn-primary mr-2">
+                        <button @click="OpenPost(props.row.slug)" class="btn btn-sm btn-primary mr-2">
                             <i class="fas fa-external-link-alt"></i>
                         </button>
                         <router-link tag="button" :to="{path: `/manage/posts/edit/${props.row.id}`}" class="btn btn-sm btn-warning mr-2">
@@ -76,6 +76,11 @@ export default {
     }, 
 
     methods: {
+        OpenPost(slug) {
+            let route = this.$router.resolve(`/blog/${slug}`)
+            window.open(route.href, '_blank')
+        },
+
         async OnDelete(id) {
             let res = await this.$swal.fire({
                 title: 'Are you sure?',

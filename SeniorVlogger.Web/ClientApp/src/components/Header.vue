@@ -5,8 +5,8 @@
         <div class="container">
           <ul>
             <li><router-link to="/">Home</router-link></li>
-            <li><router-link to="/blog">Blog</router-link></li>
-            <li><router-link to="/about">About</router-link></li>
+            <li><router-link to="/blog" active-class="active">Blog</router-link></li>
+            <li><router-link to="/about" active-class="active">About</router-link></li>
           </ul>
         </div>
       </nav>
@@ -37,6 +37,11 @@
         background: #fff
         a
           color: #303030
+        .container .manage 
+          a
+           color: #303030
+          &:hover
+            color: $neon-light
       .container
         display: flex
         justify-content: space-between
@@ -60,7 +65,7 @@
                   text-transform: uppercase
                   cursor: pointer
                   transition: color 0.5s
-                  &.exact-active-route
+                  &.exact-active-route, &.active
                     color: $neon-light
                   &:hover
                     color: $neon-light

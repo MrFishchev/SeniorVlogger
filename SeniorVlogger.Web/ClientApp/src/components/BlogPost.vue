@@ -1,14 +1,13 @@
 <template>
     <div class="wrapper" id="blog-post">
-
         <router-link class="category slide-in-right" :to="'/posts/category/' + categoryURL">
-            {{ data.category }}
+            {{ data.category.name }}
         </router-link>
         <h1 class="title slide-in-right">{{data.title}}</h1>
 
         <hr />
         <div class="like slide-in-left">
-            <h3 class="date"><i>By Aleksey F. on <span>{{ data.date }}</span></i></h3>
+            <h3 class="date"><i>By {{data.author.name}} on <span>{{ data.publishDate }}</span></i></h3>
             <div style="width:100px" v-if="isFBReady"
                 class="fb-like"
                 :data-href="postUrl"
@@ -19,23 +18,23 @@
             </div>
         </div>
 
-        <img :src="'/uploads/' + data.image" class="image appers-fadein"/>
+        <img :src="`/${data.imageUrl}`" class="image appers-fadein"/>
 
         <div id="content" class="appers-fadein" v-if="data.content" v-html="data.content" />
 
-         <div class="additional-posts">
+        <div class="additional-posts">
             <span v-if="next">Next:<router-link :to="'/posts/' + next.slug" :title="next.title">{{next.title}}</router-link></span>
             <span v-if="previous">Previous:<router-link :to="'/posts/' + previous.slug" :title="previous.title">{{previous.title}}</router-link></span>
         </div>
         
         <div class="tags">
-            <span v-for="tag in data.tags"
-                :key="tag.name">
+            <span v-for="(tag, index) in data.tags"
+                :key="index + tag">
                 <router-link :to="'/posts/tag/' + tag">#{{tag}}</router-link>
             </span>
         </div>
 
-        <div v-if="isFBReady" class="fb-comments" :data-href="postUrl" data-width="100%" data-numposts="10"></div>
+        <!-- <div v-if="isFBReady" class="fb-comments" :data-href="postUrl" data-width="100%" data-numposts="10"></div> -->
     </div>
 </template>
 
@@ -44,19 +43,23 @@ import 'highlight.js/scss/rainbow.scss'
 const jQuery = require('jquery/dist/jquery.min.js')
 
 export default {
-    props: {
-        data: {
-            type: Object,
-            default: null
-        }
-    },
-
     data (){
         return{
             isFBReady: false,
             next: null,
-            previous: null
+            previous: null,
+            isLoading: true,
+            data: {
+                author: {},
+                category: {}
+            },
         }
+    },
+
+    async beforeMount() {
+        let response = await this.$api.get(`/api/blog/slug/${this.$route.params.slug}`)
+        this.data = response.data
+        this.isLoading = false
     },
 
     computed: {
@@ -64,12 +67,12 @@ export default {
             // return this.data.category.toLowerCase().trim()
         },
         postUrl(){
-            return `https://seniorvlogger.com/posts/${this.data.slug}` 
+            // return `https://seniorvlogger.com/posts/${this.data.slug}` 
         }
     },
 
     beforeDestroy (){
-        window.removeEventListener('fb-sdk-ready', this.onFBReady)
+        // window.removeEventListener('fb-sdk-ready', this.onFBReady)
 
         let blogLink = jQuery('#header a').eq(1)
         blogLink.removeClass("exact-active-route")
@@ -87,19 +90,19 @@ export default {
         blogLink.addClass("exact-active-route")
 
 	
-        this.isFBReady = this.$fb != undefined
-        console.log(this.$fb)
-        if(this.$fb)
-        {
-	        window.fbAsyncInit()
-        }
-        window.addEventListener('fb-sdk-ready', this.onFBReady)
+        // this.isFBReady = this.$fb != undefined
+        // console.log(this.$fb)
+        // if(this.$fb)
+        // {
+	    //     window.fbAsyncInit()
+        // }
+        // window.addEventListener('fb-sdk-ready', this.onFBReady)
     },
 
     methods: {
-        onFBReady: function () {
-            this.isFBReady = true
-        }
+        // onFBReady: function () {
+        //     this.isFBReady = true
+        // }
     },
 }
 </script>

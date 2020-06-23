@@ -1,15 +1,13 @@
 <template>
   <footer class="wrapper">
-    <!-- <router-link to="/blog" v-if="this.$nuxt.$data.layoutName!='blog'">  -->
-    <router-link to="/blog"> 
+    <router-link to="/blog" v-if="NeedReadBlogButton"> 
       <button
         type="button"
         class="btn">
         Read Blog
       </button>
     </router-link>
-
-    <!-- <button type="button" class="btn" v-else>Subscribe</button> -->
+    <button type="button" class="btn" v-else>Subscribe</button>
 
     <div class="icon-wrapper">
       <a
@@ -108,6 +106,12 @@ export default {
     LinkedInIcon,
     InstagramIcon,
     GithubIcon
+  },
+
+  computed: {
+    NeedReadBlogButton() {
+      return this.$route.meta.layout !== 'blog'
+    }
   }
 }
 </script>

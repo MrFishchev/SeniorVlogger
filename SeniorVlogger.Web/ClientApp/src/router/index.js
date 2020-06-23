@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import {store} from '../store'
 import Home from '../views/Home.vue'
+import Blog from '../views/Blog.vue'
+import BlogPost from '../components/BlogPost.vue'
 import NotFound from '../views/NotFound.vue'
 
 import middlewarePipeline from './middlewarePipeline'
@@ -73,6 +75,18 @@ Vue.use(VueRouter)
         }
       }
     ]
+  },
+
+  {
+    path: '/blog',
+    name: 'Blog',
+    meta: { layout: 'blog' },
+    component: Blog
+  },
+  {
+    path: '/blog/:slug',
+    meta: { layout: 'blog' },
+    component: BlogPost
   }
 ]
 

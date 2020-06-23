@@ -54,6 +54,13 @@ namespace SeniorVlogger.Web.Controllers
             return post?.ToViewModel();
         }
 
+        [HttpGet("slug/{slug}")]
+        public async Task<BlogPostViewModel> GetBySlug(string slug)
+        {
+            var post = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Slug == slug, includeProperties: "Category,Author");
+            return post?.ToViewModel();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] BlogPostViewModel post)
         {
