@@ -7,7 +7,7 @@
         Read Blog
       </button>
     </router-link>
-    <button type="button" class="btn" v-else>Subscribe</button>
+    <button type="button" class="btn" v-else @click="Subscribe">Subscribe</button>
 
     <div class="icon-wrapper">
       <a
@@ -111,6 +111,61 @@ export default {
   computed: {
     NeedReadBlogButton() {
       return this.$route.meta.layout !== 'blog'
+    }
+  },
+
+  methods: {
+    Subscribe() {
+      this.$swal.fire({
+        title: 'Enter your Email',
+        input: 'text',
+        inputAttributes: {
+          autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: "Subscribe",
+        showLoaderOnConfirm: true,
+        buttonsStyling: false,
+        customClass: {
+          confirmButton: 'btn btn-success mr-5',
+          cancelButton: 'btn btn-light'
+        },
+        preConfirm: (email) => {
+          if(!this.validateEmail(email)){
+            this.$swal.showValidationMessage("It's not email: try something else!")
+            return
+          }
+
+          this.$api.post('/api/subscription', {data: {email: email}})
+            .then(response => {
+              if(response.status === 200)
+                this.$notify({
+                  type: 'success',
+                  title: 'Thank you',
+                  text: 'We have to help whis world together!',
+                  group: 'app',
+                })
+              else
+                this.ShowError()
+            })
+            .catch(error => this.ShowError())
+        },
+        allowOutsideClick: () => !this.$swal.isLoading()
+      })
+    },
+
+    ShowError() {
+      this.$notify({
+        type: 'error',
+        title: 'Error',
+        text: 'Cannot subscribe now, please try it later',
+        group: 'app',
+      })
+    },
+
+    validateEmail(email) {
+      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(String(email).toLowerCase())
     }
   }
 }
