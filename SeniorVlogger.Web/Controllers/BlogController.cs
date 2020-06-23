@@ -41,23 +41,25 @@ namespace SeniorVlogger.Web.Controllers
         #region Actions
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IEnumerable<BlogPostViewModel>> GetAll()
         {
             var posts = await _unitOfWork.BlogPosts.GetAll(includeProperties: "Category,Author");
             return posts?.Select(i => i.ToViewModel());
         }
 
+        [HttpGet("slug/{slug}")]
+        [AllowAnonymous]
+        public async Task<BlogPostViewModel> GetBySlug(string slug)
+        {
+            var post = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Slug == slug, includeProperties: "Category,Author");
+            return post?.ToViewModel();
+        }
+
         [HttpGet("{id}")]
         public async Task<BlogPostViewModel> Get(int id)
         {
             var post = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Id == id, includeProperties: "Category,Author");
-            return post?.ToViewModel();
-        }
-
-        [HttpGet("slug/{slug}")]
-        public async Task<BlogPostViewModel> GetBySlug(string slug)
-        {
-            var post = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Slug == slug, includeProperties: "Category,Author");
             return post?.ToViewModel();
         }
 
