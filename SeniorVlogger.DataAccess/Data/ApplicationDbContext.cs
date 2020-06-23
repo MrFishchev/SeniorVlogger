@@ -15,5 +15,6 @@ namespace SeniorVlogger.DataAccess.Data
         public DbSet<BlogPostDto> BlogPosts { get; set; }
         public DbSet<BlogFileDto> BlogFiles { get; set; }
         public DbSet<CategoryDto> Categories { get; set; }
+        public DbSet<SubscriptionDto> Subscriptions { get; set; }
     }
 }

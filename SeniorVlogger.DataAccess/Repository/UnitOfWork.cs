@@ -12,6 +12,7 @@ namespace SeniorVlogger.DataAccess.Repository
         public IBlogPostRepository BlogPosts { get; }
         public IBlogFileRepository BlogFiles { get; }
         public ICategoryRepository Categories { get; }
+        public ISubscriptionRepository Subscriptions { get; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -20,6 +21,7 @@ namespace SeniorVlogger.DataAccess.Repository
             BlogPosts = new BlogPostRepository(db);
             BlogFiles = new BlogFileRepository(db);
             Categories = new CategoryRepository(db);
+            Subscriptions = new SubscriptionRepository(db);
         }
 
         public async Task Save()

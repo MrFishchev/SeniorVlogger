@@ -9,6 +9,7 @@ namespace SeniorVlogger.DataAccess.Repository.IRepository
         IBlogPostRepository BlogPosts { get; }
         IBlogFileRepository BlogFiles { get; }
         ICategoryRepository Categories { get; }
+        ISubscriptionRepository Subscriptions { get; }
 
         Task Save();
     }
