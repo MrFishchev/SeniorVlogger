@@ -1,21 +1,21 @@
 <template>
     <div id="post-short">
-        <nuxt-link class="category slide-in-left" :to="'/posts/category/' + categoryURL">
-            {{ data.category }}
-        </nuxt-link>
+        <router-link class="category slide-in-left" :to="'/blog/category/' + data.category.id">
+            {{ data.category.name }}
+        </router-link>
 
         <h1 class="title slide-in-right">
-            <nuxt-link :to="'/posts/' + data.slug">{{ data.title }}</nuxt-link>
+            <router-link :to="`/blog/${data.slug}`">{{ data.title }}</router-link>
         </h1>
 
         <h3 class="date slide-in-left">{{ data.date }}</h3>
 
-        <nuxt-link class="image appers-fadein" :to="'/posts/' + data.slug">
-            <img :src="'/uploads/' + data.image" />
-        </nuxt-link>
+        <router-link class="image appers-fadein" :to="`/blog/${data.slug}`">
+            <img :src="`/${data.imageUrl}`" />
+        </router-link>
 
-        <p class="short appers-fadein">{{ data.short.substring(0, 195) }}...</p>
-        <nuxt-link class="more slide-in-right" :to="'/posts/' + data.slug" :title="data.title">Read more</nuxt-link>
+        <p class="short appers-fadein">{{ data.description.substring(0, 195) }}...</p>
+        <router-link class="more slide-in-right" :to="`/blog/${data.slug}`" :title="data.title">Read more</router-link>
 
         <hr class="separator"/>
     </div>
@@ -28,19 +28,12 @@ export default {
             type: Object,
             default: null
         }
-    },
-
-    computed: {
-        categoryURL () {
-            return this.data.category.toLowerCase().trim()
-        }
     }
-    
 }
 </script>
 
 <style lang="sass">
-    @import '~/assets/_blog'
+    @import '@/assets/_blog'
     #post-short
         display: flex
         flex-direction: column
