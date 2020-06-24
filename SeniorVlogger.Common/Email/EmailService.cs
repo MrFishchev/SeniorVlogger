@@ -1,17 +1,18 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using RestSharp.Authenticators;
+using SeniorVlogger.Common.Email.IEmail;
+using SeniorVlogger.Common.Properties;
 
-namespace SeniorVlogger.Common
+namespace SeniorVlogger.Common.Email
 {
-    public class EmailSender : IEmailSender
+    public class EmailService : IEmailService
     {
         private readonly EmailSettings _emailSettings;
 
-        public EmailSender(IOptions<EmailSettings> options)
+        public EmailService(IOptions<EmailSettings> options)
         {
             _emailSettings = options.Value;
         }
@@ -21,11 +22,26 @@ namespace SeniorVlogger.Common
             return Execute(subject, htmlMessage, email);
         }
 
+        public Task SendWelcomeAsync(string email)
+        {
+            return Execute("Thank you for subscribing!",
+                Resources.WelcomeEmailTemplate, email);
+        }
+
+        public Task SendWelcomeBackAsync(string email)
+        {
+            //TODO add different email template
+            return Execute("Welcome back friend!", 
+                Resources.WelcomeEmailTemplate, email);
+        }
+
         private Task Execute(string subject, string htmlMessage, string email)
         {
-            var client = new RestClient();
-            client.BaseUrl = new Uri("https://api.mailgun.net/v3");
-            client.Authenticator = new HttpBasicAuthenticator("api", _emailSettings.EmailApiKey);
+            var client = new RestClient
+            {
+                BaseUrl = new Uri("https://api.mailgun.net/v3"),
+                Authenticator = new HttpBasicAuthenticator("api", _emailSettings.EmailApiKey)
+            };
 
             var request = new RestRequest();
             request.AddParameter("domain", _emailSettings.EmailDomain, ParameterType.UrlSegment);

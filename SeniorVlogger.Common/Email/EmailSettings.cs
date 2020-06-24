@@ -1,4 +1,4 @@
-﻿namespace SeniorVlogger.Common
+﻿namespace SeniorVlogger.Common.Email
 {
     public class EmailSettings
     {

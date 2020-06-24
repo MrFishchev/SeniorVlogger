@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SeniorVlogger.Common.Email.IEmail;
 using SeniorVlogger.DataAccess.Repository.IRepository;
 using SeniorVlogger.Models.DTO;
 using SeniorVlogger.Models.Requests;
@@ -22,14 +24,17 @@ namespace SeniorVlogger.Web.Controllers
 
         private readonly ILogger<SubscriptionController> _logger;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmailService _emailService;
 
         #endregion
 
         #region Constructor
 
-        public SubscriptionController(IUnitOfWork unitOfWork, ILogger<SubscriptionController> logger)
+        public SubscriptionController(IUnitOfWork unitOfWork, IEmailService emailService, 
+            ILogger<SubscriptionController> logger)
         {
             _unitOfWork = unitOfWork;
+            _emailService = emailService;
             _logger = logger;
         }
 
@@ -64,6 +69,7 @@ namespace SeniorVlogger.Web.Controllers
                         SubscribeDate = DateTime.UtcNow
                     };
                     await _unitOfWork.Subscriptions.Add(subscription);
+                    _emailService.SendWelcomeAsync(subscription.Email);
                 }
                 else
                 {
@@ -73,6 +79,7 @@ namespace SeniorVlogger.Web.Controllers
                     }
                     subscription.IsSubscribed = true;
                     await _unitOfWork.Subscriptions.Update(subscription);
+                    _emailService.SendWelcomeBackAsync(subscription.Email);
                 }
             }
             catch (Exception e)
@@ -110,5 +117,6 @@ namespace SeniorVlogger.Web.Controllers
         }
 
         #endregion
+
     }
 }
