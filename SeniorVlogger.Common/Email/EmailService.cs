@@ -34,6 +34,15 @@ namespace SeniorVlogger.Common.Email
                 Resources.WelcomeBackEmailTemplate, email);
         }
 
+        public Task SendFeedbackAsync(string email, string subject, string message)
+        {
+            var htmlMessage = Resources.FeedbackRequestEmailTemplate;
+            htmlMessage = htmlMessage.Replace("%Subject%", subject);
+            htmlMessage = htmlMessage.Replace("%CallbackEmail%", email);
+            htmlMessage = htmlMessage.Replace("%Message%", message);
+            return Execute(subject, htmlMessage, email);
+        }
+
         private Task Execute(string subject, string htmlMessage, string email)
         {
             var client = new RestClient

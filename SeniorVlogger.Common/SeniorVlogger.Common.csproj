@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\FeedbackRequest.html" />
     <None Remove="Resources\Welcome.html" />
     <None Remove="Resources\WelcomeBack.html" />
   </ItemGroup>
@@ -16,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\FeedbackRequest.html" />
     <Resource Include="Resources\Welcome.html" />
     <Resource Include="Resources\WelcomeBack.html" />
   </ItemGroup>

@@ -7,5 +7,7 @@
         public string EmailFrom { get; set; }
 
         public string EmailApiKey { get; set; }
+
+        public string FeedbackEmail { get; set; }
     }
 }

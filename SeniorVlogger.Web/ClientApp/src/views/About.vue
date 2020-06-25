@@ -139,30 +139,29 @@
           </div>
 
           <div class="contact-form">
-            <form action="">
+            <form @submit.prevent="SendContact">
               <input
                 type="text"
-                name="name"
-                placeholder="Name"
+                name="subject"
+                v-model="contact.subject"
+                placeholder="Subject"
                 required>
               <input
-                type="email"
+                type="text"
                 name="email"
+                v-model="contact.callbackEmail"
                 placeholder="Email"
                 required>
               <textarea
                 :maxlength="maxMessageLength"
-                v-model="message"
+                v-model="contact.message"
                 name="message"
                 placeholder="Message"
                 @keyup="countdown"/>
               <div class="remaining">{{ remainingMessageLength }}</div>
+              <button type="submit" class="btn w-100">Get to know</button>
             </form>
-            <button
-              type="button"
-              class="btn">Submit</button>
           </div>
-
         </div>
       </div>
     </div>
@@ -341,13 +340,56 @@ export default {
     return {
       maxMessageLength: 255,
       remainingMessageLength: '',
-      message: ''
+      contact: {
+        message: '',
+        email: '',
+        subject: ''
+      }
     }
   },
   methods: {
     countdown () {
-      this.remainingMessageLength = this.maxMessageLength - this.message.length
+      this.remainingMessageLength = this.maxMessageLength - this.contact.message.length
       if (this.remainingMessageLength === this.maxMessageLength) { this.remainingMessageLength = '' }
+    },
+
+    SendContact() {
+      if(this.contact.message == '' || this.contact.callbackEmail == '' || this.contact.subject == '') return
+      if(!this.ValidateEmail(this.contact.callbackEmail)) {
+        this.$notify({
+          type: 'warning',
+          group: 'app',
+          title: 'Oops...',
+          text: "It doesn't look like email. Please, verify that."
+        })
+        return
+      }
+
+      this.$api.post('/api/email', this.contact)
+      .then(() => {
+        this.$notify({
+          type: 'success',
+          group: 'app',
+          title: 'Contact Form',
+          text: 'Your message has been sent! Thank you!'
+        })
+        this.contact.subject = ''
+        this.contact.callbackEmail = ''
+        this.contact.message = ''
+      })
+      .catch(() => {
+        this.$notify({
+          type: 'error',
+          group: 'app',
+          title: 'Contact Form',
+          text: 'Cannot sent message. Please, try again later.'
+        })
+      })
+    },
+
+    ValidateEmail(email) {
+      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(String(email).toLowerCase())
     }
   }
 }

@@ -8,5 +8,7 @@ namespace SeniorVlogger.Common.Email.IEmail
         Task SendWelcomeAsync(string email);
 
         Task SendWelcomeBackAsync(string email);
+
+        Task SendFeedbackAsync(string email, string subject, string message);
     }
 }
