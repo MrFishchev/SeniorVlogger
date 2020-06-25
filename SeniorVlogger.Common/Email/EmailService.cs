@@ -30,9 +30,8 @@ namespace SeniorVlogger.Common.Email
 
         public Task SendWelcomeBackAsync(string email)
         {
-            //TODO add different email template
             return Execute("Welcome back friend!", 
-                Resources.WelcomeEmailTemplate, email);
+                Resources.WelcomeBackEmailTemplate, email);
         }
 
         private Task Execute(string subject, string htmlMessage, string email)
