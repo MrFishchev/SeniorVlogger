@@ -34,7 +34,7 @@ export default {
 
 <style lang="sass">
   #post-short:last-child 
-    margin-bottom: 10vw
+    margin-bottom: 30px
     .separator
       display: none
 </style>

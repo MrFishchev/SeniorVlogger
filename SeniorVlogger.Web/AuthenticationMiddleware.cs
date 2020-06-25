@@ -25,8 +25,6 @@ namespace SeniorVlogger.Web
             })
             .AddJwtBearer(options =>
             {
-                //options.RequireHttpsMetadata = false;
-                //options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,

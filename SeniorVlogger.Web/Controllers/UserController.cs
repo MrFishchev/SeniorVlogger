@@ -21,25 +21,23 @@ namespace SeniorVlogger.Web.Controllers
 
         private readonly ILogger<UserController> _logger;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IWebHostEnvironment _hostEnvironment;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IConfiguration _configuration;
+        private readonly JwtService _jwtService;
 
         #endregion
 
         #region Constructor
 
-        public UserController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment, 
+        public UserController(IUnitOfWork unitOfWork, JwtService jwtService, 
             ILogger<UserController> logger, SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager, IConfiguration configuration)
+            UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
-            _hostEnvironment = hostEnvironment;
+            _jwtService = jwtService;
             _logger = logger;
             _signInManager = signInManager;
             _userManager = userManager;
-            _configuration = configuration;
         }
 
         #endregion
@@ -143,8 +141,7 @@ namespace SeniorVlogger.Web.Controllers
             if (string.IsNullOrEmpty(email))
                 throw new ArgumentNullException();
 
-            var jwt = new JwtService(_configuration);
-            var token = jwt.GenerateSecurityToken(email);
+            var token = _jwtService.GenerateSecurityToken(email);
             return token;
         }
 

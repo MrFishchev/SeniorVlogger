@@ -120,7 +120,8 @@ export default {
         title: 'Enter your Email',
         input: 'text',
         inputAttributes: {
-          autocapitalize: 'off'
+          autocapitalize: 'off',
+          spellcheck: false
         },
         showCancelButton: true,
         confirmButtonText: "Subscribe",
@@ -136,17 +137,33 @@ export default {
             return
           }
 
-          this.$api.post('/api/subscription', {data: {email: email}})
+          let json = {
+            email: email
+          }
+
+          this.$api.post('/api/subscription', json)
             .then(response => {
-              if(response.status === 200)
-                this.$notify({
-                  type: 'success',
-                  title: 'Thank you',
-                  text: 'We have to help whis world together!',
-                  group: 'app',
-                })
-              else
+              if(response.status === 200){
+                if(response.data.exist){
+                  this.$notify({
+                    type: 'warning',
+                    title: 'Oops!',
+                    text: response.data.message,
+                    group: 'app',
+                  })
+                }
+                else{
+                  this.$notify({
+                    type: 'success',
+                    title: 'Thank you',
+                    text: 'We have to help whis world together!',
+                    group: 'app',
+                  })
+                }
+              }
+              else{
                 this.ShowError()
+              }
             })
             .catch(error => this.ShowError())
         },

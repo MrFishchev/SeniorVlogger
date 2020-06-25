@@ -2,30 +2,25 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SeniorVlogger.Common;
 
 namespace SeniorVlogger.Web
 {
-    internal class JwtService
+    public class JwtService
     {
-        private readonly string _secret;
-        private readonly string _expirationTime;
-        private readonly string _issuer;
-        private readonly string _audience;
+        private readonly JwtSettings _jwtSettings;
 
-        public JwtService(IConfiguration configuration)
+        public JwtService(IOptions<JwtSettings> jwtSettings)
         {
-            _secret = configuration.GetSection("Jwt")["Secret"];
-            _expirationTime = configuration.GetSection("Jwt")["ExpirationInMinutes"];
-            _issuer = configuration.GetSection("Jwt")["Issuer"];
-            _audience = configuration.GetSection("Jwt")["Audience"];
+            _jwtSettings = jwtSettings.Value;
         }
 
         public string GenerateSecurityToken(string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_secret);
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -34,11 +29,11 @@ namespace SeniorVlogger.Web
                     new Claim(ClaimTypes.Email, email),
                     new Claim(JwtRegisteredClaimNames.Sub, email), 
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(double.Parse(_expirationTime)),
+                Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationInMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature),
-                Issuer = _issuer,
-                Audience = _audience,
+                Issuer = _jwtSettings.Issuer,
+                Audience = _jwtSettings.Audience,
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
