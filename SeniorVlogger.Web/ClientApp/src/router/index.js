@@ -73,6 +73,24 @@ Vue.use(VueRouter)
         component: function () {
           return import(/* webpackChunkName: "createpost" */ '../views/manage/posts/Create.vue')
         }
+      },
+      {
+        path: 'categories',
+        component: function() {
+          return import('../views/manage/categories/Index.vue')
+        }
+      },
+      {
+        path: 'categories/edit/:id',
+        component: function() {
+          return import('../views/manage/categories/Create.vue')
+        }
+      },
+      {
+        path: 'categories/create',
+        component: function() {
+          return import('../views/manage/categories/Create.vue')
+        }
       }
     ]
   },

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SeniorVlogger.DataAccess.Data;
 using SeniorVlogger.DataAccess.Repository.IRepository;
 using SeniorVlogger.Models.DTO;
@@ -14,10 +15,13 @@ namespace SeniorVlogger.DataAccess.Repository
             _db = db;
         }
 
-        public Task Update(CategoryDto category)
+        public async Task Update(CategoryDto category)
         {
-            _db.Categories.Update(category);
-            return Task.CompletedTask;
+            var objDb = await _db.Categories
+                .FirstOrDefaultAsync(c => c.Id == category.Id);
+
+            if(objDb == null) return;
+            objDb.Name = category.Name;
         }
     }
 }
