@@ -8,7 +8,7 @@
                 </div>
 
                 <div class="buttons mb-5">
-                    <button class="btn btn-success w-25 text-white" type="submit">{{ editMode ? 'Update Category' : 'Create Category'}}</button>
+                    <button :disabled="isSubmitting" class="btn btn-success w-25 text-white" type="submit">{{ editMode ? 'Update Category' : 'Create Category'}}</button>
                     <router-link to="/manage/categories" tag="button" class="btn btn-danger w-25 text-white" @click.prevent="this.$router.push('/')">Cancel</router-link>
                 </div>
             </form>
@@ -21,6 +21,7 @@ export default {
     data () {
         return {
             editMode: false,
+            isSubmitting: false,
             category: {
                 id: 0,
                 name: ''
@@ -55,6 +56,7 @@ export default {
         },
 
         async Publish() {
+            this.isSubmitting = true
             if(this.editMode){
                 this.UpdateCategory()
                 return
@@ -69,6 +71,7 @@ export default {
                         text: 'Cannot save the category',
                         group: 'app',
                     })
+                    this.isSubmitting = false
                 })
         },
 
@@ -82,6 +85,7 @@ export default {
                     text: 'Cannot update the category',
                     group: 'app',
                 })
+                this.isSubmitting = false
             })
         }
 

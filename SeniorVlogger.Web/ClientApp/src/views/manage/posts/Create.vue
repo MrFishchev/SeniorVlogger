@@ -99,7 +99,7 @@
                 <TextEditor class="editor" :buffer="editor.content" v-on:changed="editorTextChanged($event)" />
 
                 <div class="buttons mb-5">
-                    <button class="btn btn-success w-25 text-white" type="submit">{{ editMode ? 'Update Post' : 'Create Post'}}</button>
+                    <button class="btn btn-success w-25 text-white" type="submit" :disabled="isSubmitting">{{ editMode ? 'Update Post' : 'Create Post'}}</button>
                     <router-link to="/manage/posts" tag="button" class="btn btn-danger w-25 text-white" @click.prevent="this.$router.push('/')">Cancel</router-link>
                 </div>
             </form>
@@ -123,6 +123,7 @@ export default {
         return {
             preview: false,
             editMode: false,
+            isSubmitting: false,
 
             editor: {
                 content: '',
@@ -236,11 +237,12 @@ export default {
         },
 
         async publish() {
+            this.isSubmitting = true
+
             if(this.editMode){
                 this.UpdatePost()
                 return
             }
-
             let response = await this.uploadImage()
             this.post.imageUrl = response.data
             this.post.tags = this.tagValues.map(i => { return i.name })
@@ -255,6 +257,7 @@ export default {
                         group: 'app',
                     })
                     this.DeleteImage()
+                    this.isSubmitting = false
                 })
         },
 
@@ -269,6 +272,7 @@ export default {
                         text: 'Cannot update post',
                         group: 'app',
                     })
+                    this.isSubmitting = false
                 })
         },
 
