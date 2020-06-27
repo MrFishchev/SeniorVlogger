@@ -39,7 +39,7 @@ Vue.component('manage-layout', Manage)
 
 let loader 
 axios.interceptors.request.use(config => {
-            if(loader && loader.isActive) return
+        if(loader && !loader.isActive){
             loader = Vue.$loading.show({
                 color: '#079af0',
                 loader: 'bars',
@@ -47,6 +47,7 @@ axios.interceptors.request.use(config => {
                 height: 128,
                 opacity: 0.5
             })
+        }
   
         let token = store.getters.TOKEN
         if (token) {
@@ -58,17 +59,20 @@ axios.interceptors.request.use(config => {
     return Promise.reject(error)
 })
 
-axios.interceptors.response.use(response => { 
-    if(loader && loader.isActive) loader.hide()
-    return response 
-}, error => {
-    if(loader && loader.isActive) loader.hide()
-    if(error.response.status === 401){
-        store.commit('DELETE_USER')
-        router.replace({ path: '/login'})
+axios.interceptors.response.use(
+    response => { 
+        if(loader && loader.isActive) loader.hide()
+        return response 
+    }, 
+    error => {
+        if(loader && loader.isActive) loader.hide()
+        if(error.response.status === 401){
+            store.commit('DELETE_USER')
+            router.replace({ path: '/login'})
+        }
+        return Promise.reject(error)
     }
-    return Promise.reject(error)
-})
+)
 
 
 Vue.prototype.$api = axios

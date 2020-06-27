@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <img :src="`/${data.imageUrl}`" class="image appers-fadein"/>
+        <img v-if="!edit" :src="`/${data.imageUrl}`" class="image appers-fadein"/>
 
         <div id="content" class="appers-fadein" v-if="data.content" v-html="data.content" />
 
@@ -47,6 +47,11 @@ export default {
         edit: {
             type: Boolean,
             default: false
+        },
+
+        editData: {
+            type: Object,
+            default: null
         }
     },
 
@@ -59,6 +64,12 @@ export default {
                 author: {},
                 category: {}
             },
+        }
+    },
+
+    watch: {
+        editData(val) {
+            this.data = val
         }
     },
 
@@ -86,8 +97,12 @@ export default {
     },
 
     mounted () {
+        if(!this.fbIsReady && window.FB)
+            window.fbAsyncInit()
+    },
 
-        let pre = jQuery('.content pre')
+    updated() {
+        let pre = jQuery('pre.ql-syntax')
         if(pre){
             pre.each(function () {
                 jQuery(this).wrapInner("<code class='hljs'></code>")
@@ -96,9 +111,6 @@ export default {
 
         let blogLink = jQuery('#header a').eq(1)
         blogLink.addClass("exact-active-route")
-
-        if(!this.fbIsReady && window.FB)
-            window.fbAsyncInit()
     }
 }
 </script>
@@ -185,4 +197,6 @@ export default {
                 a
                     text-decoration: none
                     color: #595959  
+        code
+            border-radius: 5px
 </style>

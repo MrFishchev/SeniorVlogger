@@ -6,7 +6,7 @@
                 <span v-else>Show preview</span>
             </button>
         </div>
-        <blog-post v-show="preview" :data="data" :edit="true" />
+        <blog-post v-show="preview" :editData="data" :edit="true" />
 
         <div class="post" v-show="!preview">
             <form class="form" @submit.prevent="publish" enctype="multipart/form-data">
@@ -180,7 +180,7 @@ export default {
         },
 
         LoadEditingPost(id){
-             this.$api.get(`/api/blog/post/${id}`)
+            this.$api.get(`/api/blog/${id}`)
              .then(response => {
                  this.post = response.data
                  this.tagValues = response.data.tags.map((i, index) => {
