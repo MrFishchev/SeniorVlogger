@@ -6,7 +6,7 @@
                 <span v-else>Show preview</span>
             </button>
         </div>
-        <blog-post v-show="preview" :data="data" />
+        <blog-post v-show="preview" :data="data" :edit="true" />
 
         <div class="post" v-show="!preview">
             <form class="form" @submit.prevent="publish" enctype="multipart/form-data">
@@ -180,22 +180,22 @@ export default {
         },
 
         LoadEditingPost(id){
-            this.$api.get(`/api/blog/${id}`)
-                .then(response => {
-                    this.post = response.data
-                    this.tagValues = response.data.tags.map((i, index) => {
-                        return { name: i, code: index }
-                    })
-                    this.editor.content = this.post.content
-                })
-                .catch(error => {
-                    this.$notify({
-                        type: 'error',
-                        title: 'Error',
-                        text: 'Cannot load the post',
-                        group: 'app',
-                    })
-                })
+             this.$api.get(`/api/blog/post/${id}`)
+             .then(response => {
+                 this.post = response.data
+                 this.tagValues = response.data.tags.map((i, index) => {
+                     return { name: i, code: index }
+                 })
+                 this.editor.content = this.post.content
+             })
+             .catch(error => {
+                 this.$notify({
+                     type: 'error',
+                     title: 'Error',
+                     text: 'Cannot load the post',
+                     group: 'app',
+                 })
+             })
         },
 
         selectImage(event){

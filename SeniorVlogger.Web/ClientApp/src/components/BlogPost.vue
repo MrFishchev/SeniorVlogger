@@ -8,7 +8,7 @@
         <hr />
         <div class="like slide-in-left">
             <h3 class="date" v-if="data.author" ><i>By {{ data.author.name}} on <span>{{ data.publishDate }}</span></i></h3>
-            <div style="width:100px"
+            <div style="width:100px" v-if="!edit"
                 class="fb-like"
                 :data-href="postUrl"
                 data-share="false"
@@ -34,7 +34,7 @@
             </span>
         </div>
 
-        <div class="fb-comments" :data-href="postUrl" data-width="100%" data-numposts="10"></div>
+        <div v-if="!edit" class="fb-comments" :data-href="postUrl" data-width="100%" data-numposts="10"></div>
     </div>
 </template>
 
@@ -43,11 +43,17 @@ import 'highlight.js/scss/rainbow.scss'
 const jQuery = require('jquery/dist/jquery.min.js')
 
 export default {
+    props: {
+        edit: {
+            type: Boolean,
+            default: false
+        }
+    },
+
     data (){
         return{
             next: null,
             previous: null,
-            isLoading: true,
             fbIsReady: false,
             data: {
                 author: {},
@@ -57,9 +63,9 @@ export default {
     },
 
     async beforeMount() {
+        if(this.edit) return
         let response = await this.$api.get(`/api/blog/slug/${this.$route.params.slug}`)
         this.data = response.data
-        this.isLoading = false
         window.addEventListener('fb-sdk-ready', () => this.fbIsReady = true)
     },
 
