@@ -35,8 +35,7 @@ namespace SeniorVlogger.Models.DTO
 
         public bool Scratch { get; set; }
 
-        [Required]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         [ForeignKey(nameof(CategoryId))]
         public CategoryDto Category { get; set; }
 

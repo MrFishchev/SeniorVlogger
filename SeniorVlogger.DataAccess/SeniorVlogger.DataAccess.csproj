@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200620112501_ChangedBlogPostModel.cs" />
     <Compile Remove="Migrations\20200620112501_ChangedBlogPostModel.Designer.cs" />
+    <Compile Remove="Migrations\20200627095400_NotRequiredCategoryForBlogPost.cs" />
+    <Compile Remove="Migrations\20200627095400_NotRequiredCategoryForBlogPost.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
