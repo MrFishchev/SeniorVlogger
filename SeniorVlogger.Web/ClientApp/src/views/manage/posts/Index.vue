@@ -103,6 +103,7 @@ export default {
                         text: 'Post was deleted',
                         group: 'app',
                     })
+                    this.LoadPosts()
                 }
                 else{
                     this.$notify({
@@ -114,12 +115,16 @@ export default {
                 }
                
             }
+        },
+
+        async LoadPosts() {
+            let response = await this.$api.get('/api/blog')
+            this.posts = response.data
         }
     },
 
     async beforeMount() {
-        let response = await this.$api.get('/api/blog')
-        this.posts = response.data
+        await this.LoadPosts()
     }
 }
 </script>

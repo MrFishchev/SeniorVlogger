@@ -95,9 +95,6 @@ namespace SeniorVlogger.Web.Controllers
         {
             try
             {
-                if (post.Author.Email != User.FindFirst(ClaimTypes.NameIdentifier)?.Value)
-                    return Problem("You have no access to edit the post");
-
                 var objDb = post.ToDto();
                 objDb.Slug = post.Title.GenerateSlug();
 
@@ -106,7 +103,7 @@ namespace SeniorVlogger.Web.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Cannot create blog post: {e.Message}");
+                _logger.LogError(e, $"Cannot update blog post: {e.Message}");
                 return Problem();
             }
 

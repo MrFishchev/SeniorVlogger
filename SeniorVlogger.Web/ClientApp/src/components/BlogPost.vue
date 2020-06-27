@@ -1,13 +1,13 @@
 <template>
     <div class="wrapper" id="blog-post">
-        <router-link class="category slide-in-right" :to="'/posts/category/' + categoryURL">
-            {{ data.category.name }}
+        <router-link class="category slide-in-right" :to="'/posts/category/' + categoryURL" v-if="data.category">
+            {{ data.category.name || '' }}
         </router-link>
         <h1 class="title slide-in-right">{{data.title}}</h1>
 
         <hr />
         <div class="like slide-in-left">
-            <h3 class="date"><i>By {{data.author.name}} on <span>{{ data.publishDate }}</span></i></h3>
+            <h3 class="date" v-if="data.author" ><i>By {{ data.author.name}} on <span>{{ data.publishDate }}</span></i></h3>
             <div style="width:100px" v-if="isFBReady"
                 class="fb-like"
                 :data-href="postUrl"
