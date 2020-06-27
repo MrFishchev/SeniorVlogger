@@ -6,6 +6,10 @@ import router from './router'
 import './assets/bootstrap.min.css'
 import './assets/style.sass'
 
+import VueFacebook from '@/assets/scripts/fb-comments.js'
+Vue.use(VueFacebook)
+Vue.prototype.$fb = VueFacebook
+
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 Vue.use(Loading);

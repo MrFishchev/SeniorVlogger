@@ -8,7 +8,7 @@
         <hr />
         <div class="like slide-in-left">
             <h3 class="date" v-if="data.author" ><i>By {{ data.author.name}} on <span>{{ data.publishDate }}</span></i></h3>
-            <div style="width:100px" v-if="isFBReady"
+            <div style="width:100px"
                 class="fb-like"
                 :data-href="postUrl"
                 data-share="false"
@@ -34,7 +34,7 @@
             </span>
         </div>
 
-        <!-- <div v-if="isFBReady" class="fb-comments" :data-href="postUrl" data-width="100%" data-numposts="10"></div> -->
+        <div class="fb-comments" :data-href="postUrl" data-width="100%" data-numposts="10"></div>
     </div>
 </template>
 
@@ -45,10 +45,10 @@ const jQuery = require('jquery/dist/jquery.min.js')
 export default {
     data (){
         return{
-            isFBReady: false,
             next: null,
             previous: null,
             isLoading: true,
+            fbIsReady: false,
             data: {
                 author: {},
                 category: {}
@@ -60,6 +60,7 @@ export default {
         let response = await this.$api.get(`/api/blog/slug/${this.$route.params.slug}`)
         this.data = response.data
         this.isLoading = false
+        window.addEventListener('fb-sdk-ready', () => this.fbIsReady = true)
     },
 
     computed: {
@@ -72,13 +73,14 @@ export default {
     },
 
     beforeDestroy (){
-        // window.removeEventListener('fb-sdk-ready', this.onFBReady)
+        window.removeEventListener('fb-sdk-ready', this.onFBReady)
 
         let blogLink = jQuery('#header a').eq(1)
         blogLink.removeClass("exact-active-route")
     },
 
     mounted () {
+
         let pre = jQuery('.content pre')
         if(pre){
             pre.each(function () {
@@ -89,21 +91,9 @@ export default {
         let blogLink = jQuery('#header a').eq(1)
         blogLink.addClass("exact-active-route")
 
-	
-        // this.isFBReady = this.$fb != undefined
-        // console.log(this.$fb)
-        // if(this.$fb)
-        // {
-	    //     window.fbAsyncInit()
-        // }
-        // window.addEventListener('fb-sdk-ready', this.onFBReady)
-    },
-
-    methods: {
-        // onFBReady: function () {
-        //     this.isFBReady = true
-        // }
-    },
+        if(!this.fbIsReady && window.FB)
+            window.fbAsyncInit()
+    }
 }
 </script>
 
