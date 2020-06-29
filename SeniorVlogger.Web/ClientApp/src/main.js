@@ -39,7 +39,7 @@ Vue.component('manage-layout', Manage)
 
 let loader 
 axios.interceptors.request.use(config => {
-        if(loader && !loader.isActive){
+        if(!loader || !loader.isActive){
             loader = Vue.$loading.show({
                 color: '#079af0',
                 loader: 'bars',

@@ -23,7 +23,7 @@
                 <div class="form-group">
                     <label for="category">Category</label>
                     <select id="category" v-model="post.category.id" class="form-control" required>
-                        <option value="" selected disabled>Select Category</option>
+                        <option value="0" selected disabled>Select Category</option>
                         <option v-for="category in categories"
                                 :key="category.id" :value="category.id">
                             {{ category.name }}
@@ -56,22 +56,22 @@
 
                 <div class="form-group">
                     <label for="previous">Previous Post</label>
-                    <select id="previous" v-model="post.previous" class="form-control">
-                        <option value="" selected>Optional</option>
-                        <option v-for="post in posts"
-                                :key="post.id" :value="post">
-                            {{post.name}}
+                    <select id="previous" v-model="post.previous.id" class="form-control selectpicker">
+                        <option value="0" selected>None</option>
+                        <option v-for="post in FreePreviousPosts"
+                                :key="post.id" :value="post.id">
+                            {{post.title}}
                         </option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="next">Next Post</label>
-                    <select id="next" v-model="post.next" class="form-control">
-                        <option value="" selected>Optional</option>
-                        <option v-for="post in posts"
-                                :key="post.id" :value="post">
-                            {{post.name}}
+                    <select id="next" v-model="post.next.id" class="form-control">
+                        <option value="0" selected>None</option>
+                        <option v-for="post in FreeNextPosts"
+                                :key="post.id" :value="post.id">
+                            {{post.title}}
                         </option>
                     </select>
                 </div>
@@ -81,7 +81,7 @@
                         <input class="form-check-input" v-model="post.mailed"
                             type="checkbox" id="mailed">
                         <label class="form-check-label" for="mailed">
-                        Send Mail to Subscribers
+                            Send Mail to Subscribers
                         </label>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                         <input class="form-check-input" v-model="post.scratch"
                             type="checkbox" id="scratch">
                         <label class="form-check-label" for="scratch">
-                        Scratch (Don't publish now)
+                            Scratch (Don't publish now)
                         </label>
                     </div>
                 </div>
@@ -139,10 +139,10 @@ export default {
                     id: 0,
                     name: ''
                 },
-                next: null,
-                previous: null,
                 mailed: false,
-                scratch: true
+                scratch: true,
+                next: {id: 0, title: ''},
+                previous: { id: 0, title: ''}
             },
 
             tagValues: [],
@@ -155,6 +155,7 @@ export default {
 
     beforeMount() {
         this.LoadCategories()
+        this.LoadPosts()
 
         let id = this.$route.params.id
         if(id){
@@ -170,10 +171,36 @@ export default {
             return {
                 ...this.post
             }
+        },
+
+        FreeNextPosts() {
+            let result = this.posts.filter(p=> p.id !== this.post.previous.id)
+
+            if(this.editMode){
+                result = result.filter(p=> p.id !== this.post.id)
+            }
+
+            return result
+        },
+
+        FreePreviousPosts() {
+            let result = this.posts.filter(p=> p.id !== this.post.next.id)
+
+            if(this.editMode){
+                result = result.filter(p=> p.id !== this.post.id)
+            }
+
+            return result
         }
     },
 
     methods: {
+
+        LoadPosts() {
+            this.$api.get('/api/blog/short')
+                .then(response => { this.posts = response.data })
+        },
+
         LoadCategories(){
             this.$api.get('/api/category')
                 .then(response => this.categories = response.data)
@@ -182,11 +209,14 @@ export default {
         LoadEditingPost(id){
             this.$api.get(`/api/blog/${id}`)
              .then(response => {
-                 this.post = response.data
-                 this.tagValues = response.data.tags.map((i, index) => {
-                     return { name: i, code: index }
-                 })
-                 this.editor.content = this.post.content
+                this.post = response.data
+                this.tagValues = response.data.tags.map((i, index) => {
+                    return { name: i, code: index }
+                })
+                this.editor.content = this.post.content
+
+                if(this.post.previous == null) this.post.previous = { id: 0, title: ''}
+                if(this.post.next == null) this.post.next = { id: 0, title: ''}
              })
              .catch(error => {
                  this.$notify({
