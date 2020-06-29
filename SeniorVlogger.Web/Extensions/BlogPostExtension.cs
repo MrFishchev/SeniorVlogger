@@ -8,12 +8,14 @@ namespace SeniorVlogger.Web.Extensions
     {
         public static BlogPostDto ToDto(this BlogPostViewModel vm)
         {
+            var previousId = vm?.Previous?.Id;
+            var nextId = vm?.Next?.Id;
             return new BlogPostDto
             {
                 Id = vm.Id,
                 CategoryId = vm.Category.Id,
-                NextId = vm?.Next?.Id,
-                PreviousId = vm?.Previous?.Id,
+                NextId = nextId == 0 ? null : nextId,
+                PreviousId =  previousId == 0 ? null : previousId,
                 Title = vm.Title,
                 ImageUrl = vm.ImageUrl,
                 Content = vm.Content,
@@ -38,7 +40,19 @@ namespace SeniorVlogger.Web.Extensions
                 Description = objDb.Description,
                 Mailed = objDb.Mailed,
                 Scratch = objDb.Scratch,
-                PublishDate = objDb.PublishDate.Date.ToString("dd.MM.yyyy")
+                PublishDate = objDb.PublishDate.Date.ToString("dd.MM.yyyy"),
+                Next = new BlogPostViewModel
+                {
+                    Id = objDb.Next?.Id ?? 0, 
+                    Title = objDb.Next?.Title,
+                    Slug = objDb.Next?.Slug
+                },
+                Previous = new BlogPostViewModel
+                {
+                    Id = objDb.Previous?.Id ?? 0, 
+                    Title = objDb.Previous?.Title,
+                    Slug = objDb.Previous?.Slug
+                }
             };
 
             if (objDb.Author != null)

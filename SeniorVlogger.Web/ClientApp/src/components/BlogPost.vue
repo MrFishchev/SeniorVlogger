@@ -23,8 +23,8 @@
         <div id="content" class="appers-fadein" v-if="data.content" v-html="data.content" />
 
         <div class="additional-posts">
-            <span v-if="next">Next:<router-link :to="'/posts/' + next.slug" :title="next.title">{{next.title}}</router-link></span>
-            <span v-if="previous">Previous:<router-link :to="'/posts/' + previous.slug" :title="previous.title">{{previous.title}}</router-link></span>
+            <span v-if="data.next">Next:<router-link :to="'/blog/' + data.next.slug">{{data.next.title}}</router-link></span>
+            <span v-if="data.previous">Previous:<router-link :to="'/blog/' + data.previous.slug">{{data.previous.title}}</router-link></span>
         </div>
         
         <div class="tags">
@@ -57,8 +57,6 @@ export default {
 
     data (){
         return{
-            next: null,
-            previous: null,
             fbIsReady: false,
             data: {
                 author: {},
@@ -70,14 +68,24 @@ export default {
     watch: {
         editData(val) {
             this.data = val
+        },
+
+        "$route.params.slug"(val) {
+            this.LoadData()
         }
     },
 
-    async beforeMount() {
+    beforeMount() {
         if(this.edit) return
-        let response = await this.$api.get(`/api/blog/slug/${this.$route.params.slug}`)
-        this.data = response.data
         window.addEventListener('fb-sdk-ready', () => this.fbIsReady = true)
+        this.LoadData()
+    },
+
+    methods: {
+        async LoadData() {
+            let response = await this.$api.get(`/api/blog/slug/${this.$route.params.slug}`)
+            this.data = response.data
+        }
     },
 
     computed: {

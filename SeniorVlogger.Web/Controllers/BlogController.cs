@@ -52,14 +52,21 @@ namespace SeniorVlogger.Web.Controllers
         [AllowAnonymous]
         public async Task<BlogPostViewModel> GetBySlug(string slug)
         {
-            var post = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Slug == slug, includeProperties: "Category,Author");
+            var post = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Slug == slug, includeProperties: "Category,Author,Next,Previous");
             return post?.ToViewModel();
+        }
+
+        [HttpGet("short")]
+        public async Task<IEnumerable<ShortPostViewModel>> GetSlugs()
+        {
+            var posts = await _unitOfWork.BlogPosts.GetAll();
+            return posts.Select(p => new ShortPostViewModel(p.Id, p.Slug, p.Title));
         }
 
         [HttpGet("{id}")]
         public async Task<BlogPostViewModel> Get(int id)
         {
-            var post = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Id == id, includeProperties: "Category,Author");
+            var post = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Id == id, includeProperties: "Category,Author,Next,Previous");
             return post?.ToViewModel();
         }
 
