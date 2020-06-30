@@ -22,6 +22,7 @@
 <style lang="sass">
     @import '@/assets/_colors'
     #header
+      min-width: 320px
       height: 50px
       background: $base-dark
       border-bottom: 3px solid $neon-light
