@@ -30,7 +30,7 @@
         <div class="tags">
             <span v-for="(tag, index) in data.tags"
                 :key="index + tag">
-                <router-link :to="'/posts/tag/' + tag">#{{tag}}</router-link>
+                <router-link :to="'/blog/tag/' + tag">#{{tag}}</router-link>
             </span>
         </div>
 

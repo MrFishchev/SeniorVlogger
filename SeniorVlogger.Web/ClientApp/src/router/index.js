@@ -95,6 +95,7 @@ Vue.use(VueRouter)
     ]
   },
 
+  //BLOG SECTION
   {
     path: '/blog',
     name: 'Blog',
@@ -105,6 +106,16 @@ Vue.use(VueRouter)
     path: '/blog/:slug',
     meta: { layout: 'blog' },
     component: BlogPost
+  },
+  {
+    path: '/blog/category/:category',
+    meta: { layout: 'blog' },
+    component: Blog
+  },
+  {
+    path: '/blog/tag/:tag',
+    meta: { layout: 'blog' },
+    component: Blog
   }
 ]
 
