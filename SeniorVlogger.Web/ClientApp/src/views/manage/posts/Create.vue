@@ -54,6 +54,11 @@
                     </div>
                 </div>
 
+                <div class="form-group" v-if="editMode">
+                    <label for="image">Image Url</label>
+                    <input type="text" class="form-control" v-model="post.imageUrl" readonly>
+                </div>
+
                 <div class="form-group">
                     <label for="previous">Previous Post</label>
                     <select id="previous" v-model="post.previous.id" class="form-control selectpicker">
