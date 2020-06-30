@@ -30,4 +30,5 @@ export default {
   #blog-layout
     .content
       padding-top: 53px
+      min-height: calc(100vh - 214px)
 </style>
