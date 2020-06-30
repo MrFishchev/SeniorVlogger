@@ -56,6 +56,22 @@ namespace SeniorVlogger.Web.Controllers
             return post?.ToViewModel();
         }
 
+        [HttpGet("category/{id}")]
+        [AllowAnonymous]
+        public async Task<IEnumerable<BlogPostViewModel>> GetByCategory(int id)
+        {
+            var posts = await _unitOfWork.BlogPosts.GetAll(p => p.Category.Id == id, includeProperties: "Category,Author");
+            return posts?.Select(i => i.ToViewModel());
+        }
+
+        [HttpGet("tag/{tag}")]
+        [AllowAnonymous]
+        public async Task<IEnumerable<BlogPostViewModel>> GetByTag(string tag)
+        {
+            var posts = await _unitOfWork.BlogPosts.GetAll(p => p.Tags.Contains(tag), includeProperties: "Category,Author");
+            return posts?.Select(i => i.ToViewModel());
+        }
+
         [HttpGet("short")]
         public async Task<IEnumerable<ShortPostViewModel>> GetSlugs()
         {

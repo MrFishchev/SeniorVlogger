@@ -24,9 +24,31 @@ export default {
     }
   },
 
-  async beforeMount() {
-    let response = await this.$api.get('/api/blog')
-    this.posts = response.data
+  watch: {
+     "$route.params"() {
+        this.LoadData()
+      }
+  },
+
+  methods: {
+    async LoadData() {
+      let response
+      if(this.$route.params.category){
+        response = await this.$api.get(`/api/blog/category/${this.$route.params.category}`)
+      }
+      else if(this.$route.params.tag){
+        response = await this.$api.get(`/api/blog/tag/${this.$route.params.tag}`)
+      }
+      else{
+        response = await this.$api.get('/api/blog')
+      }
+
+      this.posts = response.data
+    }
+  },
+
+  beforeMount() {
+    this.LoadData()
   }
 
 }
