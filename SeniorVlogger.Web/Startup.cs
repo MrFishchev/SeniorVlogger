@@ -84,6 +84,7 @@ namespace SeniorVlogger.Web
                     (env.IsDevelopment()) ? "ClientApp" : "ClientApp/dist");
             }
 
+            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -91,11 +92,7 @@ namespace SeniorVlogger.Web
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllers();
-                endpoints.MapControllerRoute(
-                    "default",
-                    "{area}/{controller}/{action=GetAll}"
-                    );
+                endpoints.MapControllers();
             });
 
             app.UseSpa(spa =>
