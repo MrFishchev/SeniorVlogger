@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SeniorVlogger.Common.Email.IEmail;
@@ -80,7 +78,9 @@ namespace SeniorVlogger.Web.Controllers
                     }
                     subscription.IsSubscribed = true;
                     await _unitOfWork.Subscriptions.Update(subscription);
+                    await _unitOfWork.Save();
                     _emailService.SendWelcomeBackAsync(subscription.Email).ConfigureAwait(false);
+                    return Json(new {exist = true, message = "Welcome back, Friend! Thank you!"});
                 }
             }
             catch (Exception e)
@@ -104,9 +104,7 @@ namespace SeniorVlogger.Web.Controllers
             subscription.IsSubscribed = false;
             subscription.UnsubscribeDate = DateTime.UtcNow;
 
-            await _unitOfWork.Subscriptions.Update(subscription);
             await _unitOfWork.Save();
-
             return Ok();
         }
 

@@ -29,9 +29,10 @@ export default {
               }
               else{
                 this.ShowError()
-              }
+                }
             })
             .catch(error => this.ShowError())
+            this.ReturnBack()
         },
         ReturnBack(){
             this.$router.push('/blog')
