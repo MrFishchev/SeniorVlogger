@@ -2,13 +2,14 @@ const jQuery = require('jquery/dist/jquery.min.js')
 
 let particles = []
 let max = 50
-let maxSpeed = 20
+let maxSpeed = 200
+let minSpeed = 10
 let animationFrame = -1
 
 class Ball {
   constructor (shape) {
     this.shape = jQuery(shape)
-    this.speed = Math.min(1 + Math.random() * 12, maxSpeed)
+    this.speed = Math.max(Math.min(1 + Math.random() * 12, maxSpeed), minSpeed)
     this.vx = (Math.random() * this.speed) - (Math.random() * this.speed)
     this.vy = (Math.random() * this.speed) - (Math.random() * this.speed)
     this.radius = 10 + Math.round(Math.random() * 80)
@@ -46,13 +47,12 @@ class Ball {
     })
 
     if (this.x < 0 || this.x > this.w - this.radius) {
-      this.vx = -this.vx
-      jQuery(this.shape).toggleClass('highlight')
+        this.vx = -this.vx
     }
     if (this.y < 0 || this.y > this.h - this.radius) {
-      this.vy = -this.vy
-      jQuery(this.shape).toggleClass('highlight')
+        this.vy = -this.vy
     }
+    
     return this
   }
 }
@@ -78,9 +78,10 @@ export const IconsFinder = {
   start () {
     jQuery('body').css('overflow-y', 'hidden')
     let svgList = jQuery('div.svg>svg')
-    // if (checkDevice()) {
-    //   maxSpeed = 10
-    // }
+     if (checkDevice()) {
+         maxSpeed = 100
+         max = 10
+     }
 
     for (let i = 0; i < Math.min(svgList.length, max); i++) {
       particles.push(
