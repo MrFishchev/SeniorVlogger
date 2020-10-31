@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorVlogger.DataAccess.Data;
 
-namespace SeniorVlogger.DataAccess.Migrations
+namespace SeniorVlogger.SqlServerMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200612200522_AddBlogPostModel")]
-    partial class AddBlogPostModel
+    [Migration("20200612201649_AddBlogFileModel")]
+    partial class AddBlogFileModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -221,6 +221,35 @@ namespace SeniorVlogger.DataAccess.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Encoding")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("Filename")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("MimeType")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlogFiles");
                 });
 
             modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogPost", b =>

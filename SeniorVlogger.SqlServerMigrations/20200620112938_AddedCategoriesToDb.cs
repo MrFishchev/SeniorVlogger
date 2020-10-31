@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SeniorVlogger.DataAccess.Migrations
+namespace SeniorVlogger.SqlServerMigrations
 {
     public partial class AddedCategoriesToDb : Migration
     {

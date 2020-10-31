@@ -4,10 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorVlogger.DataAccess.Data;
 
-namespace SeniorVlogger.DataAccess.Migrations
+namespace SeniorVlogger.SqlServerMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20200612193940_Initial")]

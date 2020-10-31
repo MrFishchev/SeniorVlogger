@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorVlogger.DataAccess.Data;
 
-namespace SeniorVlogger.DataAccess.Migrations
+namespace SeniorVlogger.SqlServerMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200623171716_AddedSubscriptionsToDb")]
-    partial class AddedSubscriptionsToDb
+    [Migration("20200612200522_AddBlogPostModel")]
+    partial class AddBlogPostModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -223,48 +223,17 @@ namespace SeniorVlogger.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogFileDto", b =>
+            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogPost", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Encoding")
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("Filename")
+                    b.Property<string>("Category")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("MimeType")
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BlogFiles");
-                });
-
-            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogPostDto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AuthorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -308,55 +277,11 @@ namespace SeniorVlogger.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("NextId");
 
                     b.HasIndex("PreviousId");
 
                     b.ToTable("BlogPosts");
-                });
-
-            modelBuilder.Entity("SeniorVlogger.Models.DTO.CategoryDto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("SeniorVlogger.Models.DTO.SubscriptionDto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsSubscribed")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("SubscribeDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("UnsubscribeDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("SeniorVlogger.Models.DTO.ApplicationUser", b =>
@@ -417,25 +342,13 @@ namespace SeniorVlogger.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogPostDto", b =>
+            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogPost", b =>
                 {
-                    b.HasOne("SeniorVlogger.Models.DTO.ApplicationUser", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SeniorVlogger.Models.DTO.CategoryDto", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SeniorVlogger.Models.DTO.BlogPostDto", "Next")
+                    b.HasOne("SeniorVlogger.Models.DTO.BlogPost", "Next")
                         .WithMany()
                         .HasForeignKey("NextId");
 
-                    b.HasOne("SeniorVlogger.Models.DTO.BlogPostDto", "Previous")
+                    b.HasOne("SeniorVlogger.Models.DTO.BlogPost", "Previous")
                         .WithMany()
                         .HasForeignKey("PreviousId");
                 });

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorVlogger.DataAccess.Data;
 
-namespace SeniorVlogger.DataAccess.Migrations
+namespace SeniorVlogger.SqlServerMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200612201649_AddBlogFileModel")]
-    partial class AddBlogFileModel
+    [Migration("20200623171716_AddedSubscriptionsToDb")]
+    partial class AddedSubscriptionsToDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -223,7 +223,7 @@ namespace SeniorVlogger.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogFile", b =>
+            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogFileDto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -252,17 +252,19 @@ namespace SeniorVlogger.DataAccess.Migrations
                     b.ToTable("BlogFiles");
                 });
 
-            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogPost", b =>
+            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogPostDto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Category")
+                    b.Property<string>("AuthorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -306,11 +308,55 @@ namespace SeniorVlogger.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("NextId");
 
                     b.HasIndex("PreviousId");
 
                     b.ToTable("BlogPosts");
+                });
+
+            modelBuilder.Entity("SeniorVlogger.Models.DTO.CategoryDto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("SeniorVlogger.Models.DTO.SubscriptionDto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSubscribed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("SubscribeDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UnsubscribeDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("SeniorVlogger.Models.DTO.ApplicationUser", b =>
@@ -371,13 +417,25 @@ namespace SeniorVlogger.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogPost", b =>
+            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogPostDto", b =>
                 {
-                    b.HasOne("SeniorVlogger.Models.DTO.BlogPost", "Next")
+                    b.HasOne("SeniorVlogger.Models.DTO.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SeniorVlogger.Models.DTO.CategoryDto", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SeniorVlogger.Models.DTO.BlogPostDto", "Next")
                         .WithMany()
                         .HasForeignKey("NextId");
 
-                    b.HasOne("SeniorVlogger.Models.DTO.BlogPost", "Previous")
+                    b.HasOne("SeniorVlogger.Models.DTO.BlogPostDto", "Previous")
                         .WithMany()
                         .HasForeignKey("PreviousId");
                 });
