@@ -116,6 +116,15 @@ Vue.use(VueRouter)
     path: '/blog/tag/:tag',
     meta: { layout: 'blog' },
     component: Blog
+  },
+
+  //UNSUBSCRIBE SECTION
+  {
+      path: '/unsubscribe/:id',
+      meta: { layout: 'blog' },
+      component: function () {
+          return import('../views/Unsubscribe.vue')
+      }
   }
 ]
 

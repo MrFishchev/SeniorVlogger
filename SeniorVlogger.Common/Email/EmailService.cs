@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using RestSharp;
 using RestSharp.Authenticators;
 using SeniorVlogger.Common.Email.IEmail;
+using SeniorVlogger.Common.Helpers;
 using SeniorVlogger.Common.Properties;
 
 namespace SeniorVlogger.Common.Email
@@ -45,6 +46,8 @@ namespace SeniorVlogger.Common.Email
 
         private Task Execute(string subject, string htmlMessage, string email)
         {
+            htmlMessage = htmlMessage.Replace("%UserId%", Base64Helper.Base64Encode(email));
+
             var client = new RestClient
             {
                 BaseUrl = new Uri("https://api.mailgun.net/v3"),

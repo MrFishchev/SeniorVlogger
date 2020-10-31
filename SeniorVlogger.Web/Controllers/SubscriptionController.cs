@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SeniorVlogger.Common.Email.IEmail;
+using SeniorVlogger.Common.Helpers;
 using SeniorVlogger.DataAccess.Repository.IRepository;
 using SeniorVlogger.Models.DTO;
 using SeniorVlogger.Models.Requests;
@@ -79,7 +80,7 @@ namespace SeniorVlogger.Web.Controllers
                     }
                     subscription.IsSubscribed = true;
                     await _unitOfWork.Subscriptions.Update(subscription);
-                    _emailService.SendWelcomeBackAsync(subscription.Email);
+                    _emailService.SendWelcomeBackAsync(subscription.Email).ConfigureAwait(false);
                 }
             }
             catch (Exception e)
@@ -92,31 +93,23 @@ namespace SeniorVlogger.Web.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Unsubscribe(string base64Id)
+        [HttpDelete("{base64Email}")]
+
+        public async Task<IActionResult> Unsubscribe(string base64Email)
         {
-            var bytes = Convert.FromBase64String(base64Id);
-            var decodedId = Encoding.UTF8.GetString(bytes);
+            var decodedId = Base64Helper.Base64Decode(base64Email);
+            if (string.IsNullOrWhiteSpace(decodedId)) return Problem();
 
-            if (int.TryParse(decodedId, out var id))
-            {
-                var subscription = await _unitOfWork.Subscriptions.Get(id);
-                subscription.IsSubscribed = false;
-                subscription.UnsubscribeDate = DateTime.UtcNow;
+            var subscription = await _unitOfWork.Subscriptions.GetFirstOrDefault(s => s.Email == decodedId);
+            subscription.IsSubscribed = false;
+            subscription.UnsubscribeDate = DateTime.UtcNow;
 
-                await _unitOfWork.Subscriptions.Update(subscription);
-                await _unitOfWork.Save();
-            }
-            else
-            {
-                _logger.LogWarning($"Cannot decode subscription id ({nameof(Unsubscribe)})");
-                return Problem();
-            }
+            await _unitOfWork.Subscriptions.Update(subscription);
+            await _unitOfWork.Save();
 
             return Ok();
         }
 
         #endregion
-
     }
 }
