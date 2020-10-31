@@ -5,6 +5,7 @@
 
 SeniorVlogger.Web/ClientApp/uploads/
 SeniorVlogger.Web/ClientApp/dist/
+db/
 
 # User-specific files
 *.rsuser

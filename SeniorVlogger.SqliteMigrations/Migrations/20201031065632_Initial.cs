@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SeniorVlogger.SqlServerMigrations
+namespace SeniorVlogger.SqliteMigrations.Migrations
 {
     public partial class Initial : Migration
     {
@@ -48,11 +48,56 @@ namespace SeniorVlogger.SqlServerMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BlogFiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Filename = table.Column<string>(maxLength: 100, nullable: false),
+                    MimeType = table.Column<string>(maxLength: 30, nullable: true),
+                    Encoding = table.Column<string>(maxLength: 30, nullable: true),
+                    Url = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlogFiles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subscriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Email = table.Column<string>(nullable: false),
+                    IsSubscribed = table.Column<bool>(nullable: false),
+                    SubscribeDate = table.Column<DateTime>(nullable: false),
+                    UnsubscribeDate = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscriptions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -73,7 +118,7 @@ namespace SeniorVlogger.SqlServerMigrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -153,6 +198,55 @@ namespace SeniorVlogger.SqlServerMigrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "BlogPosts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(maxLength: 200, nullable: false),
+                    Slug = table.Column<string>(maxLength: 50, nullable: false),
+                    Tags = table.Column<string>(nullable: true),
+                    ImageUrl = table.Column<string>(nullable: false),
+                    Content = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    PublishDate = table.Column<DateTime>(nullable: false),
+                    Mailed = table.Column<bool>(nullable: false),
+                    Scratch = table.Column<bool>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: true),
+                    NextId = table.Column<int>(nullable: true),
+                    PreviousId = table.Column<int>(nullable: true),
+                    AuthorId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlogPosts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BlogPosts_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BlogPosts_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_BlogPosts_BlogPosts_NextId",
+                        column: x => x.NextId,
+                        principalTable: "BlogPosts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_BlogPosts_BlogPosts_PreviousId",
+                        column: x => x.PreviousId,
+                        principalTable: "BlogPosts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -162,8 +256,7 @@ namespace SeniorVlogger.SqlServerMigrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -189,8 +282,27 @@ namespace SeniorVlogger.SqlServerMigrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogPosts_AuthorId",
+                table: "BlogPosts",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogPosts_CategoryId",
+                table: "BlogPosts",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogPosts_NextId",
+                table: "BlogPosts",
+                column: "NextId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogPosts_PreviousId",
+                table: "BlogPosts",
+                column: "PreviousId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,10 +323,22 @@ namespace SeniorVlogger.SqlServerMigrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BlogFiles");
+
+            migrationBuilder.DropTable(
+                name: "BlogPosts");
+
+            migrationBuilder.DropTable(
+                name: "Subscriptions");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

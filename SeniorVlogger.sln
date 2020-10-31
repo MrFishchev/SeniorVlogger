@@ -9,7 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeniorVlogger.Models", "Sen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeniorVlogger.Common", "SeniorVlogger.Common\SeniorVlogger.Common.csproj", "{E9860F04-C409-491F-94DC-72876DEC3F8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeniorVlogger.Web", "SeniorVlogger.Web\SeniorVlogger.Web.csproj", "{3C6741FA-C941-4877-8FD2-CE8BE5DBE230}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeniorVlogger.Web", "SeniorVlogger.Web\SeniorVlogger.Web.csproj", "{3C6741FA-C941-4877-8FD2-CE8BE5DBE230}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{280A0AAC-BD23-4C1F-A755-63CACEE2BC46}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeniorVlogger.SqlServerMigrations", "SeniorVlogger.SqlServerMigrations\SeniorVlogger.SqlServerMigrations.csproj", "{96A81330-51EA-4D8F-BCA7-B1BDD9DABAFA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeniorVlogger.SqliteMigrations", "SeniorVlogger.SqliteMigrations\SeniorVlogger.SqliteMigrations.csproj", "{EE1E6D0A-B53C-4A69-9A7D-481CBCF71BC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +39,21 @@ Global
 		{3C6741FA-C941-4877-8FD2-CE8BE5DBE230}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C6741FA-C941-4877-8FD2-CE8BE5DBE230}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C6741FA-C941-4877-8FD2-CE8BE5DBE230}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96A81330-51EA-4D8F-BCA7-B1BDD9DABAFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96A81330-51EA-4D8F-BCA7-B1BDD9DABAFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96A81330-51EA-4D8F-BCA7-B1BDD9DABAFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96A81330-51EA-4D8F-BCA7-B1BDD9DABAFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE1E6D0A-B53C-4A69-9A7D-481CBCF71BC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE1E6D0A-B53C-4A69-9A7D-481CBCF71BC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE1E6D0A-B53C-4A69-9A7D-481CBCF71BC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE1E6D0A-B53C-4A69-9A7D-481CBCF71BC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{96A81330-51EA-4D8F-BCA7-B1BDD9DABAFA} = {280A0AAC-BD23-4C1F-A755-63CACEE2BC46}
+		{EE1E6D0A-B53C-4A69-9A7D-481CBCF71BC0} = {280A0AAC-BD23-4C1F-A755-63CACEE2BC46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B438378A-34A7-45F9-9177-48584A73C285}
