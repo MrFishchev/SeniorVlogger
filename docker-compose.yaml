@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+    seniorvlogger:
+        image: seniorvlogger:prod
+        container_name: seniorvlogger
+        build:
+            dockerfile: ./SeniorVlogger.Web/Dockerfile
+            context: .
+        ports:
+            - "80:9001"
