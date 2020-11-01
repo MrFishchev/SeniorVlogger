@@ -14,6 +14,9 @@ export default {
   components: {
     Header,
     Footer
+  },
+  mounted () {
+    document.title = "SeniorVlogger - About"
   }
 }
 </script>

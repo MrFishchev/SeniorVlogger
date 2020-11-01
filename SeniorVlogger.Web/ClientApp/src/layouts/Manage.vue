@@ -51,6 +51,10 @@
 
 <script>
     export default {
+        mounted () {
+          document.title = "SeniorVlogger - Manage"
+        },
+
         computed: {
             auth() {
                 return this.$store.getters.AUTH

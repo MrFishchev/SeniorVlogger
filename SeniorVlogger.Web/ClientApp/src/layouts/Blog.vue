@@ -18,6 +18,7 @@ export default {
     Header
   },
   mounted () {
+    document.title = "SeniorVlogger - Blog"
     document.body.classList.add('light')
   },
   destroyed () {
