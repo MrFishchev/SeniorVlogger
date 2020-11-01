@@ -7,13 +7,18 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "anymatch": "^3.1.1",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
+    "braces": "^2.3.2",
     "highlight.js": "^10.1.0",
     "jquery": "^3.5.1",
+    "micromatch": "^3.1.10",
+    "node-forge": "^0.10.0",
     "popper": "^1.0.1",
     "quill-image-resize-vue": "^1.0.4",
     "secure-ls": "^1.2.6",
+    "serialize-javascript": "^5.0.1",
     "sweetalert2": "^9.15.1",
     "vue": "^2.6.11",
     "vue-good-table": "^2.19.3",
