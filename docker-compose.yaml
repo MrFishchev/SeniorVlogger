@@ -8,3 +8,6 @@ services:
             context: .
         ports:
             - "80:9001"
+        volumes:
+            - "/mnt/seniorvlogger_volume/db:/dist/db"
+            - "/mnt/seniorvlogger_volume/uploads:/dist/ClientApp/dist/uploads"
