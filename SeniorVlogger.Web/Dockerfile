@@ -24,7 +24,7 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine
 WORKDIR /app
 
 ENV ASPNETCORE_ENVIRONMENT Production
-ENV ASPNETCORE_URLS http://+:9001
+ENV ASPNETCORE_URLS https://+:9001
 EXPOSE 9001
 
 COPY --from=buildnet /dist .
