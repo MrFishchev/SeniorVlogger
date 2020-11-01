@@ -104,6 +104,34 @@ namespace SeniorVlogger.Common.Properties {
         ///        color: #000;
         ///        font-family: Helvetica, Arial, sans-serif;
         ///      }
+        ///      .center{
+        ///        text-align: center;
+        ///      }
+        ///      .mr-4 {
+        ///        margin-right: 16px [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string NewPostAvailableTemplate {
+            get {
+                return ResourceManager.GetString("NewPostAvailableTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+        ///&lt;html lang=&quot;en&quot;&gt;
+        ///  &lt;head&gt;
+        ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
+        ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+        ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;&gt;
+        ///    &lt;title&gt;Senior Vlogger&lt;/title&gt;
+        ///    &lt;style&gt;
+        ///      * {
+        ///        margin: 0;
+        ///        padding: 0;
+        ///        font-size: 16px;
+        ///        color: #000;
+        ///        font-family: Helvetica, Arial, sans-serif;
+        ///      }
         ///      .mr-4 {
         ///        margin-right: 16px;
         ///      }

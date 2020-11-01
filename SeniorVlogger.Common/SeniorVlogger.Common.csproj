@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <None Remove="Resources\FeedbackRequest.html" />
+    <None Remove="Resources\NewPostAvailable.html" />
     <None Remove="Resources\Welcome.html" />
     <None Remove="Resources\WelcomeBack.html" />
   </ItemGroup>

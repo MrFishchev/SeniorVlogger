@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Senior Vlogger</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        color: #000;
+        font-family: Helvetica, Arial, sans-serif;
+      }
+      .center{
+        text-align: center;
+      }
+      .mr-4 {
+        margin-right: 16px;
+      }
+      .pb-2 {
+        padding-bottom: 8px;
+      }
+      .pb-4 {
+        padding-bottom: 16px;
+      }
+      .pb-6 {
+        padding-bottom: 24px;
+      }
+      .pb-8 {
+        padding-bottom: 32px;
+      }
+      .pt-2 {
+        padding-top: 8px;
+      }
+      .pt-8 {
+        padding-top: 32px;
+      }
+      .fw-bold {
+        font-weight: bold;
+      }
+      p {
+        font-size: 18px;
+        line-height: 28px;
+      }
+      .wrapper {
+        width: 472px;
+        text-align: left;
+        padding: 45px 64px 32px 64px;
+        border-bottom: 1px solid #C1CFCA;
+      }
+      .header {
+        font-size: 24px;
+      }
+      a {
+        line-height: 24px;
+        color: #079af0;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1 class="header pt-2 pb-8">
+        Hello Friend,
+      </h1>
+      <p class="pb-2 center">
+        There is a new post on our blog.
+      </p>
+      <p class="pb-4 center">
+        <strong><a href="%PostUrl%">%PostTitle%</a></strong>
+      </p>
+
+      <img src="%PostImageUrl%" class="center" width="500px" height="200px"/>
+
+      <p class="pb-4">%PostDescription%</p>
+      <p class="pt-2 pb-6">
+        If you have any questions, reach out to me at <a href="mailto:support@seniorvlogger.com">support@seniorvlogger.com</a>.
+      </p>
+      <p class="small fw-bold mt-2 mb-4">
+        Mr.Fishchev
+      </p>
+      <div class="social-media">
+          <a href="https://www.linkedin.com/in/mrfishchev" class="mr-4">
+              <img width="16" height="16" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAh1BMVEUmJib///8AAAAXFxceHh4jIyMKCgqNjY3v7+9gYGD8/PzPz88bGxstLS0aGhoGBgYSEhLg4ODIyMgPDw+zs7M+Pj5LS0tDQ0PAwMBwcHAzMzP19fXr6+uWlpapqamIiIh4eHhVVVVcXFyfn5+Dg4Pa2tpqamqtra2VlZU/Pz+3t7c3NzdOTk5GcZ7bAAALd0lEQVR4nOWdaWOqOhCGSUhwZ3XBXVtrre3//303uKMkzECQcM/75Xw4VXnIMpPJZGKRyjVf9OLVcr35GE9Gs4E1mI0m44/NermKe4t59T9vVfnli95q9zeIKHV822WMc24lEv8y5tq+Q2k0+NuteosqH6IqwnZ82CYENjtTycSZnbyB7SFuV/QkVRAujpsZ9WymREuL2R6dbY5VNKZuwnnY+qGOq244SXO6Dp20Qt1DUythN55G1C5Cd6O0aTSNuzofSiOhwPP6Jeiu6nvRNNT3WLoIg5ZLdeBdIKnbCjQ9mR7C4V+5zvkq0V3/hlqeTQNhe+k4mHkTKuY4Sw0mpDRhsPF8vc13F/e9TenOWpIw2FO3IryzXLovyViKUPDpm11k6pdkLEG4eAffhbGEs1OYcN56E9+ZsVXYCyhK+O36b+NL5LvfbyX8GnlVzZ8ycW/09T7CNa3C/uWJ0fWbCEP+3g56l88L+Kt4wg19dwe9i9NN5YRfg7oa8Cx/gB2NSMJljQ14FqfLCgnbY6dmvkTOGOWPYwh7qNBLdWJ2rxrCz9p76FWcflZA2O3QusEeRDtgLw5KOB/ZdVOlZI+gMTkg4ZdrxhC8i7lAswEjDI0ZgndxCnNwQITfBgImiKDlBoRwZdIc8yi60kP4aSqgQARYjXzCpbmAAjHfhcslNBoQgphHaHAXPSu3o+YQfpsOKBBzZlQ14dF8QIF4LE7YawKgQFQuNVSEgZGG/lXcUwXFFYRz3gzAJLlD4YbLCbsT05xtudhEvpiSE3bMWi6pZXfwhMYbwrTkZlFGGDYLUCDK1lISwrbmbfnqxW1JBE5C2KBZ5io2wRC2TIiLYuW04IQN8WWele3bZBF2Ldgg5G5EhRxTxiy3sqxiFuEUZAkZZZthLwh6x8OEmmE77aydqQxCkKHg9ONheg52zvs29RXKMhkZhJDUSXvw1OfbRoTEOYMQ7gAbhFkblUMTViL+Lp/wC9AW2RvqRrhB9CUS/kL4m98SGS/KGET+m0f47eV+icx5EI5C9AaGHHnPYZsnwm4/vwmpfEUN6ABVi/efjOIT4Tp/mnEV6RCxAf3Uf3Le0oQLyDSjCooY0IgWTaf5pQn3+XabbRWA5LPeXJST3L2cMAA0oa+MMUO+oXKle1mKENCEGQYnJROWXf1UIz4SghrAUSezTAwYiOlGfCTsQLxnX50hsDchONB/jLw9EMLGkK0m3FSb2A7UYyNa2IeL1L3UiDZM2ew7YTvfX0ukNIdmGEQh794Od8IDzJQ5sQqwC3tNlcu/bw3fCYGWzFamIpsSw+LOK+EQaMn4QEW4NiNgI7ra7VjYjXAMnSJUqUjdnFO/7xMbPxPC3S32JydcGbBAvOg2I14JEd2LSs8Ftg0ZhYlu88WVEBPVpTKTuDXCGJ7F7TRhjJnl2W/2juvOnD4qROMU4RQV0O1npq/uDLGFF/Wnj4Rd5Ntn1ssaav5hwsLpUVH3gRDVSRNxuk4Pxm8zwvqP8uIHQlwnPcn2drd2XHwOHFMM4V2XbmoV6aRn2dTurD8/W9MBreyscyn53Rth0WA1Z7bv24AQaz06e18nQmO8Sb06G/0T4cjUVignProSQuLAjdQpNpwQDo3yRTQqGl4IC9iKZuhkLxLC2f9zGIqBODsTmjMM+UXavjAZiIIwNsGh5P2IUjb7nYx+B30vKRKmgzMJmwnCFtYacqnAf/r0Vz61p9+99mXFMp8vesP1hHqFCmo9ym6dCP+Q61bdo5bR32VmEDbc2CXd3STiYoHDiDdFC9LNFumkX5Z4hZI/DG8jg9GOPNW+exyVy2GhCSF6y0+x+/RKKFF4Xa7Rbc5ByfCnzDQhphrr/mM1EDIPUO2qzAlrLxSE6I1pfYT+BFRZJxgU3tDyPwUh2qPRRgguctHdFl38CK/GImNsH9BFSKX/+6qiiHwsCAc1EeLqW/wUC8XyAbHm6BigHkIfV4el6OEBb27h80O0EFJpcpz0E4UIaWChjYUmQnR9smmhCdULrSN6+auDMEYWmRFqF7L80dFaofO0dBAGBSrNolcIifyVdUB/TgdhEXWLjET7YO3Q3bsuQrIr0Iju2tqgDU1thJAU9GexjbVF25naCIvEdfmHhXbaaiRc4rspH1v4ZML6CAt0Uz6x8C1fHyHBh675yJqhP1QjYYG8wJk1MIGwHQRtSPEuvHtSgE87YbgbO8kxRvo7PeZRFkqbq7kNP216reTH+06UUxapQErSoN5xGMzSAVFOt+oP4IO1Mwuf8qqPMKNImj1WfgKcX3iVmEtrtIdfWWHCSLn2R6eRC3tYn08jOUWmrDaD9mqET1OfX9rKnvqVx46+sTafb+tbW0jnRVWuPHonUKwtalsfSmPtviLCgTaIYn1Y2xpfOolzRRgO7XuLNT7+PJ0eQsXeeiQP4qBjn/6qplibMsVFcTwO7dREx5ripYQoxr8jL8A2xxJ6YU0xb6V3ojrEiX1aGtS0b6H0MF3Jef8ihN68pr0n0lYM/2uGdpaQ7ZHsPdWzf6hMU2J76ccI0nqf9g9r2QNWGjb2ISdEHjs67QHXso+vdE5U546QhKd9/FpyMZS/yhRrRCThKRejlnwaJSHXRyi8+AI5UZX3Uv6jj7BQXlv1hIpDnDjCS14bduexQYSX3ETsqrJBhJf8UmyOcIMILznCWL+tOYTXPG+sV9McwluuPvK8RXMIb+ctkAOxOYS3MzPI/fHGEN7PPSHPrjWG8PzzBc4fNobw4fwh7gxpYwgfzpDi7EVTCB/PAePOcjeFMHWWG9VNm0KYOo+P6qYNIUzXVEB104YQPtXFwNQ2aQbhc20TjNFvBuFLfRpEPKoZhC81hhB5HI0gfK0TBa711RDCjFpfJIK2fxMIs+q1kSU0ut8Ewsyae8C6ic0gfCjWha592QjC7NqXYIPRAEJJ/VJYDdomEMpq0EIb0XxCaR1hUC3oBhDKa0EDG9F4QkU9b1gjmk6oqskOiw2bTqisqy/Lam0SofpuBND9FmYT5t1vAbmjxGzCvDtKIAW5jSbMv2cGkIVrNCHgrqD8+55MJoTc95T/mgwmhN3ZlbsTpbg7AEGoyolSEKpLnQHvXcu9O8+1ZXr+eZvKpJyyufQH1GFdOysxtcz9h6YJfv+hMfX/kYLfYfkP3EP6D9wl+w/cB2zETX8oSY8t/rv3cv8Dd6uTboNmGzaRn+SXE5K5MVeq5IkzRVEmBSEJTLgdFiCuvINKRdiUCVV1t08OIRk2AVF+7w2AkKzMR6TPgRkcoflmUW4IgYRkaTZifgXNXEKzEQElQvMJTe6ouV0URki+TUXMm2TAhORopOnnVH6qHUtIegYick9V5gVLSIK+aW44Y+rrQrGEZD4yazFl/0AroEIJSbdj0nxDO5DybjjCxDCaMhg5plI2gpCEvhmDkfnKxUQJQtKemBBHdSbqS5fLEBJyqL2ncnrAPTKSkPQG+OKMOuUPYFawOCEhmxqbkYOvUyhDSEJeVzP6FmaKKU5IyJrWMakyqrwwWyshCX7e3lU5nQDdNC2EhAzZe7uqzwA30mglJN0Wfd+FdH3aAntp2ggJWezfxNine/RdEVoIxXDcv2HKEXzFBqAOQsHYqbgd+7RTiq80oWCc0urmHN+bluTTQCj88YPjVNFZmeMcUD52ZYRCwz+qeeOf2/SvqH1ISw+h6KwtW+OI7FO7Vbp7XqSLUCjeO54OyL7n7GN9j6WRUHgB8TQq111F54ymcWHrniWthELdcD2iUaGrupOrSEfrUCse0U+YaDGczqhnY+ZXZnt0Nh2WcF2kqoIw0SJubR1KfTfn7lvOXZ9SZ9uKq6BLVBXhSYtwtRlbDvUc33YZu94hK/5lzLV9x6OONd6swqrgTqqU8Kx50ItXy/XmYzwZzQbWYDaajD826+Uq7hW5ugur/wAUQ8OCaFOS8QAAAABJRU5ErkJggg==" />
+          </a>
+          <a href="https://github.com/mrfishchev" class="mr-4">
+              <img width="16" height="16" src="https://cdn2.iconfinder.com/data/icons/font-awesome/1792/github-square-512.png"/>
+          </a>
+          <a href="https://instagram.com/mrfishchev">
+              <img width="16" height="16" src="https://superpeer.dev/emails/instagram.png" />
+          </a>
+      </div>
+      <span style="font-size:10px;color:#ababab;">You can unsubscribe from the news by the <a style ="font-size:10px;" href="https://seniorvlogger.com/unsubscribe/%UserId%">link.</a> I will miss you!</span>
+    </div>
+  </body>
+</html>

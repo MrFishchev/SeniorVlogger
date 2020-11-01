@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SeniorVlogger.Common.Email.IEmail;
 using SeniorVlogger.DataAccess.Repository.IRepository;
 using SeniorVlogger.Models.ViewModels;
 using SeniorVlogger.Web.Extensions;
@@ -24,16 +25,19 @@ namespace SeniorVlogger.Web.Controllers
         private readonly ILogger<BlogController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UploadsService _uploadsService;
+        private readonly IEmailService _emailService;
 
         #endregion
 
         #region Constructor
 
-        public BlogController(IUnitOfWork unitOfWork, UploadsService uploadsService, ILogger<BlogController> logger)
+        public BlogController(IUnitOfWork unitOfWork, UploadsService uploadsService, 
+            IEmailService emailService, ILogger<BlogController> logger)
         {
             _unitOfWork = unitOfWork;
             _uploadsService = uploadsService;
             _logger = logger;
+            _emailService = emailService;
         }
 
         #endregion
@@ -44,7 +48,8 @@ namespace SeniorVlogger.Web.Controllers
         [AllowAnonymous]
         public async Task<IEnumerable<BlogPostViewModel>> GetAll()
         {
-            var posts = await _unitOfWork.BlogPosts.GetAll(includeProperties: "Category,Author");
+            var posts = await _unitOfWork.BlogPosts.GetAll(p => !p.Scratch,
+                includeProperties: "Category,Author");
             return posts?.Select(i => i.ToViewModel());
         }
 
@@ -103,6 +108,9 @@ namespace SeniorVlogger.Web.Controllers
 
                 await _unitOfWork.BlogPosts.Add(objDb);
                 await _unitOfWork.Save();
+
+                if (post.Mailed && !post.Scratch)
+                    await SendNotificationForSubscribers(post);
             }
             catch (Exception e)
             {
@@ -144,6 +152,23 @@ namespace SeniorVlogger.Web.Controllers
             await _unitOfWork.Save();
 
             return Ok();
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private async Task SendNotificationForSubscribers(BlogPostViewModel post)
+        {
+            var subscribers = await _unitOfWork.Subscriptions
+                .GetAll(s => s.IsSubscribed);
+
+            foreach (var email in subscribers.Select(s => s.Email))
+            {
+                _emailService.SendNewPostAvailableAsync(email,
+                    $"https://seniorvlogger.com/blog/{post.Slug}",
+                    post.Title, post.Description, $"https://seniorvlogger.com/{post.ImageUrl}");
+            }
         }
 
         #endregion

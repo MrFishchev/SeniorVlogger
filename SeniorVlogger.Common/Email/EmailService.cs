@@ -23,6 +23,16 @@ namespace SeniorVlogger.Common.Email
             return Execute(subject, htmlMessage, email);
         }
 
+        public Task SendNewPostAvailableAsync(string email, string url, string title, string description, string imageUrl)
+        {
+            var htmlMessage = Resources.NewPostAvailableTemplate;
+            htmlMessage = htmlMessage.Replace("%PostTitle%", title);
+            htmlMessage = htmlMessage.Replace("%PostDescription%", description);
+            htmlMessage = htmlMessage.Replace("%PostUrl%", url);
+            htmlMessage = htmlMessage.Replace("%PostImageUrl%", imageUrl);
+            return Execute($"Read new: {title}", htmlMessage, email);
+        }
+
         public Task SendWelcomeAsync(string email)
         {
             return Execute("Thank you for subscribing!",
