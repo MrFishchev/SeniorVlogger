@@ -214,34 +214,6 @@ namespace SeniorVlogger.SqliteMigrations.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogFileDto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Encoding")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("Filename")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("MimeType")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BlogFiles");
-                });
-
             modelBuilder.Entity("SeniorVlogger.Models.DTO.BlogPostDto", b =>
                 {
                     b.Property<int>("Id")

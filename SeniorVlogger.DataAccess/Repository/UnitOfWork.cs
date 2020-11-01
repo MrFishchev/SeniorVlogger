@@ -10,7 +10,6 @@ namespace SeniorVlogger.DataAccess.Repository
 
         public IApplicationUserRepository ApplicationUsers { get; }
         public IBlogPostRepository BlogPosts { get; }
-        public IBlogFileRepository BlogFiles { get; }
         public ICategoryRepository Categories { get; }
         public ISubscriptionRepository Subscriptions { get; }
 
@@ -19,7 +18,6 @@ namespace SeniorVlogger.DataAccess.Repository
             _db = db;
             ApplicationUsers = new ApplicationUserRepository(db);
             BlogPosts = new BlogPostRepository(db);
-            BlogFiles = new BlogFileRepository(db);
             Categories = new CategoryRepository(db);
             Subscriptions = new SubscriptionRepository(db);
         }

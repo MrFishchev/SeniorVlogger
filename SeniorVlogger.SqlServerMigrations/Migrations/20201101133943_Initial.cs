@@ -48,22 +48,6 @@ namespace SeniorVlogger.SqlServerMigrations.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BlogFiles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Filename = table.Column<string>(maxLength: 100, nullable: false),
-                    MimeType = table.Column<string>(maxLength: 30, nullable: true),
-                    Encoding = table.Column<string>(maxLength: 30, nullable: true),
-                    Url = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BlogFiles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -323,9 +307,6 @@ namespace SeniorVlogger.SqlServerMigrations.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "BlogFiles");
 
             migrationBuilder.DropTable(
                 name: "BlogPosts");
