@@ -7,7 +7,11 @@ services:
             dockerfile: ./SeniorVlogger.Web/Dockerfile
             context: .
         ports:
-            - "80:9001"
+            - "8080:9001"
         volumes:
-            - "/mnt/seniorvlogger_volume/db:/dist/db"
+            - "/mnt/seniorvlogger_volume/db:/db"
             - "/mnt/seniorvlogger_volume/uploads:/dist/ClientApp/dist/uploads"
+            - "/home/username/cert:/certs"
+        environment:
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Nhf61Hfmeu!dTe64
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/certs/certificate.pfx
