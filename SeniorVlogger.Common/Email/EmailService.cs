@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -82,7 +83,7 @@ namespace SeniorVlogger.Common.Email
         {
             using var client = new SmtpClient();
             await client.ConnectAsync(_emailSettings.SmtpServer,
-                _emailSettings.SmtpPort, true);
+                _emailSettings.SmtpPort, SecureSocketOptions.StartTls);
 
             await client.AuthenticateAsync(_emailSettings.SmtpUser, _emailSettings.SmtpPassword);
             await client.SendAsync(message);
