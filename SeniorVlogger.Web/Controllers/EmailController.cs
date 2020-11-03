@@ -25,7 +25,7 @@ namespace SeniorVlogger.Web.Controllers
         {
             if (request == null) return BadRequest();
 
-            await _emailService.SendFeedbackAsync(_emailSettings.FeedbackEmail, 
+            await _emailService.SendFeedbackAsync(_emailSettings.EmailFrom, 
                 request.Subject, request.Message);
 
             return Ok();
