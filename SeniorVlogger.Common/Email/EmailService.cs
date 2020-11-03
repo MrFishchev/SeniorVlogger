@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RestSharp;
-using RestSharp.Authenticators;
+using MimeKit;
 using SeniorVlogger.Common.Email.IEmail;
 using SeniorVlogger.Common.Helpers;
 using SeniorVlogger.Common.Properties;
@@ -12,10 +14,12 @@ namespace SeniorVlogger.Common.Email
     public class EmailService : IEmailService
     {
         private readonly EmailSettings _emailSettings;
+        private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IOptions<EmailSettings> options)
+        public EmailService(IOptions<EmailSettings> options, ILogger<EmailService> logger)
         {
             _emailSettings = options.Value;
+            _logger = logger;
         }
 
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
@@ -54,25 +58,36 @@ namespace SeniorVlogger.Common.Email
             return Execute(subject, htmlMessage, email);
         }
 
-        private Task Execute(string subject, string htmlMessage, string email)
+        private async Task Execute(string subject, string htmlMessage, string email)
         {
-            htmlMessage = htmlMessage.Replace("%UserId%", Base64Helper.Base64Encode(email));
-
-            var client = new RestClient
+            try
             {
-                BaseUrl = new Uri("https://api.mailgun.net/v3"),
-                Authenticator = new HttpBasicAuthenticator("api", _emailSettings.EmailApiKey)
-            };
+                htmlMessage = htmlMessage.Replace("%UserId%", Base64Helper.Base64Encode(email));
 
-            var request = new RestRequest();
-            request.AddParameter("domain", _emailSettings.EmailDomain, ParameterType.UrlSegment);
-            request.Resource = "{domain}/messages";
-            request.AddParameter("from", $"Senior Vlogger <{_emailSettings.EmailFrom}>");
-            request.AddParameter("to", email);
-            request.AddParameter("subject", subject);
-            request.AddParameter("html", htmlMessage);
-            request.Method = Method.POST;
-            return client.ExecuteAsync(request);
+                var bodyBuilder = new BodyBuilder {HtmlBody = htmlMessage};
+                var mailMessage = new MimeMessage();
+                mailMessage.From.Add(MailboxAddress.Parse(_emailSettings.EmailFrom));
+                mailMessage.To.Add(MailboxAddress.Parse(email));
+                mailMessage.Subject = subject;
+                mailMessage.Body = bodyBuilder.ToMessageBody();
+
+                await SendMessage(mailMessage);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Cannot send email to {email}");
+            }
+        }
+
+        private async Task SendMessage(MimeMessage message)
+        {
+            using var client = new SmtpClient();
+            await client.ConnectAsync(_emailSettings.SmtpServer,
+                _emailSettings.SmtpPort, SecureSocketOptions.StartTls);
+
+            await client.AuthenticateAsync(_emailSettings.SmtpUser, _emailSettings.SmtpPassword);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
         }
     }
 }

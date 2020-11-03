@@ -58,7 +58,7 @@ namespace SeniorVlogger.Web
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddSingleton<IEmailService, EmailService>();
-            services.Configure<EmailSettings>(Configuration.GetSection("MailGun"));
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             services.AddSingleton<UploadsService>();
             services.AddSingleton<JwtService>();
