@@ -13,5 +13,5 @@ services:
             - "/mnt/seniorvlogger_volume/uploads:/dist/ClientApp/dist/uploads"
             - "/home/username/cert:/certs"
         environment:
-            - ASPNETCORE_Kestrel__Certificates__Default__Password=Nhf61Hfmeu!dTe64
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=YOUR_PASSWORD
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/certs/certificate.pfx
