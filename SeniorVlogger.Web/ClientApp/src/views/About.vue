@@ -45,62 +45,62 @@
               <div class="bar">
                 <div
                   class="fill"
-                  style="width:95%">
-                  <div class="tag"><span>HTML</span></div>
-                </div>
-                <span>95%</span>
-              </div>
-              <div class="bar">
-                <div
-                  class="fill"
-                  style="width:95%">
-                  <div class="tag"><span>CSS</span></div>
-                </div>
-                <span>95%</span>
-              </div>
-              <div class="bar">
-                <div
-                  class="fill"
-                  style="width:85%">
-                  <div class="tag"><span>JavaScript</span></div>
-                </div>
-                <span>85%</span>
-              </div>
-              <div class="bar">
-                <div
-                  class="fill"
                   style="width:75%">
-                  <div class="tag"><span>Vue.js</span></div>
+                  <div class="tag"><span>JavaScript</span></div>
                 </div>
                 <span>75%</span>
               </div>
               <div class="bar">
                 <div
                   class="fill"
-                  style="width:65%">
-                  <div class="tag"><span>Angular</span></div>
+                  style="width:85%">
+                  <div class="tag"><span>Vue.js</span></div>
                 </div>
-                <span>65%</span>
+                <span>85%</span>
               </div>
               <div class="bar">
                 <div
                   class="fill"
-                  style="width:55%">
-                  <div class="tag"><span>C / C++</span></div>
+                  style="width:100%">
+                  <div class="tag"><span>HTML</span></div>
                 </div>
-                <span>55%</span>
+                <span>100%</span>
+              </div>
+              <div class="bar">
+                <div
+                  class="fill"
+                  style="width:97%">
+                  <div class="tag"><span>CSS</span></div>
+                </div>
+                <span>97%</span>
+              </div>
+              <div class="bar">
+                <div
+                  class="fill"
+                  style="width:83%">
+                  <div class="tag"><span>Docker</span></div>
+                </div>
+                <span>83%</span>
+              </div>
+              <div class="bar">
+                <div
+                  class="fill"
+                  style="width:70%">
+                  <div class="tag"><span>Architecture</span></div>
+                </div>
+                <span>70%</span>
               </div>
             </div>
 
             <div class="additional appers-fadein">
               <p>
-                <span>.NET</span> WPF, MVVM, Caliburn, EnityFramework, NHibernate, Autofac, MediatR, SignalR, Quartz, MS SQL
+                <span>Backend</span> ASP.NET Core API, EntityFramework, Multitenancy, Microservices, Docker, Autofac, Quartz, IdentityServer, MSSQL, MongoDB, Redis, RabbitMQ, SOLID
               </p>
               <p>
-                <span>Web</span> Angular, Vue.js, Nuxt.js MEAN, MEVN, MongoDB, Apollo, GraphQL, PWA, Webpack, Cordova
+                <span>Frontend</span> Vue.js, Blazor, Nuxt.js, Bootstrap, CSS Grid, PWA
               </p>
               <p>
-                <span>Embedded</span> OpenWRT, Uboot, drivers
+                <span>DevOps</span> Docker, Kubernetes, Lua, Prometheus, Grafana
               </p>
             </div>
           </div>
@@ -129,12 +129,11 @@
             <div class="img"/>
             <div class="title">
               Aleksey Fishchev<br>
-              <span>(Sergeevich)</span>
             </div>
             <div class="desc">
-              I'm a <strong>Fullstack .NET Developer</strong>. I was born in Russia but live in Minsk.
-              I would like to move to Germany. Let's make the world a better place.
-              If you want know more about me or <strong>.NET</strong>, then go to my <router-link to="/blog">blog</router-link>.
+              Hi Friend! I'm a <strong>Senior .NET Developer</strong> I love backend and perfomance tricks.
+              Now I'm on my way to becoming a Software Architect. Let's make the World a better place.
+              If you want to know about me or <strong>.NET</strong>, then go to my <router-link to="/blog">blog</router-link>.
             </div>
           </div>
 
