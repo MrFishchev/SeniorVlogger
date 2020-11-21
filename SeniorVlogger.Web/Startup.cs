@@ -30,30 +30,22 @@ namespace SeniorVlogger.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFrameworkSqlite().AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlite(Configuration.GetConnectionString("SqliteConnection"),
                 sqliteOptions => sqliteOptions.MigrationsAssembly("SeniorVlogger.SqliteMigrations"));
             });
 
-            //services.AddEntityFrameworkSqlServer().AddDbContext<ApplicationDbContext>(options =>
+            //services.AddDbContext<ApplicationDbContext>(options =>
             //{
-            //    options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"),
+            //    options.UseSqlServer(Configuration.Get ConnectionString("SqlServerConnection"),
             //        sqlServerOptions => sqlServerOptions.MigrationsAssembly("SeniorVlogger.SqlServerMigrations"));
             //});
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
-
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredUniqueChars = 1;
-                options.Password.RequiredLength = 3;
-                options.SignIn.RequireConfirmedAccount = false;
-                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedEmail = true;
                 options.User.RequireUniqueEmail = true;
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
 
