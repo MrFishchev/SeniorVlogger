@@ -48,9 +48,25 @@ namespace SeniorVlogger.Web.Controllers
         [AllowAnonymous]
         public async Task<IEnumerable<BlogPostViewModel>> GetAll()
         {
-            var posts = await _unitOfWork.BlogPosts.GetAll(p => !p.Scratch,
-                includeProperties: "Category,Author");
-            return posts?.Select(i => i.ToViewModel());
+            var posts = new List<BlogPostViewModel>();
+
+            var email = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _unitOfWork.ApplicationUsers
+                .GetFirstOrDefault(u => u.Email == email);
+
+            if (user != null)
+            {
+                posts = (await _unitOfWork.BlogPosts.GetAll(includeProperties: "Category,Author"))
+                    ?.Select(p => p.ToViewModel()).ToList();
+            }
+            else
+            {
+                posts = (await _unitOfWork.BlogPosts.GetAll(p => !p.Scratch,
+                        includeProperties: "Category,Author"))
+                    ?.Select(p => p.ToViewModel()).ToList();
+            }
+
+            return posts;
         }
 
         [HttpGet("slug/{slug}")]
@@ -126,11 +142,17 @@ namespace SeniorVlogger.Web.Controllers
         {
             try
             {
+                var oldPost = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Id == post.Id);
+                if (oldPost == null) return NotFound();
+
                 var objDb = post.ToDto();
                 objDb.Slug = post.Title.GenerateSlug();
 
                 await _unitOfWork.BlogPosts.Update(objDb);
                 await _unitOfWork.Save();
+
+                if(oldPost.Scratch && !post.Scratch)
+                    await SendNotificationForSubscribers(post);
             }
             catch (Exception e)
             {
