@@ -40,6 +40,7 @@
 
 <script>
 import 'highlight.js/scss/rainbow.scss'
+import hljs from 'highlight.js'
 const jQuery = require('jquery/dist/jquery.min.js')
 
 export default {
@@ -115,12 +116,9 @@ export default {
     },
 
     updated() {
-        let pre = jQuery('pre.ql-syntax')
-        if(pre){
-            pre.each(function () {
-                jQuery(this).wrapInner("<code class='hljs'></code>")
-            })
-        }
+        document.querySelectorAll('.ql-syntax').forEach((block) => {
+            hljs.highlightBlock(block);
+        }); 
 
         let blogLink = jQuery('#header a').eq(1)
         blogLink.addClass("exact-active-route")
@@ -182,7 +180,7 @@ export default {
             max-width: 700px
             max-height: 400px
             border-radius: 5px
-        code
+        pre.ql-syntax
             padding: 20px
             max-height: 850px
             overflow: auto
