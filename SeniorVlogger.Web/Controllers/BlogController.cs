@@ -134,7 +134,7 @@ namespace SeniorVlogger.Web.Controllers
                 if (oldPost == null) return NotFound();
 
                 //TODO update publish date or no?
-                post.PublishDate = DateTime.Now;
+                post.PublishDate = DateTime.Now.ToString();
                 var objDb = post.ToDto();
                 objDb.Slug = post.Title.GenerateSlug();
 
