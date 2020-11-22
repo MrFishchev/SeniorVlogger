@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +15,7 @@ namespace SeniorVlogger.Web.Services
 
         public UploadsService(IWebHostEnvironment hostEnvironment, ILogger<UploadsService> logger)
         {
-            _hostEnvironment = hostEnvironment;
+            _hostEnvironment = hostEnvironment; 
             _logger = logger;
         }
 
@@ -27,6 +25,8 @@ namespace SeniorVlogger.Web.Services
             {
                 var name = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                 var path = Path.Combine(_hostEnvironment.WebRootPath, Uploads);
+
+                _logger.LogInformation($"Saving image to {path}");
 
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);

@@ -10,7 +10,7 @@ services:
             - "8080:9001"
         volumes:
             - "/mnt/seniorvlogger_volume/db:/db"
-            - "/mnt/seniorvlogger_volume/uploads:/dist/ClientApp/dist/uploads"
+            - "/mnt/seniorvlogger_volume/uploads:/app/ClientApp/dist/uploads"
             - "/home/username/cert:/certs"
         environment:
             - ASPNETCORE_Kestrel__Certificates__Default__Password=YOUR_PASSWORD

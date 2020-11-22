@@ -7,7 +7,7 @@
 
         <hr />
         <div class="like slide-in-left">
-            <h3 class="date" v-if="data.author" ><i>By {{ data.author.name}} on <span>{{ data.publishDate }}</span></i></h3>
+            <h3 class="date"><i>{{ data.publishDate }}</i></h3>
             <div style="width:100px" v-if="!edit"
                 class="fb-like"
                 :data-href="postUrl"
@@ -23,8 +23,8 @@
         <div id="content" class="appers-fadein" v-if="data.content" v-html="data.content" />
 
         <div class="additional-posts">
-            <span v-if="data.next">Next:<router-link :to="'/blog/' + data.next.slug">{{data.next.title}}</router-link></span>
-            <span v-if="data.previous">Previous:<router-link :to="'/blog/' + data.previous.slug">{{data.previous.title}}</router-link></span>
+            <span v-if="data.next && data.next.slug">Next:<router-link :to="'/blog/' + data.next.slug">{{data.next.title}}</router-link></span>
+            <span v-if="data.previous && data.previous.slug">Previous:<router-link :to="'/blog/' + data.previous.slug">{{data.previous.title}}</router-link></span>
         </div>
         
         <div class="tags">
@@ -136,8 +136,8 @@ export default {
         div
             width: 100%
             img
-                max-width: 100%
                 height: auto
+                cursor: default!important
         hr
             height: 1px
             width: 100%
