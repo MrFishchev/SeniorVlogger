@@ -133,6 +133,8 @@ namespace SeniorVlogger.Web.Controllers
                 var oldPost = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Id == post.Id);
                 if (oldPost == null) return NotFound();
 
+                //TODO update publish date or no?
+                post.PublishDate = DateTime.Now;
                 var objDb = post.ToDto();
                 objDb.Slug = post.Title.GenerateSlug();
 
