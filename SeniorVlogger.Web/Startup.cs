@@ -1,8 +1,8 @@
 using System.IO;
-using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SpaServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,12 +36,6 @@ namespace SeniorVlogger.Web
                 sqliteOptions => sqliteOptions.MigrationsAssembly("SeniorVlogger.SqliteMigrations"));
             });
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //{
-            //    options.UseSqlServer(Configuration.Get ConnectionString("SqlServerConnection"),
-            //        sqlServerOptions => sqlServerOptions.MigrationsAssembly("SeniorVlogger.SqlServerMigrations"));
-            //});
-
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
@@ -59,53 +53,41 @@ namespace SeniorVlogger.Web
             services.AddControllers();
             services.AddTokenAuthentication(Configuration);
 
-            var env = (IHostEnvironment)services.First(d =>
-               d.ServiceType == typeof(IHostEnvironment))?.ImplementationInstance;
-
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = env.IsDevelopment() ? "ClientApp" : "ClientApp/dist";
-            });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
 
-            if (string.IsNullOrWhiteSpace(env.WebRootPath))
-            {
-                env.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(),
-                    (env.IsDevelopment()) ? "ClientApp" : "ClientApp/dist");
-            }
+            env.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp/dist");
+            app.UseSpaStaticFiles();
 
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseSpaStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                endpoints.MapToVueCliProxy(
+                    "{*path}",
+                    new SpaOptions {SourcePath = "ClientApp"},
+                    npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
+                    regex: "Compilled successfully",
+                    forceKill: true,
+                    wsl: true);
             });
 
-            app.UseSpa(spa =>
-            {
-                if (env.IsDevelopment())
-                {
-                    spa.Options.SourcePath = "ClientApp";
-                    spa.UseVueCli("serve");
-                }
-                else
-                {
-                    spa.Options.SourcePath = "ClientApp/dist";
-                }
-            });
+
+
         }
     }
 }
