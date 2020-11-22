@@ -82,9 +82,14 @@ export default {
     },
 
     methods: {
-        async LoadData() {
-            let response = await this.$api.get(`/api/blog/slug/${this.$route.params.slug}`)
-            this.data = response.data
+        LoadData() {
+            this.$api.get(`/api/blog/slug/${this.$route.params.slug}`)
+                .then(response => {
+                    this.data = response.data
+                })
+                .catch(error => {
+                    this.$router.push('/404')
+                })
         }
     },
 

@@ -57,10 +57,12 @@ namespace SeniorVlogger.Web.Controllers
 
         [HttpGet("slug/{slug}")]
         [AllowAnonymous]
-        public async Task<BlogPostViewModel> GetBySlug(string slug)
+        public async Task<IActionResult> GetBySlug(string slug)
         {
             var post = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Slug == slug, includeProperties: "Category,Author,Next,Previous");
-            return await GetPostsWithScratchIfUserValid(post);
+            var result = await GetPostsWithScratchIfUserValid(post);
+            if (result == null) return NotFound();
+            return Ok(result);
         }
 
         [HttpGet("category/{id}")]
@@ -197,9 +199,9 @@ namespace SeniorVlogger.Web.Controllers
             (IEnumerable<BlogPostDto> posts)
         {
             if (await ValidateUser())
-                return posts.Select(p => p.ToViewModel());
+                return posts?.Select(p => p.ToViewModel());
 
-            return posts.Where(p => !p.Scratch).Select(p => p.ToViewModel());
+            return posts?.Where(p => !p.Scratch)?.Select(p => p.ToViewModel());
         }
 
         #endregion
