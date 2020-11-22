@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SeniorVlogger.Common.Email.IEmail;
 using SeniorVlogger.DataAccess.Repository.IRepository;
+using SeniorVlogger.Models.DTO;
 using SeniorVlogger.Models.ViewModels;
 using SeniorVlogger.Web.Extensions;
 using SeniorVlogger.Web.Services;
@@ -48,25 +49,10 @@ namespace SeniorVlogger.Web.Controllers
         [AllowAnonymous]
         public async Task<IEnumerable<BlogPostViewModel>> GetAll()
         {
-            var posts = new List<BlogPostViewModel>();
+            var validUser = await ValidateUser();
+            var posts = await _unitOfWork.BlogPosts.GetAll(includeProperties: "Category,Author");
 
-            var email = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _unitOfWork.ApplicationUsers
-                .GetFirstOrDefault(u => u.Email == email);
-
-            if (user != null)
-            {
-                posts = (await _unitOfWork.BlogPosts.GetAll(includeProperties: "Category,Author"))
-                    ?.Select(p => p.ToViewModel()).ToList();
-            }
-            else
-            {
-                posts = (await _unitOfWork.BlogPosts.GetAll(p => !p.Scratch,
-                        includeProperties: "Category,Author"))
-                    ?.Select(p => p.ToViewModel()).ToList();
-            }
-
-            return posts;
+            return await GetPostsWithScratchIfUserValid(posts);
         }
 
         [HttpGet("slug/{slug}")]
@@ -74,7 +60,7 @@ namespace SeniorVlogger.Web.Controllers
         public async Task<BlogPostViewModel> GetBySlug(string slug)
         {
             var post = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Slug == slug, includeProperties: "Category,Author,Next,Previous");
-            return post?.ToViewModel();
+            return await GetPostsWithScratchIfUserValid(post);
         }
 
         [HttpGet("category/{id}")]
@@ -82,7 +68,7 @@ namespace SeniorVlogger.Web.Controllers
         public async Task<IEnumerable<BlogPostViewModel>> GetByCategory(int id)
         {
             var posts = await _unitOfWork.BlogPosts.GetAll(p => p.Category.Id == id, includeProperties: "Category,Author");
-            return posts?.Select(i => i.ToViewModel());
+            return await GetPostsWithScratchIfUserValid(posts);
         }
 
         [HttpGet("tag/{tag}")]
@@ -90,7 +76,7 @@ namespace SeniorVlogger.Web.Controllers
         public async Task<IEnumerable<BlogPostViewModel>> GetByTag(string tag)
         {
             var posts = await _unitOfWork.BlogPosts.GetAll(p => p.Tags.Contains(tag), includeProperties: "Category,Author");
-            return posts?.Select(i => i.ToViewModel());
+            return await GetPostsWithScratchIfUserValid(posts);
         }
 
         [HttpGet("short")]
@@ -191,6 +177,29 @@ namespace SeniorVlogger.Web.Controllers
                     $"https://seniorvlogger.com/blog/{post.Slug}",
                     post.Title, post.Description, $"https://seniorvlogger.com/{post.ImageUrl}");
             }
+        }
+
+        private async Task<bool> ValidateUser()
+        {
+            var email = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _unitOfWork.ApplicationUsers
+                .GetFirstOrDefault(u => u.Email == email);
+            return user != null;
+        }
+
+        private async Task<BlogPostViewModel> GetPostsWithScratchIfUserValid(BlogPostDto post)
+        {
+            var result = await GetPostsWithScratchIfUserValid(new[] {post});
+            return result.FirstOrDefault();
+        }
+
+        private async Task<IEnumerable<BlogPostViewModel>> GetPostsWithScratchIfUserValid
+            (IEnumerable<BlogPostDto> posts)
+        {
+            if (await ValidateUser())
+                return posts.Select(p => p.ToViewModel());
+
+            return posts.Where(p => !p.Scratch).Select(p => p.ToViewModel());
         }
 
         #endregion
