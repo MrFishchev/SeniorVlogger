@@ -58,3 +58,10 @@ export default {
    
 }
 </script>
+
+<style lang="sass">
+.quill-editor
+    .ql-container
+        overflow-y: scroll
+        max-height: 800px
+</style>
