@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import 'highlight.js/scss/rainbow.scss'
 import hljs from 'highlight.js'
 import { quillEditor } from 'vue-quill-editor'
 import Quill from 'quill'
