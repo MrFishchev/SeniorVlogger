@@ -6,7 +6,7 @@
                 <span v-else>Show preview</span>
             </button>
         </div>
-        <blog-post v-show="preview" :editData="data" :edit="true" />
+        <blog-post v-if="preview" :editData="data" :edit="true" />
 
         <div class="post" v-show="!preview">
             <form class="form" @submit.prevent="publish" enctype="multipart/form-data">
