@@ -171,12 +171,6 @@ export default {
     },
 
     computed: {
-        data () {
-            this.post.content = this.editor.content
-            return {
-                ...this.post
-            }
-        },
 
         FreeNextPosts() {
             let result = this.posts.filter(p=> p.id !== this.post.previous.id)
@@ -281,6 +275,7 @@ export default {
             let response = await this.uploadImage()
             this.post.imageUrl = response.data
             this.post.tags = this.tagValues.map(i => { return i.name })
+            this.post.content = this.editor.content
 
             this.$api.post('/api/blog', this.post)
                 .then(res => this.$router.push({ path: '/manage/posts' }))
@@ -298,6 +293,7 @@ export default {
 
         UpdatePost() {
             this.post.tags = this.tagValues.map(i => { return i.name })
+            this.post.content = this.editor.content
             this.$api.put('/api/blog', this.post)
                 .then(res => this.$router.push({path: '/manage/posts'}))
                 .catch(error => {

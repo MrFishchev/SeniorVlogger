@@ -81,9 +81,9 @@ namespace SeniorVlogger.Web
                     "{*path}",
                     new SpaOptions {SourcePath = "ClientApp"},
                     npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
-                    regex: "Compilled successfully",
+                    regex: "Compiled successfully",
                     forceKill: true,
-                    wsl: true);
+                    wsl: false);
             });
 
 
