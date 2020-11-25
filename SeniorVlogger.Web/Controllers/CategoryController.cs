@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SeniorVlogger.DataAccess.Repository.IRepository;
+using SeniorVlogger.Models.DTO;
 using SeniorVlogger.Models.ViewModels;
-using SeniorVlogger.Web.Extensions;
 
 namespace SeniorVlogger.Web.Controllers
 {
@@ -20,15 +21,18 @@ namespace SeniorVlogger.Web.Controllers
 
         private readonly ILogger<CategoryController> _logger;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         #endregion
 
         #region Constructor
 
-        public CategoryController(IUnitOfWork unitOfWork, ILogger<CategoryController> logger)
+        public CategoryController(IUnitOfWork unitOfWork, ILogger<CategoryController> logger,
+            IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _mapper = mapper;
         }
 
         #endregion
@@ -39,13 +43,14 @@ namespace SeniorVlogger.Web.Controllers
         public async Task<IEnumerable<CategoryViewModel>> GetAll()
         {
             var category = await _unitOfWork.Categories.GetAll();
-            return category.Select(c => c.ToViewModel());
+            return category.Select(c => _mapper.Map<CategoryViewModel>(c));
         }
 
         [HttpGet("{id}")]
         public async Task<CategoryViewModel> Get(int id)
         {
-            return (await _unitOfWork.Categories.Get(id)).ToViewModel();
+            var category = await _unitOfWork.Categories.Get(id);
+            return _mapper.Map<CategoryViewModel>(category);
         }
 
         [HttpPost]
@@ -53,7 +58,7 @@ namespace SeniorVlogger.Web.Controllers
         {
             try
             {
-                var objDb = category.ToDto();
+                var objDb = _mapper.Map<CategoryDto>(category);
                 await _unitOfWork.Categories.Add(objDb);
                 await _unitOfWork.Save();
             }
@@ -74,7 +79,7 @@ namespace SeniorVlogger.Web.Controllers
                 var categoryDb = await _unitOfWork.Categories.Get(category.Id);
                 if (categoryDb == null) return NotFound();
 
-                await _unitOfWork.Categories.Update(category.ToDto());
+                await _unitOfWork.Categories.Update(_mapper.Map<CategoryDto>(category));
                 await _unitOfWork.Save();
             }
             catch (Exception e)
