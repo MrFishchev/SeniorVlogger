@@ -15,9 +15,9 @@ RUN dotnet publish "SeniorVlogger.Web.csproj" -c Release -o /dist
 FROM node:alpine as buildvue
 WORKDIR /src
 COPY SeniorVlogger.Web/ClientApp/package.json .
-RUN npm install 
+RUN npm install --silent 
 COPY SeniorVlogger.Web/ClientApp .
-RUN npm run build
+RUN npm run --silent build
 
 #Backend + Frontend production
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
