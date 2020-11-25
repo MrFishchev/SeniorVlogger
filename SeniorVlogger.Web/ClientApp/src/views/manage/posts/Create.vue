@@ -91,7 +91,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" v-if="!editMode">
+                <div class="form-group" v-if="editMode">
                     <div class="form-check">
                         <input class="form-check-input" v-model="post.scratch"
                             type="checkbox" id="scratch">

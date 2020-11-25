@@ -136,6 +136,8 @@ export default {
         width: 100%
         max-width: 720px
         margin: 0 auto
+        p.ql-align-center
+            text-align: center
         div
             width: 100%
             img
