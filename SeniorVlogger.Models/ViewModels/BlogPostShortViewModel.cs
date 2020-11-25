@@ -2,7 +2,7 @@
 
 namespace SeniorVlogger.Models.ViewModels
 {
-    public class BlogPostViewModel : IBlogPost
+    public class BlogPostShortViewModel : IBlogPost
     {
         public int Id { get; set; }
 
@@ -22,13 +22,7 @@ namespace SeniorVlogger.Models.ViewModels
 
         public bool Scratch { get; set; }
 
-        public string Content { get; set; }
-
         public CategoryViewModel Category { get; set; }
-
-        public BlogPostViewModel Next { get; set; }
-
-        public BlogPostViewModel Previous { get; set; }
 
         public UserViewModel Author { get; set; }
     }

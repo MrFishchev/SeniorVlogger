@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,6 @@ using SeniorVlogger.DataAccess.Repository.IRepository;
 using SeniorVlogger.Models.DTO;
 using SeniorVlogger.Models.Requests;
 using SeniorVlogger.Models.ViewModels;
-using SeniorVlogger.Web.Extensions;
 
 namespace SeniorVlogger.Web.Controllers
 {
@@ -24,17 +24,19 @@ namespace SeniorVlogger.Web.Controllers
         private readonly ILogger<SubscriptionController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailService _emailService;
+        private readonly IMapper _mapper;
 
         #endregion
 
         #region Constructor
 
         public SubscriptionController(IUnitOfWork unitOfWork, IEmailService emailService, 
-            ILogger<SubscriptionController> logger)
+            ILogger<SubscriptionController> logger, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _emailService = emailService;
             _logger = logger;
+            _mapper = mapper;
         }
 
         #endregion
@@ -46,7 +48,7 @@ namespace SeniorVlogger.Web.Controllers
         public async Task<IEnumerable<SubscriptionViewModel>> GetAll()
         {
             var subscriptions = await _unitOfWork.Subscriptions.GetAll();
-            return subscriptions?.Select(s => s.ToViewModel());
+            return subscriptions?.Select(s => _mapper.Map<SubscriptionViewModel>(s));
         }
 
         [HttpPost]

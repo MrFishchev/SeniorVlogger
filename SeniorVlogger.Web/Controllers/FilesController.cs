@@ -49,11 +49,11 @@ namespace SeniorVlogger.Web.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteImage([FromBody] DeleteImageRequest request)
+        public IActionResult DeleteImage([FromBody] DeleteImageRequest request)
         {
             try
             {
-                await _uploadsService.Delete(request.Path);
+                _uploadsService.Delete(request.Path);
                 return Ok();
             }
             catch (Exception e)

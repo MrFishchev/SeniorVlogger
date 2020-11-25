@@ -1,4 +1,5 @@
 using System.IO;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +14,7 @@ using SeniorVlogger.Common.Email.IEmail;
 using SeniorVlogger.DataAccess.Data;
 using SeniorVlogger.DataAccess.Repository;
 using SeniorVlogger.DataAccess.Repository.IRepository;
+using SeniorVlogger.Web.Classes;
 using SeniorVlogger.Web.Services;
 using VueCliMiddleware;
 
@@ -42,6 +44,13 @@ namespace SeniorVlogger.Web
                 options.SignIn.RequireConfirmedEmail = true;
                 options.User.RequireUniqueEmail = true;
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddSingleton<IEmailService, EmailService>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
