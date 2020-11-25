@@ -141,7 +141,7 @@ namespace SeniorVlogger.Web.Controllers
                 await _unitOfWork.BlogPosts.Update(objDb);
                 await _unitOfWork.Save();
 
-                if(oldPost.Scratch && !post.Scratch)
+                if(oldPost.Scratch && !post.Scratch && post.Mailed)
                     await SendNotificationForSubscribers(post);
             }
             catch (Exception e)
