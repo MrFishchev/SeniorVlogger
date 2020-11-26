@@ -20,7 +20,15 @@ COPY SeniorVlogger.Web/ClientApp .
 RUN npm run --silent build
 
 #Backend + Frontend production
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim
+
+#Installing dependencies for System.Drawing.Common
+RUN apt-get update -qq \ 
+    && apt-get install -qq -y --no-install-recommends libgdiplus libc6-dev \
+    && apt-get clean -qq \
+    && rm -rf /var/lib/apt/lists/*
+RUN cd /usr/lib && ln -s libgdiplus.so gdiplus.dll
+
 WORKDIR /app
 
 ENV ASPNETCORE_ENVIRONMENT Production
