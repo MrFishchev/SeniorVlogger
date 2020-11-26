@@ -104,7 +104,8 @@ export default {
         },
         createdDate() {
             if(!this.data.publishDate) return
-            return moment(this.data.publishDate, "dd.MM.yyyy HH:ss:mm").format('DD.MM.yyyy')
+            
+            return this.data.publishDate.split(' ')[0]
         }
     },
 
