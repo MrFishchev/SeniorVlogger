@@ -7,7 +7,7 @@
 
         <hr />
         <div class="like slide-in-left">
-            <h3 class="date"><i>{{ data.publishDate }}</i></h3>
+            <h2 class="date">{{ createdDate }}</h2>
             <div style="width:100px" v-if="!edit"
                 class="fb-like"
                 :data-href="postUrl"
@@ -23,8 +23,8 @@
         <div id="content" class="appers-fadein" v-if="data.content" v-html="data.content" />
 
         <div class="additional-posts">
-            <span v-if="data.next && data.next.slug">Next:<router-link :to="'/blog/' + data.next.slug">{{data.next.title}}</router-link></span>
-            <span v-if="data.previous && data.previous.slug">Previous:<router-link :to="'/blog/' + data.previous.slug">{{data.previous.title}}</router-link></span>
+            <span v-if="data.next && data.next.slug">Next part:<router-link :to="'/blog/' + data.next.slug">{{data.next.title}}</router-link></span>
+            <span v-if="data.previous && data.previous.slug">Previous part:<router-link :to="'/blog/' + data.previous.slug">{{data.previous.title}}</router-link></span>
         </div>
         
         <div class="tags">
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import 'highlight.js/scss/rainbow.scss'
 import hljs from 'highlight.js'
 const jQuery = require('jquery/dist/jquery.min.js')
@@ -100,6 +101,10 @@ export default {
         },
         postUrl(){
             // return `https://seniorvlogger.com/posts/${this.data.slug}` 
+        },
+        createdDate() {
+            if(!this.data.publishDate) return
+            return moment(this.data.publishDate, "dd.MM.yyyy HH:ss:mm").format('DD.MM.yyyy')
         }
     },
 
@@ -171,7 +176,7 @@ export default {
             margin-bottom: 1vw
         .date
             color: $font-date
-            font-size: 1rem
+            font-size: 1.125rem
             font-weight: 400
             span
                 font-weight: 600

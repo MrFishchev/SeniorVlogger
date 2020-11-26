@@ -196,7 +196,7 @@ export default {
     methods: {
 
         LoadPosts() {
-            this.$api.get('/api/blog/short')
+            this.$api.get('/api/blog')
                 .then(response => { this.posts = response.data })
         },
 

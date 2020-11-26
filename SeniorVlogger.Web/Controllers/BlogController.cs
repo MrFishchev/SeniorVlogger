@@ -108,16 +108,7 @@ namespace SeniorVlogger.Web.Controllers
                 objDb.PublishDate = DateTime.UtcNow;
                 objDb.Content = _uploadsService.ParseAndSaveImages(objDb.Slug, post.Content);
 
-                //TODO improve these
-                var previousId = post?.Previous?.Id;
-                var nextId = post?.Next?.Id;
-                objDb.PreviousId = previousId == 0 ? null : previousId;
-                objDb.NextId = nextId == 0 ? null : nextId;
-                objDb.CategoryId = post.Category.Id;
-                objDb.Previous = null;
-                objDb.Next = null;
-                objDb.Category = null;
-                objDb.Tags = string.Join(',', post.Tags);
+                SetPropertiesFromModel(objDb, post);
 
                 await _unitOfWork.BlogPosts.Add(objDb);
                 await _unitOfWork.Save();
@@ -142,19 +133,19 @@ namespace SeniorVlogger.Web.Controllers
             try
             {
                 var oldPost = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Id == post.Id);
+                var wasScratch = oldPost.Scratch;
                 if (oldPost == null) return NotFound();
 
-                //TODO update publish date or no?
-                post.PublishDate = DateTime.Now.ToString();
                 var objDb = _mapper.Map<BlogPostDto>(post);
                 objDb.Slug = post.Title.GenerateSlug();
-
                 objDb.Content = _uploadsService.ParseAndSaveImages(objDb.Slug, post.Content);
+
+                SetPropertiesFromModel(objDb, post);
 
                 await _unitOfWork.BlogPosts.Update(objDb);
                 await _unitOfWork.Save();
 
-                if(oldPost.Scratch && !post.Scratch && post.Mailed)
+                if(wasScratch && !post.Scratch && post.Mailed)
                     await SendNotificationForSubscribers(post);
             }
             catch (Exception e)
@@ -183,6 +174,19 @@ namespace SeniorVlogger.Web.Controllers
         #endregion
 
         #region Private Methods
+
+        private void SetPropertiesFromModel(BlogPostDto objDb, BlogPostViewModel post)
+        {
+            var previousId = post?.Previous?.Id;
+            var nextId = post?.Next?.Id;
+            objDb.PreviousId = previousId == 0 ? null : previousId;
+            objDb.NextId = nextId == 0 ? null : nextId;
+            objDb.CategoryId = post.Category.Id;
+            objDb.Previous = null;
+            objDb.Next = null;
+            objDb.Category = null;
+            objDb.Tags = string.Join(',', post.Tags);
+        }
 
         private async Task SendNotificationForSubscribers(BlogPostViewModel post)
         {
