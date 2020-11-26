@@ -139,13 +139,14 @@ export default {
         flex-direction: column
         align-items: center
         width: 100%
-        max-width: 720px
+        max-width: 1080px
         margin: 0 auto
         p.ql-align-center
             text-align: center
         div
             width: 100%
             img
+                max-width: 100%
                 height: auto
                 cursor: default!important
         hr
