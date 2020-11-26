@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import 'highlight.js/scss/rainbow.scss'
 import hljs from 'highlight.js'
 const jQuery = require('jquery/dist/jquery.min.js')
