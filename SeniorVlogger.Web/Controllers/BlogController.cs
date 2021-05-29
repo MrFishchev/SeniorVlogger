@@ -56,7 +56,7 @@ namespace SeniorVlogger.Web.Controllers
             var validUser = await ValidateUser();
             var posts = await _unitOfWork.BlogPosts.GetAll(includeProperties: "Category,Author");
 
-            return await GetPostsWithScratchIfUserValid<BlogPostShortViewModel>(posts);
+            return await GetPostsWithScratchIfUserValid<BlogPostShortViewModel>(posts.OrderByDescending(x=> x.PublishDate));
         }
 
         [HttpGet("slug/{slug}")]
