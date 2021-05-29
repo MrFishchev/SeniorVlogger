@@ -9,7 +9,7 @@
   "dependencies": {
     "@popperjs/core": "^2.5.4",
     "anymatch": "^3.1.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "braces": "^2.3.2",
     "highlight.js": "^10.1.0",
