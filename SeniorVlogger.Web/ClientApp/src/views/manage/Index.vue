@@ -6,9 +6,17 @@
 
 <script>
 export default {
+  updated() {
+    this.redirect()
+  },
   beforeMount() {
-    if(this.$route.path === '/manage')
-      this.$router.replace('/manage/posts')
+    this.redirect()
+  },
+  methods:{
+    redirect(){
+      if(this.$route.path === '/manage')
+        this.$router.replace('/manage/posts')
+    }
   }
 }
 </script>
