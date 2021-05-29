@@ -96,7 +96,6 @@ namespace SeniorVlogger.Web.Controllers
         }
 
         [HttpDelete("{base64Email}")]
-
         public async Task<IActionResult> Unsubscribe(string base64Email)
         {
             var decodedId = Base64Helper.Base64Decode(base64Email);

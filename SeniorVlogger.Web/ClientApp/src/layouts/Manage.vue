@@ -23,7 +23,7 @@
             <router-link :to="{ path: '/manage/categories'}" exact class="nav-link" active-class="active">Categories</router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{ path: '/manage/users'}" exact class="nav-link" active-class="active">Users</router-link>
+            <router-link :to="{ path: '/manage/subscribers'}" exact class="nav-link" active-class="active">Subscribers</router-link>
           </li>
         </ul>
 
@@ -38,10 +38,10 @@
             <a href="#" @click="Logout" class="nav-link">Logout</a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0 d-none d-lg-block">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" />
-          <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-        </form>
+<!--        <form class="form-inline my-2 my-lg-0 d-none d-lg-block">-->
+<!--          <input class="form-control mr-sm-2" type="text" placeholder="Search" />-->
+<!--          <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>-->
+<!--        </form>-->
       </div>
     </nav>
 
@@ -87,6 +87,6 @@ body
           text-decoration: none
           transition: color .2s
     a.active
-      color: #18BC9C 
+      color: #18BC9C       
 </style>
 

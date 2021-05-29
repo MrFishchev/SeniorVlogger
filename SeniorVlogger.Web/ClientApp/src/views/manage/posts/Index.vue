@@ -11,20 +11,20 @@
                 :select-options="{ enabled: true, selectOnCheckboxOnly: true, selectionText: 'posts selected'}"
                 :search-options="{ enabled: true }">
                 <template slot="table-row" slot-scope="props">
-                    <span v-if="props.column.field == 'tags'" class="tags">
+                    <span v-if="props.column.field === 'tags'" class="tags">
                         <span class="tag" v-for="(item, index) in props.row.tags" :key="index">
                             {{ item }}
                         </span> 
                     </span>
-                    <span v-else-if="props.column.field == 'mailed'" class="check-success">
+                    <span v-else-if="props.column.field === 'mailed'" class="check-success">
                         <i class="fas fa-check text-success" v-if="props.row.mailed"></i>
                         <i class="fas fa-times text-danger" v-else></i>
                     </span>
-                    <span v-else-if="props.column.field == 'scratch'" class="check-success">
+                    <span v-else-if="props.column.field === 'scratch'" class="check-success">
                         <i class="fas fa-check text-success" v-if="props.row.scratch"></i>
                         <i class="fas fa-times text-danger" v-else></i>
                     </span>
-                    <span v-else-if="props.column.field == 'buttons'" class="table-buttons">
+                    <span v-else-if="props.column.field === 'buttons'" class="table-buttons">
                         <button @click="OpenPost(props.row.slug)" class="btn btn-sm btn-primary mr-2">
                             <i class="fas fa-external-link-alt"></i>
                         </button>
@@ -57,16 +57,16 @@ export default {
 
             columns: [
                 { label: 'Title', field: 'title', sortable: false},
-                { label: 'Description', field: 'description', sortable: false },
                 { label: 'Category', field: 'category.name' },
                 { 
-                    label: 'Date', 
-                    field: 'publishDate', 
-                    dateOutputFormat: 'dd MMM yyyy',
-                    dateInputFormat: 'dd.MM.yyyy',
-                    type: 'date'
+                  label: 'Date', 
+                  field: 'publishDate',
+                  dateInputFormat: 'MM/dd/yyyy HH:mm:ss',
+                  dateOutputFormat: 'dd.MM.yyyy',
+                  type: 'date',
+                  tdClass: 'vgt-left-align',
+                  thClass: 'vgt-left-align'
                 },
-                { label: 'Author', field: 'author.name' },
                 { label: 'Tags', field: 'tags', sortable: false, globalSearchDisabled: true },
                 { label: 'Mailed', field: 'mailed', sortable: false, globalSearchDisabled: true, tdClass: 'center-item' },
                 { label: 'Scratch', field: 'scratch', sortable: false, globalSearchDisabled: true, tdClass: 'center-item'  },
@@ -145,5 +145,11 @@ export default {
             .controls
                 background: linear-gradient(#f4f5f8,#f1f3f6)
                 height: 40px
+        .tag
+          display: inline-block
+          background: #e0ecff
+          padding: 5px
+          margin: 2px
+          color: #8c8c8c
 
 </style>

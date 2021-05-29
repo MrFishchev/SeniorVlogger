@@ -91,7 +91,13 @@ Vue.use(VueRouter)
         component: function() {
           return import('../views/manage/categories/Create.vue')
         }
-      }
+      },
+      {
+        path: 'subscribers',
+        component: function() {
+          return import('../views/manage/subscribers/Index.vue')
+        }
+      },
     ]
   },
 
