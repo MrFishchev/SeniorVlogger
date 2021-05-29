@@ -12,21 +12,21 @@
             <div class="option">
               <ScaleIcon />
               <div class="title">Scalability</div>
-              <div class="desc">Use SOLID principles and Design patterns</div>
+              <div class="desc">Use SOLID principles and Clean Architecture</div>
             </div>
             <div class="option">
               <CleanIcon />
-              <div class="title">Clean</div>
+              <div class="title">Readibility</div>
               <div class="desc">Beautiful and readable code</div>
             </div>
             <div class="option">
               <SpeedIcon />
-              <div class="title">Fast</div>
+              <div class="title">Availability</div>
               <div class="desc">Fastest loading and lowest latency</div>
             </div>
             <div class="option">
               <ResponsiveIcon />
-              <div class="title">Responsive</div>
+              <div class="title">Crossplatform</div>
               <div class="desc">Any devices supported</div>
             </div>
           </div>
@@ -38,9 +38,33 @@
                 <div
                   class="fill"
                   style="width:99%">
-                  <div class="tag"><span>C#</span></div>
+                  <div class="tag"><span>.NET</span></div>
                 </div>
                 <span>99%</span>
+              </div>
+              <div class="bar">
+                <div
+                    class="fill"
+                    style="width:60%">
+                  <div class="tag"><span>Go</span></div>
+                </div>
+                <span>60%</span>
+              </div>
+              <div class="bar">
+                <div
+                    class="fill"
+                    style="width:70%">
+                  <div class="tag"><span>Architecture</span></div>
+                </div>
+                <span>70%</span>
+              </div>
+              <div class="bar">
+                <div
+                    class="fill"
+                    style="width:83%">
+                  <div class="tag"><span>Docker</span></div>
+                </div>
+                <span>83%</span>
               </div>
               <div class="bar">
                 <div
@@ -61,46 +85,22 @@
               <div class="bar">
                 <div
                   class="fill"
-                  style="width:100%">
-                  <div class="tag"><span>HTML</span></div>
-                </div>
-                <span>100%</span>
-              </div>
-              <div class="bar">
-                <div
-                  class="fill"
                   style="width:97%">
                   <div class="tag"><span>CSS</span></div>
                 </div>
                 <span>97%</span>
               </div>
-              <div class="bar">
-                <div
-                  class="fill"
-                  style="width:83%">
-                  <div class="tag"><span>Docker</span></div>
-                </div>
-                <span>83%</span>
-              </div>
-              <div class="bar">
-                <div
-                  class="fill"
-                  style="width:70%">
-                  <div class="tag"><span>Architecture</span></div>
-                </div>
-                <span>70%</span>
-              </div>
             </div>
 
             <div class="additional appers-fadein">
               <p>
-                <span>Backend</span> ASP.NET Core API, EntityFramework, Multitenancy, Microservices, Docker, Autofac, Quartz, IdentityServer, MSSQL, MongoDB, Redis, RabbitMQ, SOLID
+                <span>Backend</span> .NET 5, EntityFramework, Multitenancy, SAGA, Autofac, Quartz, IdentityServer, gRPC, REST
               </p>
               <p>
-                <span>Frontend</span> Vue.js, Blazor, Nuxt.js, Bootstrap, CSS Grid, PWA
+                <span>Infrastructure</span> Docker, Kubernetes, MSSQL, MongoDB, Redis, RabbitMQ, Monitoring, ELK
               </p>
               <p>
-                <span>DevOps</span> Docker, Kubernetes, Lua, Prometheus, Grafana
+                <span>Frontend</span> Vue.js, Blazor, Nuxt.js, Bootstrap, CSS Grid, Flexbox
               </p>
             </div>
           </div>
@@ -125,15 +125,14 @@
         <div class="container">
 
           <div class="whoami">
-            <!-- <img src="@/static/about.jpg" alt=""> -->
             <div class="img"/>
             <div class="title">
               Aleksey Fishchev<br>
             </div>
             <div class="desc">
-              Hi Friend! I'm a <strong>Senior .NET Developer</strong> I love backend and perfomance tricks.
+              Hi Friend! I'm a <strong>Senior Software Engineer</strong>.
               Now I'm on my way to becoming a Software Architect. Let's make the World a better place.
-              If you want to know about me or <strong>.NET</strong>, then go to my <router-link to="/blog">blog</router-link>.
+              If you want to know about me or <strong>.NET</strong>, then welcome to my <router-link to="/blog">blog</router-link>.
             </div>
           </div>
 
@@ -280,7 +279,7 @@
                             width: 250px
                             height: 250px
                             background: linear-gradient( rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25) ), url('../assets/about.jpg')
-                            background-size: contain
+                            background-size: cover
                             border-radius: 50%
                             border: 2px solid $neon-light
                         .title

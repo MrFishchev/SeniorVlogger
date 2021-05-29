@@ -5,7 +5,7 @@
     <div class="title noselect">
       <h3>Hello! I am</h3>
       <h1>Mr. Fishchev</h1>
-      <h3 class="job">Fullstack <strong>.NET Developer</strong></h3>
+      <h3 class="job">Senior Software Engineer</h3>
       <div class="routes">
         <router-link to="/blog">
           <button
