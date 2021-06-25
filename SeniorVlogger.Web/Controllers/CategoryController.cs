@@ -40,6 +40,7 @@ namespace SeniorVlogger.Web.Controllers
         #region Actions
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IEnumerable<CategoryViewModel>> GetAll()
         {
             var category = await _unitOfWork.Categories.GetAll();

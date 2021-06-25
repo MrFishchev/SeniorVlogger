@@ -53,9 +53,7 @@ namespace SeniorVlogger.Web.Controllers
         [AllowAnonymous]
         public async Task<IEnumerable<BlogPostShortViewModel>> GetAll()
         {
-            var validUser = await ValidateUser();
             var posts = await _unitOfWork.BlogPosts.GetAll(includeProperties: "Category,Author");
-
             return await GetPostsWithScratchIfUserValid<BlogPostShortViewModel>(posts.OrderByDescending(x=> x.PublishDate));
         }
 
@@ -134,7 +132,6 @@ namespace SeniorVlogger.Web.Controllers
             {
                 var oldPost = await _unitOfWork.BlogPosts.GetFirstOrDefault(p => p.Id == post.Id);
                 var wasScratch = oldPost.Scratch;
-                if (oldPost == null) return NotFound();
 
                 var objDb = _mapper.Map<BlogPostDto>(post);
                 objDb.Slug = post.Title.GenerateSlug();
