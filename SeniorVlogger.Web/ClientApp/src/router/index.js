@@ -9,7 +9,6 @@ import NotFound from '../views/NotFound.vue'
 import middlewarePipeline from './middlewarePipeline'
 import guest from './middleware/guest'
 import auth from './middleware/auth'
-import isSubscribed from './middleware/isSubscribed'
 
 Vue.use(VueRouter)
 
@@ -96,6 +95,24 @@ Vue.use(VueRouter)
         path: 'subscribers',
         component: function() {
           return import('../views/manage/subscribers/Index.vue')
+        }
+      },
+      {
+        path: 'users',
+        component: function() {
+          return import('../views/manage/users/Index.vue')
+        }
+      },
+      {
+        path: 'users/edit/:id',
+        component: function() {
+          return import('../views/manage/users/Create.vue')
+        }
+      },
+      {
+        path: 'users/create',
+        component: function() {
+          return import('../views/manage/users/Create.vue')
         }
       },
     ]

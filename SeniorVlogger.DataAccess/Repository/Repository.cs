@@ -35,7 +35,10 @@ namespace SeniorVlogger.DataAccess.Repository
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = null)
+        public async Task<IEnumerable<T>> GetAll(
+            Expression<Func<T, bool>> filter = null, 
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, 
+            string includeProperties = null)
         {
             IQueryable<T> query = _dbSet;
 

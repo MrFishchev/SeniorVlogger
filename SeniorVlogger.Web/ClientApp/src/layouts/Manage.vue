@@ -25,6 +25,9 @@
           <li class="nav-item">
             <router-link :to="{ path: '/manage/subscribers'}" exact class="nav-link" active-class="active">Subscribers</router-link>
           </li>
+          <li class="nav-item">
+            <router-link :to="{ path: '/manage/users'}" exact class="nav-link" active-class="active">Users</router-link>
+          </li>
         </ul>
 
         <ul class="navbar-nav ml-auto mr-5">
