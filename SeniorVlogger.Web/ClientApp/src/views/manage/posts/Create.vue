@@ -33,7 +33,7 @@
 
                 <div class="form-group">
                     <label for="tags">Tags</label>
-                    <multiselect class="tags"
+                    <multiselect class="tags" id="tags"
                         tag-placeholder="Add this as new tag" 
                         placeholder="Search or add a tag" 
                         label="name"
@@ -56,7 +56,7 @@
 
                 <div class="form-group" v-if="editMode">
                     <label for="image">Image Url</label>
-                    <input type="text" class="form-control" v-model="post.imageUrl" readonly>
+                    <input type="text" class="form-control" id="image" v-model="post.imageUrl" readonly>
                 </div>
 
                 <div class="form-group">
