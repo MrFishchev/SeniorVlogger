@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -22,6 +21,11 @@ namespace SeniorVlogger.Web.Services
             _logger = logger;
         }
 
+        private string GetPostImagesDirectory(string slug)
+        {
+            return Path.Combine(_hostEnvironment.WebRootPath, $"{Uploads}/{slug}");
+        }
+        
         public string ParseAndSaveImages(string slug, string content)
         {
             var sb = new StringBuilder(content);
@@ -41,7 +45,7 @@ namespace SeniorVlogger.Web.Services
                 {
                     var type = regexType.Match(match.Value)?.Value;
                     var name = $"{Guid.NewGuid()}.{type}";
-                    var pathToSave = Path.Combine(_hostEnvironment.WebRootPath, $"{Uploads}/{slug}/{name}");
+                    var pathToSave = Path.Combine(GetPostImagesDirectory(slug), name);
 
                     SaveBase64ToImage(pathToSave, match.Value.Split(',')[1]);
 
@@ -65,7 +69,7 @@ namespace SeniorVlogger.Web.Services
         {
             try
             {
-                var name = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                var name = Guid.NewGuid() + Path.GetExtension(file.FileName);
                 var path = Path.Combine(_hostEnvironment.WebRootPath, Uploads);
 
                 _logger.LogInformation($"Saving image to {path}");
@@ -120,13 +124,8 @@ namespace SeniorVlogger.Web.Services
             var directoryName = Path.GetDirectoryName(pathToSave);
             if (!Directory.Exists(directoryName))
                 Directory.CreateDirectory(directoryName);
-
-            var bytes = Convert.FromBase64String(base64Data);
-            using (var ms = new MemoryStream(bytes))
-            {
-                var image = Image.FromStream(ms);
-                image.Save(pathToSave);
-            }
+            
+            File.WriteAllBytes(pathToSave, Convert.FromBase64String(base64Data));
         }
     }
 }

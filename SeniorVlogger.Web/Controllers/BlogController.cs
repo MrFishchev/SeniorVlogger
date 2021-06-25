@@ -135,6 +135,7 @@ namespace SeniorVlogger.Web.Controllers
 
                 var objDb = _mapper.Map<BlogPostDto>(post);
                 objDb.Slug = post.Title.GenerateSlug();
+                _uploadsService.DeleteBlogImages(objDb.Slug);
                 objDb.Content = _uploadsService.ParseAndSaveImages(objDb.Slug, post.Content);
 
                 SetPropertiesFromModel(objDb, post);
