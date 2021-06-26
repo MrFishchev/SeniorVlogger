@@ -38,7 +38,7 @@
             <router-link :to="{ path: '/blog'}" exact class="nav-link">Blog</router-link>
           </li>
           <li class="nav-item" v-if="auth">
-            <a href="#" @click="Logout" class="nav-link">Logout</a>
+            <a href="#" @click="Logout" class="nav-link">Logout ({{user}})</a>
           </li>
         </ul>
 <!--        <form class="form-inline my-2 my-lg-0 d-none d-lg-block">-->
@@ -59,9 +59,12 @@
         },
 
         computed: {
-            auth() {
-                return this.$store.getters.AUTH
-            }
+          auth() {
+              return this.$store.getters.AUTH
+          },
+          user(){
+            return this.$store.getters.USER.name
+          }
         },
 
         methods: {
@@ -73,9 +76,9 @@
     }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 body
-  background: #fff!important
+  background: #fff
   #manage      
     nav
       font-size: 1rem

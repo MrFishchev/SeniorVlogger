@@ -48,7 +48,7 @@ $signtext-brd: #58442d
 
 .p404 
   margin: 0
-  background: $base
+  background: var(--base)
   width: 100vw
   height: 100vh
 
@@ -63,14 +63,14 @@ $signtext-brd: #58442d
 
 
 .bowl 
-  background: $base-light
+  background: var(--base-light)
   position: fixed
   width: 100px
   height: 45px
   border-radius: 5px 5px 50px 50px
   left: calc(50vw - 25px)
   top: calc(50vh + 19px)
-  border: 4px solid $base-dark
+  border: 4px solid var(--base-dark)
   box-shadow: inset -5px 0 0 $shadow
   z-index: 50
 
@@ -144,7 +144,7 @@ $signtext-brd: #58442d
 .leg 
   width: 5px
   height: 1px
-  position: abolute
+  position: absolute
   background: $dkblue-11
 
 

@@ -23,6 +23,9 @@ export const store = new Vuex.Store({
             isEmailConfirmed: false,
             isSubscribed: false,
             token: null
+        },
+        theme: {
+            isLightMode: true
         }
     },
     getters: {
@@ -36,6 +39,10 @@ export const store = new Vuex.Store({
 
         USER: state => {
             return state.user
+        },
+        
+        IsLightMode: state => {
+            return state.theme.isLightMode
         }
     },
     mutations: {
@@ -51,6 +58,14 @@ export const store = new Vuex.Store({
             state.user.isEmailConfirmed = false
             state.user.isSubscribed = false
             state.user.token = null
+        },
+        
+        SET_THEME_LIGHT: (state) => {
+            state.theme.isLightMode = true
+        },
+
+        SET_THEME_DARK: (state) => {
+            state.theme.isLightMode = false
         }
     },
     actions: {
@@ -72,6 +87,15 @@ export const store = new Vuex.Store({
             let { data } = await axios.get('/api/User/Verify')
             if (data.user) {
                 context.commit('SET_USER', data)
+            }
+        },
+        
+        SET_THEME: (context, payload) =>{
+            if(payload === 'light'){
+                context.commit('SET_THEME_LIGHT')
+            }
+            else{
+                context.commit('SET_THEME_DARK')
             }
         }
     }

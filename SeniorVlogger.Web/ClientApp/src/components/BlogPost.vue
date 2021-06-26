@@ -34,7 +34,12 @@
             </span>
         </div>
 
-        <div v-if="!edit" class="fb-comments" :data-href="postUrl" data-width="100%" data-numposts="10"></div>
+        
+        <div v-if="!edit && isLightMode" class="fb-comments" :data-href="postUrl" data-order-by="reverse_time" data-colorscheme="dark"
+             data-width="100%" data-numposts="10" ></div>
+        <div v-if="!edit && !isLightMode" class="fb-dark-error">
+          <p>Unfortunately, Facebook Comments plugin is not readable in the dark mode until fix by facebook team.</p>
+        </div>
     </div>
 </template>
 
@@ -105,6 +110,10 @@ export default {
             if(!this.data.publishDate) return
             
             return this.data.publishDate.split(' ')[0]
+        },
+      
+        isLightMode(){
+          return this.$store.getters.IsLightMode
         }
     },
 
@@ -141,6 +150,13 @@ export default {
         width: 100%
         max-width: 1080px
         margin: 0 auto
+        .fb-dark-error
+          color: #b3adb6
+          font-style: italic
+        #content
+          color: var(--font-blog)
+          .hljs
+            background: var(--hljs-backgound)
         p.ql-align-center
             text-align: center
         div
@@ -153,7 +169,7 @@ export default {
             height: 1px
             width: 100%
             margin: 0 0 5px 0 
-            color: $font-category
+            color: var(--font-category)
         .like
             display: flex
             justify-content: space-between
@@ -162,21 +178,22 @@ export default {
             text-transform: uppercase
             font-weight: 700
         .category
-            color: $font-category
+            color: var(--font-category)
             font-size: 1.125rem
             text-decoration: none
             transition: color .1s
             letter-spacing: 1px
             line-height: 1.5
             &:hover
-                color: $neon-light
+                color: var(--neon-light)
         .title
+            color: var(--font-title)
             letter-spacing: 2px
             font-size: 2.5rem
             text-align: center
             margin-bottom: 1vw
         .date
-            color: $font-date
+            color: var(--font-date)
             font-size: 1.125rem
             font-weight: 400
             span

@@ -171,7 +171,7 @@
     #about
         padding: 0
         margin: 0
-        background: $base
+        background: var(--base)
         .content
             h1
               animation: slideInLeft 0.5s
@@ -192,12 +192,12 @@
                             max-width: 280px
                             margin-bottom: 1.875rem
                             svg
-                                fill: $neon-light
+                                fill: var(--neon-light)
                                 width: 35%
                             .title
-                                color: $font-white
+                                color: var(--font-white)
                             .desc
-                                color: $font
+                                color: var(--font)
                                 max-width: 200px
                                 margin: 0 auto
                             &:last-child
@@ -215,7 +215,7 @@
                                 justify-content: center
                                 align-items: flex-start
                                 margin-bottom: 30px
-                                background: $base-light
+                                background: var(--base-light)
                                 border-radius: 5px 5px 3px 3px
                                 &:nth-child(even) .fill
                                   animation: widthFromZero 1.5s
@@ -223,44 +223,44 @@
                                   animation: widthFromZero 1s
                                 .fill
                                     height: 30px
-                                    background: $neon-light
+                                    background: var(--neon-light)
                                     border-radius: 5px 5px 3px 3px
                                     .tag
                                         border-radius: 3px 0 0 3px
                                         width: 110px
-                                        background: $base-dark
+                                        background: var(--base-dark)
                                         height: 100%
                                         text-align: center
                                         display: flex
                                         justify-content: center
                                         align-items: center
                                         span
-                                            color: $font-white
+                                            color: var(--font-white)
                                             position: relative
                                 & > span
                                     position: absolute
                                     left: calc(100% - 40px)
-                                    color: $font-white
+                                    color: var(--font-white)
                                     font-weight: lighter
                         .additional
                             display: flex
                             flex-direction: column
                             justify-content: space-evenly
                             padding: 5px 10px
-                            border-top: 1px solid $neon-light
-                            border-bottom: 1px solid $neon-light
+                            border-top: 1px solid var(--neon-light)
+                            border-bottom: 1px solid var(--neon-light)
                             min-height: 180px
                             h4
                                 margin-top: 5px
                                 margin-bottom: 10px
-                                color: $font-white
+                                color: var(--font-white)
                                 font-size: 1.125rem
                             p
                                 padding: 0 15px
-                                color: $font
+                                color: var(--font)
                                 margin: 0
                                 span
-                                    color: $font-white
+                                    color: var(--font-white)
                                     font-weight: 400
                                 &::before
                                     content: '-'
@@ -281,9 +281,9 @@
                             background: linear-gradient( rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25) ), url('../assets/about.jpg')
                             background-size: cover
                             border-radius: 50%
-                            border: 2px solid $neon-light
+                            border: 2px solid var(--neon-light)
                         .title
-                            color: $font-white
+                            color: var(--font-white)
                             text-align: center
                             font-size: 1.25rem
                             font-weight: 600
@@ -294,7 +294,7 @@
                         .desc
                             text-align: center
                             max-width: 350px
-                            color: $font
+                            color: var(--font)
                     .contact-form
                         display: flex
                         flex-direction: column
@@ -304,9 +304,9 @@
                             display: block
                             width: 100%
                             padding: 10px 15px
-                            background: $base-dark
+                            background: var(--base-dark)
                             border: none
-                            color: $font
+                            color: var(--font)
                             &:hover, &:active
                                 border: none
                         textarea
@@ -317,7 +317,7 @@
                         .remaining
                             text-align: right
                             padding: 3px 5px
-                            color: $font
+                            color: var(--font)
 </style>
 
 <script>

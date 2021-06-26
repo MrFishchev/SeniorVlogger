@@ -11,9 +11,13 @@
         </div>
       </nav>
   
-      <div class="manage" v-if="authorized">
-        <router-link to="/manage">Manage</router-link>
-        <a @click.prevent="logout">Logout</a>
+      <div class="manage">
+        <div class="d-inline-block" v-if="isBlogLayout">
+          <i v-if="isLightMode" @click="changeLightMode('dark')" class="light-mode far fa-moon"></i>
+          <i v-else @click="changeLightMode('light')" class="light-mode fas fa-sun"></i>
+        </div>
+        <router-link v-if="authorized" to="/manage">Manage</router-link>
+        <a v-if="authorized" @click.prevent="logout">Logout</a>
       </div>
     </div>
   </div>
@@ -24,8 +28,8 @@
     #header
       min-width: 320px
       height: 50px
-      background: $base-dark
-      border-bottom: 3px solid $neon-light
+      background: var(--base-dark)
+      border-bottom: 3px solid var(--neon-light)
       position: fixed
       top: 0
       width: 100vw
@@ -34,21 +38,15 @@
       align-items: center
       a
         color: #fff
-      &.blog
-        background: #fff
-        a
-          color: #303030
-        .container .manage 
-          a
-           color: #303030
-          &:hover
-            color: $neon-light
       .container
         display: flex
         justify-content: space-between
-        max-width: 730px
+        max-width: 1080px
         padding: 0
         nav
+          display: flex
+          flex-direction: column
+          justify-content: space-evenly
           .container
             align-items: center
             display: flex
@@ -67,34 +65,54 @@
                   cursor: pointer
                   transition: color 0.5s
                   &.exact-active-route, &.active
-                    color: $neon-light
+                    color: var(--neon-light)
                   &:hover
-                    color: $neon-light
+                    color: var(--neon-light)
               li:first-child
                 margin: 0
         .manage
-          color: $font-white
+          color: var(--font-white)
           a
-            color: $font-white
+            color: var(--font-white)
             text-decoration: none
             transition: color 0.3s
+            margin-left: 2vw
             &:first-child
               margin-right: 1vw
             &:hover
-              color: $neon-light
+              color: var(--neon-light)
+          .light-mode
+            font-size: 1.563rem
+            color: var(--font-white)
+            &:hover
+              color: var(--neon-light)
+              cursor: pointer
+              transition: color 0.3s
 </style>
 
 <script>
 export default {
+  props:{
+    isLightMode: Boolean
+  },
+  
   computed: {
     authorized() {
         return this.$store.getters.AUTH
+    },
+    isBlogLayout(){
+      return this.$route.meta.layout === 'blog'
     }
   },
+  
   methods: {
     async logout () {
       await this.$store.dispatch('LOGOUT')
       this.$router.replace('/')
+    },
+    
+    changeLightMode(value){
+      this.$emit('light-mode-changed', value === 'light')
     }
   }
 }

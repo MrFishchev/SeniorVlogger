@@ -88,7 +88,7 @@ export default {
 <style lang="sass">
     @import '@/assets/_colors'
     #main
-        background: $base
+        background: var(--base)
         margin: 0
         padding: 0
         .mask
@@ -97,7 +97,7 @@ export default {
             width: 100%
             height: 100%
             z-index: 5
-            background: $base
+            background: var(--base)
             opacity: 0.3
         .title
             z-index: 10
@@ -116,7 +116,7 @@ export default {
                 font-weight: 100
                 color: #fff
                 line-height: 1.1
-                text-shadow: 0 0 10px $neon, 0 0 20px $neon, 0 0 30px $neon, 0 0 40px $neon-light, 0 0 70px $neon-light, 0 0 80px $neon-light, 0 0 100px $neon-light, 0 0 150px $neon-light
+                text-shadow: 0 0 10px var(--neon), 0 0 20px var(--neon), 0 0 30px var(--neon), 0 0 40px var(--neon)-light, 0 0 70px var(--neon)-light, 0 0 80px var(--neon)-light, 0 0 100px var(--neon)-light, 0 0 150px var(--neon)-light
             h3
                 font-weight: 200
                 font-size: 1.75rem

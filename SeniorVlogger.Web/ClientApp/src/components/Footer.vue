@@ -47,7 +47,7 @@
     @import '@/assets/_colors'
     footer.wrapper
         padding: 70px 0 50px 0
-        background: $base-dark
+        background: var(--base-dark)
         position: relative
         .btn
             position: absolute
@@ -55,7 +55,7 @@
             top: -20px
             width: 160px
             left: calc( 50% - 80px)
-            background-image: linear-gradient(to right,$neon-light,$neon)
+            background-image: linear-gradient(to right,var(--neon-light),var(--neon))
             background-size: 200% auto
             border-radius: 0
             border: none
@@ -65,8 +65,8 @@
             transition: color 0.2s
             &:hover
                 border: none
-                background: $font-white
-                color: $neon-light
+                background: var(--font-white)
+                color: var(--neon-light)
         .icon-wrapper
             display: flex
             justify-content: center
@@ -75,25 +75,25 @@
                 div
                     width: 55px
                     height: 55px
-                    background: $base
+                    background: var(--base)
                     transition: background 0.5s
                     padding: 15px
                     svg
-                        fill: $font-white
+                        fill: var(--font-white)
                 &:last-child
                     margin: 0
                 &:hover > div
-                    background: $neon-light
+                    background: var(--neon-light)
         .copyright
             margin-top: 1.5vw
             text-transform: uppercase
-            color: $font
+            color: var(--font)
             font-weight: 200
             font-size: 12px
             text-align: center
             opacity: 0.7
             span
-                color: $neon-light
+                color: var(--neon-light)
 </style>
 
 <script>

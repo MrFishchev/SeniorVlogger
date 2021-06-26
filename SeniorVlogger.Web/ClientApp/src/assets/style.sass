@@ -20,10 +20,12 @@ body
     padding: 0!important
     margin: 0
     overflow-x: hidden!important
-    background: $base
+    background: var(--base)
     min-width: 320px
     &.light
         background: #fff
+    &.dark
+        background: $background
     .noselect
         -webkit-touch-callout: none
         -webkit-user-select: none
@@ -37,19 +39,19 @@ body
     .wrapper
         .content
             .block:nth-child(2n)
-                background: $block-dark
+                background: var(--block-dark)
             .block
                 width: 100vw
                 padding: 4vw 0
                 h1
                     font-size: 2rem
                     text-align: center
-                    color: $font-white
+                    color: var(--font-white)
                     position: relative
                     text-transform: uppercase
                     &::after
                         content: " "
-                        background: $font-white
+                        background: var(--font-white)
                         position: absolute
                         height: 2px
                         top: calc(100% + 0.5rem)
@@ -58,16 +60,16 @@ body
                 .container
                     padding-top: 3vw
         .btn
-            color: $font-white
+            color: var(--font-white)
             text-transform: uppercase
             font-weight: 400
-            border: 1px solid $base-light
+            border: 1px solid var(--base-light)
             transition: all 0.5s
             &:hover, &:active
-                background: $neon-light
+                background: var(--neon-light)
                 border-color: #0f7dbd
 a
-    color: $neon-light
+    color: var(--neon-light)
     cursor: pointer
     &:hover
         text-decoration: underline

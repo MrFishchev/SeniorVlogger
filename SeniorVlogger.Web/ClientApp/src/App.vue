@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="main">
+  <div id="app" class="main" data-theme="">
     <component :is="layout">
       <notifications group="app" class="notify" position="top right" />
       <router-view/>

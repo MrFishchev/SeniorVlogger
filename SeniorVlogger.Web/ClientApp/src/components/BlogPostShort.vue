@@ -40,36 +40,36 @@ export default {
         align-items: center
         width: 100%
         padding: 2vw 0
-        color: $font
+        color: var(--font)
         max-width: 720px
         margin: 0 auto
         .category, .title
             text-transform: uppercase
             font-weight: 700
         .category
-            color: $font-category
+            color: var(--font-category)
             font-size: 1.125rem
             text-decoration: none
             transition: color .1s
             letter-spacing: 1px
             line-height: 1.5
             &:hover
-                color: $neon-light
+                color: var(--neon-light)
         .title
             letter-spacing: 2px
             font-size: 2.5rem
             text-align: center
             a
-                color: $font-title
+                color: var(--font-title)
                 text-decoration: none
                 &:hover
-                    color: $font-title
+                    color: var(--font-title)
         .date
-            color: $font-date
+            color: var(--font-date)
             font-size: 1rem
             font-weight: 600
         .image
-            background: $font-date
+            background: var(--font-date)
             margin: 2vw 0
             display: block
             width: 100%
@@ -84,12 +84,12 @@ export default {
         .short
             font-size: 1rem
             font-weight: 400
-            color: $font
+            color: var(--font)
             text-align: center
         .more
             margin-bottom: 3vw
         .separator
-            color: $font-date
+            color: var(--font-date)
             height: 2px
             width: 100%
 </style>
