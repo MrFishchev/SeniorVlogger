@@ -72,7 +72,7 @@ namespace SeniorVlogger.Web.Controllers
         public async Task<IEnumerable<BlogPostShortViewModel>> GetByCategory(int id)
         {
             var posts = await _unitOfWork.BlogPosts.GetAll(p => p.Category.Id == id, includeProperties: "Category,Author");
-            return await GetPostsWithScratchIfUserValid<BlogPostShortViewModel>(posts);
+            return await GetPostsWithScratchIfUserValid<BlogPostShortViewModel>(posts.OrderByDescending(x=> x.PublishDate));
         }
 
         [HttpGet("tag/{tag}")]
@@ -80,7 +80,7 @@ namespace SeniorVlogger.Web.Controllers
         public async Task<IEnumerable<BlogPostShortViewModel>> GetByTag(string tag)
         {
             var posts = await _unitOfWork.BlogPosts.GetAll(p => p.Tags.Contains(tag), includeProperties: "Category,Author");
-            return await GetPostsWithScratchIfUserValid<BlogPostShortViewModel>(posts);
+            return await GetPostsWithScratchIfUserValid<BlogPostShortViewModel>(posts.OrderByDescending(x=> x.PublishDate));
         }
 
         [HttpGet("{id}")]
